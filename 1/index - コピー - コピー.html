@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <!-- 【修正】Googleアナリティクスは必ずheadタグの「一番上」に配置します -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BZV0EVRXP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0BZV0EVRXP');
+    </script>
+
+    <!-- 【修正】SEO用のタイトルと説明文に最適化しました -->
+    <title>CSVの重複削除・文字化け修正ツール「CSVスッキリ」【無料】</title>
+    <meta name="description" content="ブラウザ上でCSVの重複削除・文字化け修正・タブやセミコロンの区切り整形が一瞬でできる無料オンラインツール。インストール不要。入力データはサーバーに送信せずブラウザ内で安全に処理されるため安心です。">
+    <meta name="keywords" content="CSV整形,CSV重複削除,文字化け直す,CSVコピペ,オンラインツール,無料">
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+    <!-- 2. キャッチコピー -->
+    <span class="catch-copy">インストール不要 ・ 完全無料</span>
+    
+    <!-- 3. メインタイトル -->
+    <h1 class="main-title">
+        ブラウザだけで使えるCSV整形ツール <span class="tool-name">CSVスッキリ</span>
+    </h1>
+    
+    <!-- 4. サブタイトル -->
+    <div class="sub-title">重複削除など面倒な作業から解放！！！</div>
+    
+    <!-- 5. 説明文 -->
+    <p class="description-text">
+        手作業のイライラにサヨナラ。文字化け・ズレ・不要な改行を、<span class="highlight">一瞬で『キレイなCSV』</span>に
+    </p>
+    <p class="description-text">
+        コピペしてボタンを押すだけ。一番簡単なCSVお直しツール、ファイルのゴミをスッキリお掃除
+    </p>
+
+    <!-- 【超重要】クリックしてファイルを選択するために絶対必要な隠しタグです。もしJSが動かない原因がこれなら、これを復活させてください -->
+    <input type="file" id="fileInput" accept=".csv,.txt" style="display: none;">
+
+    <!-- ドラッグ＆ドロップエリア -->
+    <div id="dropZone">
+        <p class="text-primary">ここにCSVファイルをドラッグ＆ドロップ</p>
+        <p class="text-secondary">または クリックしてファイルを選択</p>
+        <p class="text-hint">💡 コピペ（Ctrl + V）でテキストを直接貼り付けてもOKです</p>
+    </div>
+
+    <!-- ファイル名、キャンセル、コピーボタンを表示するエリア -->
+    <div class="title-container" style="margin-top: 20px; justify-content: center;">
+        <div id="fileInfo">
+            <span id="fileName">sample.csv</span>
+            <span class="cancel-btn" id="cancelBtn">✕ キャンセル</span>
+        </div>
+        <button id="copyBtn">📋 結果をコピー</button>
+    </div>
+    
+    <!-- テーブル結果が表示される場所 -->
+    <!-- 【注意】JS側が「tableContainer」か「table-container」か確認してください -->
+    <div id="tableContainer"></div>
+</div>   
+    
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>CSVスッキリ｜ブラウザだけで使えるCSV整形ツール レジュメ</title>
+  <meta name="description" content="CSVスッキリは、ブラウザだけで使えるCSV整形ツールです。文字化け・ズレ・不要な改行・重複行などを一瞬でキレイに整形。サーバー送信なしの安心設計。">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 16px;
+      line-height: 1.8;
+      color: #222;
+      background: #fafafa;
+    }
+    h1, h2, h3 {
+      line-height: 1.4;
+    }
+    h1 {
+      font-size: 1.9rem;
+      margin-bottom: 0.5em;
+    }
+    h2 {
+      font-size: 1.4rem;
+      margin-top: 2.2em;
+      border-left: 4px solid #2b7cff;
+      padding-left: 0.5em;
+    }
+    h3 {
+      font-size: 1.1rem;
+      margin-top: 1.4em;
+    }
+    p {
+      margin: 0.6em 0;
+    }
+    ul, ol {
+      padding-left: 1.4em;
+      margin: 0.4em 0 0.8em;
+    }
+    code {
+      background: #eee;
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+    .tagline {
+      font-size: 1.05rem;
+      color: #444;
+      margin-bottom: 1.2em;
+    }
+    .hero-box {
+      background: #fff;
+      border-radius: 8px;
+      padding: 16px 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      margin-bottom: 1.8em;
+    }
+    .hero-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      padding-left: 0;
+      list-style: none;
+      margin: 0.4em 0 0.2em;
+    }
+    .hero-list li::before {
+      content: "✔ ";
+      color: #2b7cff;
+    }
+    .back-link {
+      margin-top: 2.4em;
+      font-size: 0.95rem;
+    }
+    .back-link a {
+      color: #2b7cff;
+      text-decoration: none;
+    }
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+    .small {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    footer {
+      margin-top: 3em;
+      padding-top: 1.5em;
+      border-top: 1px solid #ddd;
+      font-size: 0.85rem;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>CSVスッキリ｜ブラウザだけで使えるCSV整形ツール レジュメ</h1>
+  <p class="tagline">
+    重複削除・文字化け・ズレ・不要な改行など、<br>
+    「CSVのちょっとしたイライラ」を一瞬で片付ける、シンプルなCSV整形ツールです。
+  </p>
+
+  <div class="hero-box">
+    <p><strong>CSVスッキリ</strong> は、インストール不要・ブラウザだけで使える <strong>CSVお直し専用ツール</strong> です。</p>
+    <ul class="hero-list">
+      <li>文字コードの自動判定（UTF-8 / Shift-JIS）</li>
+      <li>区切り文字の変換（カンマ / タブ / セミコロン / 半角スペース）</li>
+      <li>重複行の削除</li>
+      <li>不要な改行・空行の除去</li>
+      <li>サーバー送信なしのローカル処理</li>
+    </ul>
+    <p class="small">※実際の機能はバージョンにより異なる場合があります。</p>
+  </div>
+
+  <h2>このツールで解決できること</h2>
+  <p>
+    Excelや業務システムから出力されたCSVは、次のような問題を抱えていることがよくあります。
+  </p>
+  <ul>
+    <li>開くたびに文字化けする</li>
+    <li>区切り文字がバラバラで、他システムに取り込めない</li>
+    <li>同じ行が何度も重複している</li>
+    <li>不要な空行や改行が混ざっていて見づらい</li>
+  </ul>
+  <p>
+    <strong>CSVスッキリ</strong> は、こうした「ちょっとしたけど毎回面倒な作業」を、<br>
+    ブラウザ上でサッと整えて、すぐに次の処理に回せる状態にすることを目的としています。
+  </p>
+
+  <h2>主な機能</h2>
+
+  <h3>文字コードの自動判定と変換</h3>
+  <ul>
+    <li>UTF-8 / UTF-8（BOM付き）/ Shift-JIS に対応</li>
+    <li>自動判定モードで、文字化けしにくい形に整形</li>
+  </ul>
+
+  <h3>区切り文字の統一</h3>
+  <ul>
+    <li>カンマ (<code>,</code>)</li>
+    <li>タブ</li>
+    <li>セミコロン (<code>;</code>)</li>
+    <li>半角スペース</li>
+  </ul>
+  <p>など、よく使われる区切り文字に変換して、他システムへの取り込みをしやすくします。</p>
+
+  <h3>重複行・不要な行の整理</h3>
+  <ul>
+    <li>同一内容の行を削除してスリムなCSVに</li>
+    <li>空行や不要な改行を除去して、見やすく・扱いやすく整形</li>
+  </ul>
+
+  <h3>ブラウザだけで完結する安全設計</h3>
+  <ul>
+    <li>ファイルはサーバーに送信されず、ブラウザ内で処理</li>
+    <li>インストール不要・アカウント登録不要</li>
+  </ul>
+
+  <h2>使い方（基本ステップ）</h2>
+  <ol>
+    <li>トップページを開く</li>
+    <li>CSVファイルを「ドラッグ＆ドロップ」するか、「ファイルを選択」ボタンから選ぶ<br>または「テキスト直接入力」で内容を貼り付ける</li>
+    <li>文字コード・区切り文字などのオプションを選択する</li>
+    <li>整形処理を実行し、結果をコピーまたはダウンロードする</li>
+  </ol>
+  <p>
+    直感的に操作できるよう、画面上の説明とボタン配置をシンプルにしています。
+  </p>
+
+  <h2>想定している利用シーン</h2>
+  <ul>
+    <li>日々の業務で、システム間のCSV受け渡しをしている担当者</li>
+    <li>Excelで加工する前に、CSVの「ゴミ」を取り除きたいとき</li>
+    <li>ちょっとしたデータ前処理を、ローカルでサッと済ませたいエンジニア・アナリスト</li>
+  </ul>
+
+  <h2>セキュリティとプライバシーについて</h2>
+  <p>
+    CSVスッキリは、<strong>サーバーにファイルを送信せず、ブラウザ内で処理する設計</strong> を基本としています。<br>
+    機密性の高いデータを扱う場合でも、外部サーバーにアップロードされない構成を目指しています。
+  </p>
+  <p class="small">
+    ※実装内容や挙動の詳細については、GitHubリポジトリやツール本体の説明をご確認ください。
+  </p>
+
+  <h2>開発者情報</h2>
+  <p>
+    開発者：<strong>中西 太一</strong><br>
+    分類：個人開発ツール / 実務補助ツール
+  </p>
+  <p class="small">
+    不具合のご連絡・ご意見・ご要望などは、ツール画面の「質問・お問い合わせ・ご意見」からお送りいただけるようにする想定です。
+  </p>
+
+  <h2>よくある質問（想定）</h2>
+
+  <h3>Q. ファイルはサーバーに保存されますか？</h3>
+  <p>
+    A. 基本的な設計として、ファイルはサーバーに送信せず、ブラウザ内で処理する想定です。
+  </p>
+
+  <h3>Q. 大きなファイルでも使えますか？</h3>
+  <p>
+    A. ブラウザ上で処理するため、PCのスペックやブラウザの制限に依存します。非常に大きなファイルでは動作が重くなる場合があります。
+  </p>
+
+  <div class="back-link">
+    <p>
+      ▶ ツール本体はこちら：<br>
+      <a href="./">CSVスッキリ（マイ CSV クリーナー）トップページへ戻る</a>
+    </p>
+  </div>
+
+  <footer>
+    <p>CSVスッキリ / マイ CSV クリーナー – ブラウザだけで使えるCSV整形ツール</p>
+  </footer>
+
+</body>
+</html>

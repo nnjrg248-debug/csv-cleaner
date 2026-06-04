@@ -1,0 +1,457 @@
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #f4f7f6; /* 目に優しい薄いグレーグリーン */
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* 全体を囲むコンテナ */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        /* テーブル（結果表示）のスタイル */
+        table { 
+            border-collapse: collapse; 
+            margin-top: 30px; 
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        th { background-color: #f1f5f9; color: #334155; font-weight: bold; }
+
+        /* 2. タイトルに色をつけ、改行とメリハリをつける */
+        .catch-copy {
+            display: inline-block;
+            background-color: #e0f2fe; /* 薄い青のバッジ */
+            color: #0369a1;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            margin-bottom: 10px;
+        }
+        
+        .main-title {
+            color: #0f172a; /* 深みのある黒 */
+            font-size: 32px;
+            margin: 0 0 20px 0;
+            font-weight: 700;
+        }
+        
+        .main-title span {
+            color: #2563eb; /* ツール名「CSVスッキリ」だけ鮮やかな青に */
+        }
+
+        
+        /* タイトル周りのレイアウト調整     [python -m http.server 8000]    */
+        .title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        h1 { margin: 0; }
+        
+        /* ファイル名とキャンセルボタンのスタイル */
+        #fileInfo {
+            font-size: 14px;
+            color: #334155;
+            background-color: #e2e8f0; /* スッキリしたグレー */
+            padding: 8px 14px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+        }
+        .cancel-btn {
+            color: #ef4444; /* 綺麗な赤 */
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .cancel-btn:hover {
+            color: #b91c1c;
+            text-decoration: underline;
+        }
+
+        /* コピーボタンのスタイル */
+        #copyBtn {
+            font-size: 14px;
+            padding: 6px 14px;
+            background-color: #10b981; /* 今風の鮮やかなグリーン */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        #copyBtn:hover {
+            background-color: #059669;
+        }
+        #copyBtn:active {
+            transform: scale(0.97); /* クリックしたときに少しへこむ演出 */
+        }
+        /* ドラッグ＆ドロップエリアのスタイル */
+        #dropZone {
+            border: 3px dashed #cbd5e1; /* 落ち着いたグレーの点線 */
+            background-color: #ffffff;
+            border-radius: 16px; /* 角を丸く */
+            padding: 60px 40px; /* 縦横の余白を大きくして改行を見やすく */
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); /* 軽い影をつけて立体的に */
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* マウスを乗せたとき、またはドラッグ中の演出 */
+        #dropZone:hover, #dropZone.dragover {
+            border-color: #2563eb;
+            background-color: #eff6ff; /* ふんわり青くなる */
+        }
+
+        /* 4. ドロップエリア内の説明文の改行と文字サイズ */
+        .text-primary {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+            margin: 0 0 12px 0;
+        }
+        
+        .text-secondary {
+            font-size: 14px;
+            color: #64748b;
+            margin: 0 0 20px 0;
+        }
+        
+        .text-hint {
+            font-size: 13px;
+            color: #94a3b8;
+            background-color: #f8fafc;
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            margin: 0;
+        }
+
+        /* スイッチ全体のカプセル外枠 */
+        .switch-container {
+            position: relative;
+            display: flex !important; /* 確実に横並びにする */
+            width: 320px;
+            margin: 20px auto;
+            background-color: #f0f0f2;
+            border-radius: 30px;
+            padding: 4px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+        }
+
+        /* 本物のラジオボタンは画面から完全に隠す */
+        .switch-container input[type="radio"] {
+            position: absolute !important;
+            opacity: 0 !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+        }
+
+        /* 切り替え文字（ラベル）のスタイル */
+        .switch-label {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            z-index: 2; /* 文字をスライド板より前に出す */
+            transition: color 0.3s ease;
+            margin: 0 !important;
+            border: none !important; /* 余計な枠線を消す */
+            background: none !important;
+        }
+
+        /* 選択された方の文字色を濃くする */
+        .switch-container input[type="radio"]:checked + .switch-label {
+            color: #333;
+        }
+
+        
+        /* 「直接テキスト入力」が選ばれたら、右側にスライドさせる */
+        #modeDirect:checked ~ .switch-selection {
+            transform: translateX(100%);
+        }
+
+
+        /* --- スイッチとボタンを横並びにする設定 --- */
+        .top-controls {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px auto;
+            width: fit-content;
+        }
+
+        /* スイッチ自体の幅とマージンをリセットして横並びに最適化 */
+        .switch-container {
+            position: relative;
+            display: flex !important;
+            width: 320px;
+            margin: 0 !important;
+            background-color: #f0f0f2;
+            border-radius: 30px;
+            padding: 4px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+        }
+        /* --- 入力エリアを完全に同じ位置・大きさにする設定 --- */
+        .input-display-area {
+            position: relative;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        /* ドロップゾーンと直接入力の外枠のサイズを完全に統一 */
+        #dropZone, #directInputZone {
+            width: 100%;
+            min-height: 200px; /* 元のdropZoneと同じ高さに設定してください */
+            box-sizing: border-box;
+        }
+
+        /* textareaをdropZoneの見た目・サイズと完全に重ね合わせる */
+        #csvTextArea {
+            width: 100%;
+            height: 100%;       /* 親要素いっぱいに広げる */
+            min-height: 200px;  /* 高さをdropZoneと一致させる */
+            padding: 20px;      /* 内側の余白 */
+            border: 2px dashed #ccc; /* dropZoneの点線枠に合わせる */
+            border-radius: 8px;      /* 丸みを合わせる */
+            font-family: monospace;
+            font-size: 14px;
+            resize: none;       /* サイズがズレないよう手動引き伸ばしを禁止 */
+            box-sizing: border-box;
+            outline: none;
+            background-color: #fafafa;
+            margin: 0;
+            display: block;
+        }
+
+        #csvTextArea:focus {
+            border-color: #4a90e2;
+            background-color: #fff;
+        }
+
+        /* 整形ボタンのベーススタイル */
+        .primary-btn {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s, transform 0.1s;
+            white-space: nowrap; /* ボタン内の文字が改行されるのを防ぐ */
+        }
+
+        .primary-btn:hover {
+            background-color: #357abd;
+        }
+
+
+        /* --- スイッチとボタンを横並びにする設定 --- */
+        .top-controls {
+            display: flex !important;   /* 確実に横並びにする */
+            align-items: center;        /* 上下の中央を揃える */
+            justify-content: center;     /* 画面の真ん中に配置する */
+            gap: 15px;                  /* スイッチとボタンの間のすき間 */
+            margin: 20px auto;          /* ドロップゾーンの上の余白 */
+            width: fit-content;         /* 横幅を中身に合わせる */
+        }
+
+        /* スイッチ全体のカプセル外枠 */
+        .switch-container {
+            position: relative;
+            display: flex !important;   /* 確実に中の文字を横並びにする */
+            width: 320px;
+            margin: 0 !important;       /* 他のマージンを打ち消す */
+            background-color: #f0f0f2;
+            border-radius: 30px;
+            padding: 4px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+        }
+
+        /* 本物のラジオボタンは画面から完全に隠す */
+        .switch-container input[type="radio"] {
+            position: absolute !important;
+            opacity: 0 !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+        }
+
+        /* 切り替え文字（ラベル）のスタイル */
+        .switch-label {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            z-index: 2; /* 文字をスライド板より前に出す */
+            transition: color 0.3s ease;
+            margin: 0 !important;
+            border: none !important; /* 余計な枠線を消す */
+            background: none !important;
+        }
+
+        /* 本物のラジオボタンは画面から完全に隠す */
+        .switch-container input[type="radio"] {
+            position: absolute !important;
+            opacity: 0 !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+        }
+
+
+        /* 選択された方の文字色を濃くする */
+        .switch-container input[type="radio"]:checked + .switch-label {
+            color: #333;
+        }
+
+        /* 背景で動くスライド用の板 */
+        .switch-selection {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background-color: #fff;
+            border-radius: 26px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        
+
+        /* 「直接テキスト入力」が選ばれたら、右側にスライドさせる */
+        #modeDirect:checked ~ .switch-selection {
+            transform: translateX(100%);
+        }
+
+        /* 整形ボタンのベーススタイル */
+        .primary-btn {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s, transform 0.1s;
+            white-space: nowrap; /* ボタン内の文字が改行されるのを防ぐ */
+        }
+
+        .primary-btn:hover {
+            background-color: #357abd;
+        }
+
+        /* --- スイッチとボタンの親枠（ここを基準位置にする） --- */
+        .top-controls {
+            position: relative;     /* ボタンの位置を固定するための基準 */
+            display: flex !important;
+            align-items: center;
+            justify-content: center; /* ★スライドスイッチを常に「完全な画面中央」に配置 */
+            margin: 20px auto;
+            width: 100%;            /* 横幅を広げて中央を固定 */
+            max-width: 600px;       /* 適切な最大幅を設定 */
+        }
+
+        /* スライドスイッチ本体 */
+        .switch-container {
+            position: relative;
+            display: flex !important;
+            width: 320px;
+            margin: 0 !important;   /* 余計なマージンを排除 */
+            background-color: #f0f0f2;
+            border-radius: 30px;
+            padding: 4px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+        }
+
+        /* --- 【ここを修正】CSV整形ボタンを絶対位置で固定する --- */
+        .primary-btn {
+            position: absolute;     /* ★絶対位置にして、スイッチの配置に影響を与えないようにする */
+            left: calc(50% + 175px); /* ★「画面中央（50%） + スイッチの半幅（160px） + すき間（15px）」の位置に固定 */
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s, transform 0.1s;
+            white-space: nowrap;    /* 文字の改行を防ぐ */
+        }
+
+        .primary-btn:hover {
+            background-color: #357abd;
+        }
+
+        .primary-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* --- ドロップゾーンと直接入力の外枠のサイズを完全に統一 --- */
+        #dropZone, #directInputZone {
+            width: 100%;
+            height: 200px;         /* ★min-heightではなく「height」で高さをカチッと固定 */
+            box-sizing: border-box;
+        }
+
+        /* --- textareaをdropZoneと完全に同じサイズにする --- */
+        #csvTextArea {
+            width: 100%;
+            height: 100%;          /* ★親要素（directInputZone）の高さを100%継承する */
+            padding: 20px;         /* 内側の余白 */
+            border: 2px dashed #ccc; /* 点線の太さとスタイルをdropZoneに完全一致させる */
+            border-radius: 8px;    /* 角の丸みを合わせる */
+            font-family: monospace;
+            font-size: 14px;
+            resize: none;          /* 手動の引き伸ばしを禁止 */
+            box-sizing: border-box; /* ★余白や枠線を高さ（200px）の中に含めて計算する（最重要） */
+            outline: none;
+            background-color: #fafafa;
+            margin: 0;
+            display: block;
+        }
+
+        #csvTextArea:focus {
+            border-color: #4a90e2;
+            background-color: #fff;
+        }

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0BZV0EVRXP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-0BZV0EVRXP');
+</script>
+
+    <meta charset="UTF-8">
+    <title>マイ CSV クリーナー</title>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+
+        <!-- 謳い文句とタイトルを改行して美しく配置 -->
+        <span class="catch-copy">インストール不要 ・ 完全無料</span>
+        <h1 class="main-title">ブラウザだけで使えるCSV整形ツール <span>CSVスッキリ</span></h1>
+            
+        <div class="encoding-selector">
+            <!--<p>文字コードの読み込み方法を選択してください：</p>-->
+            <label>
+                <input type="radio" name="encoding_mode" id="mode_auto" checked>
+                自動判定
+            </label>
+            
+            <label class="has-sub-option">
+                <input type="radio" name="encoding_mode" id="mode_utf8">
+                UTF-8
+                <!-- UTF-8専用のBOMありチェックボックス -->
+                <span class="bom-option">
+                    <input type="checkbox" id="utf8_with_bom" name="utf8_bom">
+                    <label id="label_bom" for="utf8_with_bom">BOMあり</label>
+                </span>
+            </label>
+            
+            <label>
+                <input type="radio" name="encoding_mode" id="mode_sjis">
+                Shift-JIS
+            </label>
+        </div>
+        <!-- 【変更】スライド式セグメントコントロール -->
+        <div class="top-controls">
+            <div class="switch-container">
+            <input type="radio" id="modeFile" name="inputMode" value="file" checked>
+                <label for="modeFile" class="switch-label">ファイル選択 / コピペ</label>
+
+                <input type="radio" id="modeDirect" name="inputMode" value="direct">
+                <label for="modeDirect" class="switch-label">直接テキスト入力</label>
+
+                <!-- 背景で動くスライド用の板 -->
+                <div class="switch-selection"></div>
+            </div>
+    
+            <!-- CSV整形実行ボタン（初期状態は非表示） -->
+            <button id="convertBtn" class="primary-btn" style="display: none;">表形式へ</button>
+        </div>
+
+
+        <!-- 入力エリアをまとめるコンテナ（スタイル調整用） -->
+        <div class="input-wrapper">
+            <!-- 【モード1】ファイルドロップ / コピペゾーン -->
+            <div id="dropZone" tabindex="0">
+                <p class="text-primary">ここにCSVファイルをドラッグ＆ドロップ</p>
+                <p class="text-secondary">または クリックしてファイルを選択</p>
+                <p class="text-hint">💡 コピペ（Ctrl + V）でテキストを直接貼り付けてもOKです</p>
+                <input type="file" id="csvFile" accept=".csv" style="display: none;">
+            </div>
+
+            <!-- 【モード2】直接テキスト入力ゾーン（初期状態は非表示） -->
+            <div id="directInputZone" style="display: none;">
+                <textarea id="csvTextArea" placeholder="ここにCSVテキストを直接入力・編集してください..."></textarea>
+            </div>
+        </div>
+
+        <!-- CSV整形実行ボタン（初期状態は非表示） 
+        <div class="action-container" style="text-align: center; margin: 15px 0;">
+            <button id="convertBtn" class="primary-btn" style="display: none;">CSVを整形する</button>
+        </div>
+        -->
+
+        <!-- ファイル名とキャンセル、コピーボタンを表示するコンテナ -->
+        <div class="title-container">
+            <div id="fileInfo" style="display: none;"><!--style="display: none;"、ファイル貼付けよりjsで"display: flex"となり表示となる-->
+                <span id="fileName"></span>
+                <span id="cancelClear" class="cancel-btn">キャンセル</span>
+                <button id="copyBtn" class="secondary-btn">表データをコピー</button>
+                <!-- 【追加】Excel保存ボタン -->
+                <button id="exportExcelBtn" class="success-btn">Excelで保存</button>
+                <!-- 【追加】CSV保存ボタン -->
+                <button id="exportCsvBtn" class="info-btn">CSVファイルで保存</button>
+            </div>
+        </div>
+        
+
+        <!-- テーブルを表示する場所 -->
+        <div id="tableContainer"></div>
+    </div>    
+    
+</body>
+</html>

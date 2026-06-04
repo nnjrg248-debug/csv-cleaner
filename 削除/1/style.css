@@ -1,0 +1,171 @@
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            color: #333333;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* --- 2. キャッチコピー（インストール不要...） --- */
+        .catch-copy {
+            display: inline-block;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #0066cc;
+            background-color: #e6f0ff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        /* --- 3. メインタイトル（CSVスッキリ） --- */
+        .main-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            line-height: 1.3;
+            margin: 0 0 20px 0;
+            letter-spacing: 0.03em;
+        }
+        /* ツール名だけを鮮やかなグラデーションにして目立たせる */
+        .tool-name {
+            background: linear-gradient(135deg, #0066cc, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* --- 4. サブタイトル（重複削除など...） --- */
+        .sub-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 25px;
+        }
+
+        /* --- 5. 説明文（手作業のイライラに...） --- */
+        .description-text {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+        /* 「一瞬で」などの強調キーワード */
+        .highlight {
+            color: #ff5722;
+            font-weight: 700;
+        }
+        
+        /* テーブル（結果表示）のスタイル */
+        table { 
+            border-collapse: collapse; 
+            margin-top: 30px; 
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        th { background-color: #f1f5f9; color: #334155; font-weight: bold; }
+
+
+        
+        /* タイトル周りのレイアウト調整     [python -m http.server 8000]    */
+        .title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        h1 { margin: 0; }
+        
+        /* ファイル名とキャンセルボタンのスタイル */
+        #fileInfo {
+            font-size: 14px;
+            color: #334155;
+            background-color: #e2e8f0; /* スッキリしたグレー */
+            padding: 8px 14px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+        }
+        .cancel-btn {
+            color: #ef4444; /* 綺麗な赤 */
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .cancel-btn:hover {
+            color: #b91c1c;
+            text-decoration: underline;
+        }
+
+        /* コピーボタンのスタイル */
+        #copyBtn {
+            font-size: 14px;
+            padding: 6px 14px;
+            background-color: #10b981; /* 今風の鮮やかなグリーン */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        #copyBtn:hover {
+            background-color: #059669;
+        }
+        #copyBtn:active {
+            transform: scale(0.97); /* クリックしたときに少しへこむ演出 */
+        }
+        /* ドラッグ＆ドロップエリアのスタイル */
+        #dropZone {
+            border: 3px dashed #cbd5e1; /* 落ち着いたグレーの点線 */
+            background-color: #ffffff;
+            border-radius: 16px; /* 角を丸く */
+            padding: 60px 40px; /* 縦横の余白を大きくして改行を見やすく */
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); /* 軽い影をつけて立体的に */
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* マウスを乗せたとき、またはドラッグ中の演出 */
+        #dropZone:hover, #dropZone.dragover {
+            border-color: #2563eb;
+            background-color: #eff6ff; /* ふんわり青くなる */
+        }
+
+        /* 4. ドロップエリア内の説明文の改行と文字サイズ */
+        .text-primary {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+            margin: 0 0 12px 0;
+        }
+        
+        .text-secondary {
+            font-size: 14px;
+            color: #64748b;
+            margin: 0 0 20px 0;
+        }
+        
+        .text-hint {
+            font-size: 13px;
+            color: #94a3b8;
+            background-color: #f8fafc;
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            margin: 0;
+        }
+

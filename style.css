@@ -1,0 +1,1224 @@
+        body, h1, h2, p, ul {
+        margin: 0;
+        padding: 0;
+        }
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Sans", Meiryo, sans-serif;
+            /*background-color: #f4f7f6; /* 目に優しい薄いグレーグリーン */
+            background-color: #eff7f6; 
+            color: #333;
+            text-align: center;
+            overflow-x: hidden;/*横幅1画面に抑える*/
+          
+         
+            /* 必要に応じて以下を追加 */
+            vertical-align: top; 
+                }
+        /* 全体を囲むコンテナ */
+        .top-container {
+                        margin:15px 0 0 0;
+            width: 100%;
+            text-align: center;
+            
+           /*  margin-bottom: 40px; 数値を大きくすると隙間が広がります 
+            display: inline-block;*/
+        }
+        
+        /* テーブル（結果表示）のスタイル */
+        table { 
+            border-collapse: collapse; 
+            margin-top: 30px; 
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        th { background-color: #f1f5f9; color: #334155; font-weight: bold; }
+
+        
+        .main-title {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.3;
+            margin:15px 0 0 0;
+           /* line-height: 0.9;    見出しの行間を小さく */
+        }
+        
+        /* ツール名だけを鮮やかなグラデーションにして目立たせる */
+        .tool-name {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0066cc, #00c6ff);
+            -webkit-background-clip: text;
+             background-clip: text; /* ★この標準プロパティを1行追加する */
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+             margin:0 0 1.5rem 0;
+        }
+
+        .sub-title {
+            text-align: center;
+        }
+        
+        .sub-REDLINE{
+          
+            margin-left: auto; 
+            margin-right: auto;/* margin: 0 auto;のこと 文字でないのでtext-align:center;は適用されない*/
+            margin-top: 18px; /* 上の余白をゼロにする */
+            background-color: #ffe6ea;   /* 薄いピンク */
+            border-left: 6px solid #ff8800; /* 左端オレンジの帯 */
+            width:60%;
+          /*   padding: 8px 12px;           内側の余白 */
+        /*     margin-bottom: 8px;           下との間隔 */
+        }
+
+
+        .HOUKI {
+        color: #e60033;
+        font-family: "Hiragino Mincho ProN", "MS Mincho", serif;  
+        font-size: 1.0rem;
+        text-align:center;
+        width:100%;
+        padding: 5px 0;
+        margin-top:5px;
+        }
+
+        .description-container{
+                margin-left: auto; margin-right: auto;/* margin: 0 auto;のこと     
+                background-color: #ffe6ea;  */
+                width: 55%;    
+
+        }
+
+        .description {
+        text-align: left;
+        margin-top:-10px;  
+        font-size: 0.8rem;
+        /* background-color: #00e6ea;  */
+        }
+
+
+
+
+        
+
+         .container-m {
+          
+            width: 100%;            
+            text-align: center;
+           
+        }
+
+
+     
+
+
+        
+        /* タイトル周りのレイアウト調整     [python -m http.server 8000]    */
+        .btn-container {
+            display: flex;
+            align-items: center;
+            gap: 0px;
+            flex-wrap: wrap;
+          
+        }
+      
+        
+        /* ファイル名とキャンセルボタンのスタイル */
+        #fileInfo {
+            font-size: 14px;
+            color: #334155;
+            background-color: #e2e8f0; /* スッキリしたグレー */
+            padding: 8px 14px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+        }
+        .cancel-btn {
+            color: #ef4444; /* 綺麗な赤 */
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .cancel-btn:hover {
+            color: #b91c1c;
+            text-decoration: underline;
+        }
+
+        /* ==========================================
+        ファイル情報エリアのボタン共通スタイル
+        ========================================== */
+        #copyBtn, #exportExcelBtn, #exportCsvBtn {
+            font-size: 14px;
+            padding: 6px 14px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        /* クリックしたときに少しへこむ演出（共通） */
+        #copyBtn:active, #exportExcelBtn:active, #exportCsvBtn:active {
+            transform: scale(0.97); 
+        }
+
+        /* 🟢 Excelで保存ボタンの個別色（鮮やかなExcelグリーン） */
+        #exportExcelBtn {
+            background-color: #10b981; 
+        }
+        #exportExcelBtn:hover {
+            background-color: #059669;
+            color: #1e293b ;
+        }
+
+        /* 🔵 CSVファイルで保存ボタンの個別色（爽やかなシステムブルー） */
+        #exportCsvBtn {
+            background-color: #3b82f6; 
+        }
+        #exportCsvBtn:hover {
+            background-color: #2563eb;
+            color: #1e293b ;
+        }
+
+        /* 🔘 表データをコピーボタンの個別色（落ち着いたグレー） */
+        #copyBtn {
+            background-color:  #2dd4bf; 
+        }
+        #copyBtn:hover {
+            background-color: #14b8a6 ;
+            color: #1e293b ;
+        }
+
+        /* ドラッグ＆ドロップエリアのスタイル */
+        #dropZone {
+            border: 3px dashed #cbd5e1; /* 落ち着いたグレーの点線 */
+            background-color: #ffffff;
+            border-radius: 16px; /* 角を丸く */
+            padding: 10px 40px; /* 縦横の余白を大きくして改行を見やすく */
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); /* 軽い影をつけて立体的に */
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* マウスを乗せたとき、またはドラッグ中の演出 */
+        #dropZone:hover, #dropZone.dragover {
+            border-color: #2563eb;
+            background-color: #eff6ff; /* ふんわり青くなる */
+        }
+
+        /* 4. ドロップエリア内の説明文の改行と文字サイズ */
+        .text-primary {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+            margin: 0 0 7px 0;
+        }
+        
+        .text-secondary {
+            font-size: 14px;
+            color: #64748b;
+            margin: 0 0 10px 0;
+        }
+        
+        .text-hint {
+            font-size: 13px;
+            color: #94a3b8;
+            background-color: #f8fafc;
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            margin: 0;
+        }
+
+        /* スイッチ全体のカプセル外枠 */
+        .switch-container {
+            position: relative;
+            display: flex ; /* 確実に横並びにする */
+            width: 320px;
+            margin: 20px auto;
+            background-color: #f0f0f2;
+            border-radius: 30px;
+            padding: 4px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+            
+        }
+
+        /* 本物のラジオボタンは画面から完全に隠す */
+        .switch-container input[type="radio"] {
+            position: absolute ;
+            opacity: 0 ;
+            width: 0 ;
+            height: 0 ;
+            margin: 0 ;
+        }
+
+        /* 切り替え文字（ラベル）のスタイル */
+        .switch-label {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            z-index: 2; /* 文字をスライド板より前に出す */
+            transition: color 0.3s ease;
+            margin: 0 ;
+            border: none ; /* 余計な枠線を消す */
+            background: none ;
+        }
+
+        /* 選択された方の文字色を濃くする */
+        .switch-container input[type="radio"]:checked + .switch-label {
+            color: #333;
+        }
+
+        
+        /* 「直接テキスト入力」が選ばれたら、右側にスライドさせる */
+        #modeDirect:checked ~ .switch-selection {
+            transform: translateX(100%);
+        }
+
+
+        .settings-wrapper {
+            display: flex;
+            flex-wrap: wrap;       /* 画面幅が狭いときは自動で折り返す */
+            align-items: center;   /* これにより、文字コード、区切り文字、スイッチの上下の中心線がピッタリ揃います */
+            gap: 30px;             /* ブロック同士の横のすき間 */
+            width: 100%;
+            margin-bottom: 25px;
+            margin-left: 150px;
+        }
+
+        /* --- スイッチとボタンを横並びにする設定 --- */
+        .top-controls {
+            display: flex ;
+            align-items: center;
+            justify-content: flex-start; 
+            gap: 0px;
+            margin: 0px auto;
+            width: fit-content;
+            margin-top: -10px;
+        }
+
+        /* スイッチ自体の幅とマージンをリセットして横並びに最適化 */
+        .switch-container {
+            position: relative;
+            display: flex ;
+            width: 320px;
+            margin: 0 ;
+            background-color: #f0f0f2;
+            border-radius: 30px;
+            padding: 4px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+        }
+
+        .input-wrapper {
+            margin-top: -5px ; /* マイナス値で全体を上に引っ張り上げる */
+         /*    position: relative; ボタンの配置基準にする */
+            padding-bottom: 60px; /* ボタンがテキストと被らないように下部に余白を作る */
+        }
+        
+
+        /* --- 入力エリアを完全に同じ位置・大きさにする設定 --- */
+        .input-display-area {
+        /*     position: relative;*/
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        /* ドロップゾーンと直接入力の外枠のサイズを完全に統一
+        #dropZone, #directInputZone {
+            width: 100%;
+            height: 10px; 元のdropZoneと同じ高さに設定してください 
+            box-sizing: border-box;
+        }
+        */
+        /* textareaをdropZoneの見た目・サイズと完全に重ね合わせる */
+        #csvTextArea {
+            width: 100%;
+            /*  height: 100%;      親要素いっぱいに広げる */
+            height: 200px;  /* 高さをdropZoneと一致させる */
+          /*     padding: 20px;    内側の余白 */
+            border: 2px dashed #ccc; /* dropZoneの点線枠に合わせる */
+            border-radius: 8px;      /* 丸みを合わせる */
+            font-family: monospace;
+            font-size: 14px;
+            resize: none;       /* サイズがズレないよう手動引き伸ばしを禁止 */
+            box-sizing: border-box;
+            outline: none;
+            background-color: #fafafa;
+            margin: 0;
+            display: block;
+        }
+
+        #csvTextArea:focus {
+            border-color: #4a90e2;
+            background-color: #fff;
+        }
+
+
+
+        /* --- スイッチとボタンを横並びにする設定 --- */
+        .top-controls {
+            display: flex ;   /* 確実に横並びにする */
+            align-items: center;        /* 上下の中央を揃える */
+            justify-content: center;     /* 画面の真ん中に配置する */
+            gap: 15px;                  /* スイッチとボタンの間のすき間 */
+           
+            width: fit-content;         /* 横幅を中身に合わせる */
+            transform: translateY(-25px);
+        }
+
+        /* スイッチ全体のカプセル外枠 */
+        .switch-container {
+            position: relative;
+            display: flex ;   /* 確実に中の文字を横並びにする */
+            width: 320px;
+            margin: 0 ;       /* 他のマージンを打ち消す */
+            background-color: #f0f0f2;
+            border-radius: 30px;
+            padding: 4px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+        }
+
+        /* 本物のラジオボタンは画面から完全に隠す */
+        .switch-container input[type="radio"] {
+            position: absolute ;
+            opacity: 0 ;
+            width: 0 ;
+            height: 0 ;
+            margin: 0 ;
+        }
+
+        /* 切り替え文字（ラベル）のスタイル */
+        .switch-label {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            z-index: 2; /* 文字をスライド板より前に出す */
+            transition: color 0.3s ease;
+            margin: 0 ;
+            border: none ; /* 余計な枠線を消す */
+            background: none ;
+        }
+
+        /* 本物のラジオボタンは画面から完全に隠す */
+        .switch-container input[type="radio"] {
+            position: absolute ;
+            opacity: 0 ;
+            width: 0 ;
+            height: 0 ;
+            margin: 0 ;
+        }
+
+
+        /* 選択された方の文字色を濃くする */
+        .switch-container input[type="radio"]:checked + .switch-label {
+            color: #333;
+        }
+
+        /* 背景で動くスライド用の板 */
+        .switch-selection {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background-color: #fff;
+            border-radius: 26px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        
+
+        /* 「直接テキスト入力」が選ばれたら、右側にスライドさせる 
+        #modeDirect:checked ~ .switch-selection {
+            transform: translateX(100%);
+        }
+        */
+      
+        /* --- スイッチとボタンの親枠（ここを基準位置にする） --- */
+        .top-controls {
+            position: relative;     /* ボタンの位置を固定するための基準 */
+            display: flex ;
+            align-items: center;
+            justify-content: center; /* ★スライドスイッチを常に「完全な画面中央」に配置 */
+            margin: 20px auto;
+            width: 100%;            /* 横幅を広げて中央を固定 */
+            max-width: 600px;       /* 適切な最大幅を設定 */
+        }
+
+        /* スライドスイッチ本体 */
+        .switch-container {
+            position: relative;
+            display: flex ;
+            width: 320px;
+            margin: 0 ;   /* 余計なマージンを排除 */
+            background-color: #f0f0f2;
+            border-radius: 30px;
+            padding: 4px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+        }
+
+        /* --- 【ここを修正】CSV整形ボタンを絶対位置で固定する --- */
+        
+        /* --- ドロップゾーンと直接入力の外枠のサイズを完全に統一 --- */
+        #dropZone, #directInputZone {
+            width: 100%;
+            height: 200px;         /* ★min-heightではなく「height」で高さをカチッと固定 */
+            box-sizing: border-box;
+        }
+
+        /* --- textareaをdropZoneと完全に同じサイズにする --- */
+        #csvTextArea {
+            width: 100%;
+            height: 100%;          /* ★親要素（directInputZone）の高さを100%継承する */
+            padding: 20px;         /* 内側の余白 */
+            border: 2px dashed #ccc; /* 点線の太さとスタイルをdropZoneに完全一致させる */
+            border-radius: 8px;    /* 角の丸みを合わせる */
+            font-family: monospace;
+            font-size: 14px;
+            resize: none;          /* 手動の引き伸ばしを禁止 */
+            box-sizing: border-box; /* ★余白や枠線を高さ（200px）の中に含めて計算する（最重要） */
+            outline: none;
+            background-color: #fafafa;
+            margin: 0;
+            display: block;
+        }
+
+        #csvTextArea:focus {
+            border-color: #4a90e2;
+            background-color: #fff;
+        }
+
+        /* 「BOMあり」の文字とチェックボックスを囲むグループの設定 */
+        .bom-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 10px;
+            transition: opacity 0.2s ease; /* 切り替わりを滑らかにする */
+        }
+
+        /* 【重要】自動判定やShift-JISのとき、JavaScriptによってこのクラスが付き、薄くなります */
+        .bom-option.is-disabled {
+            opacity: 0.35;        /* 文字とボタンの濃さを35%に落とす（薄くする） */
+            cursor: not-allowed;  /* マウスカーソルを禁止マークにする */
+        }
+
+        /* 禁止マークを中の文字やボタンにも適用する設定 */
+        .bom-option.is-disabled label,
+        .bom-option.is-disabled input {
+            cursor: not-allowed;
+        }
+
+        .delimiter-container {
+            display: flex;            /* 横並びにする設定 */
+            flex-wrap: wrap;          /* 画面が狭いときは自動で折り返す */
+            justify-content: center;   /* 横方向の中央揃え */
+            align-items: center;        /* 縦方向の中央揃え（必要なら） */
+            gap: 20px;                /* 【変更】15px → 20px 項目間のすき間を広げて見やすく */
+            margin: 15px 0;           /* 【変更】10px → 15px 行全体の上下の余白を拡大 */
+            font-size: 16px;          /* 【変更】14px → 16px 全体の文字を大きく */
+            text-align: center ;         /* テキストも中央寄せ */
+        }
+
+        .delimiter-title {
+            font-weight: bold;        /* タイトルを太字にする */
+            color: #333;
+            font-size: 16px;          /* タイトルのサイズ（containerと同期） */
+            margin-right: 5px;        /* 【追加】タイトルと最初の選択肢の間に少し余裕を持たせる */
+        }
+
+        .delimiter-label {
+            display: flex;
+            align-items: center;      /* ○や□と、文字の上下中心を揃える */
+            gap: 6px;                 /* 【変更】5px → 6px ラジオボタン/チェックボックスと文字の隙間 */
+            cursor: pointer;          /* マウスを乗せたときに指先マークにする */
+            user-select: none;        /* 文字が青く選択されるのを防ぐ */
+        }
+
+        /* マウスを乗せたときに少し青くする */
+        .delimiter-label:hover {
+            color: #007bff;
+        }
+
+        /* 【追加】BOMありチェックボックスを綺麗に横並びにする設定 */
+        .bom-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;                 /* 【変更】3px → 4px */
+            margin-left: 10px;        /* 【変更】8px → 10px 「UTF-8」の文字との間のすき間 */
+            font-size: 14px;          /* 【変更】13px → 14px 全体が大きくなったのに合わせて調整 */
+            color: #666;              /* 少し薄い色にして主従関係をわかりやすく */
+        }
+        .bom-option label {
+            cursor: pointer;
+        }
+
+        /* 【追加】ラジオボタンとチェックボックス自体のサイズを少し大きくする */
+        .delimiter-container input[type="radio"],
+        .delimiter-container input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+
+
+
+        /* 青枠の丸長ボタンの基本スタイル */
+        .btn-blue-outline {
+        /* display: inline-flex;
+        align-items: center;     アイコンと文字を縦方向で中央に揃える
+        justify-content: flex-end ; */
+        padding: 10px 24px;      /* 上下と左右の余白（画像に合わせたサイズ感） */
+        min-width: 160px;        /* ボタンの最低横幅 */
+        
+        /* 見た目の設定（白背景 ＋ 青い枠線・文字） */
+        background-color: #ffffff;
+        color: #007bff;          /* 鮮やかな青色 */
+        border: 1px solid #007bff; /* 1pxの青い枠線 */
+        border-radius: 12px;     /* 画像のような程よい角丸（完全に丸くしたいなら 50px） */
+        
+        font-size: 20px;
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* ほんの少しの影 */
+        transition: all 0.2s ease; /* マウスホバー時の変化を滑らかにする */
+        }
+
+        /* アイコンと文字の間のすき間 */
+        .btn-icon {
+        margin-right: 8px;
+        font-size: 20px;
+        }
+
+        /* マウスを乗せたとき（ホバー時）の動き：背景が薄い青になる */
+        .btn-blue-outline:hover {
+        background-color: #f0f7ff; /* ほんのり淡い青背景 */
+        border-color: #0056b3;     /* 枠線を少し濃い青に */
+        color: #0056b3;            /* 文字を少し濃い青に */
+        }
+
+        /* クリックした瞬間の動き */
+        .btn-blue-outline:active {
+        transform: scale(0.98);    /* ほんの少しだけボタンが沈む（小さくなる） */
+        background-color: #e1f0ff;
+        }
+        
+        /* 「一瞬で」などの強調キーワード */
+        .highlight {
+            color: #ff5722;
+            font-weight: 700;
+        }
+
+        .bottom-actions-container-top {
+             text-align: left;
+             position: relative;/* 上の余白を減らす padding-top、margin-top:でダメな時top:を伴ってpositionをつかう*/
+             top: -70px;   /* 好きな値に調整 *//* 上の余白を減らす padding-top: 0px;  ←マイナスはできない margin-top: -70px これ使うと位置は上がるがその上の要素と重なりボタンが機能しなくなる*/
+        }
+        .bottom-actions-container {
+            display: block;
+           
+            
+      
+            width: 100%;/*  ← 左寄せが効きやすくなる */
+            /* 中にあるボタンやリンク（インライン要素）を右寄せにする */
+            text-align: right; 
+            
+            margin: 0 0 30px 0; 
+            width: 100%;
+
+        }
+        .tableContainer_out{
+            /*position: relative;
+             top: -1000px;
+        */
+        }
+
+        .bottom-actions-container{
+            margin-top: 30px;
+           text-align: left;     
+        }
+        .concept-text {
+            display: block;
+            
+           
+            text-align: left;
+        }
+
+   
+
+        .tool-area {
+        
+        margin-top:10px;
+
+        border-color: #0078d4;
+        
+        }
+
+
+        .settings {    
+        
+        /*justify-content: space-around;
+        
+        border: 1px solid #ddd;*/
+        
+        }
+
+        .settings-contain{
+        
+            justify-content: center; /* ←中央寄せに必要 */     
+            /*margin: 0 auto;     ← 中央寄せに必要 */
+            display: flex;     /* 横並びなら必要 */
+
+        }
+        .set{ background-color: #f00fff;}
+        .setting-set{ /* background-color: #00ffff;  */
+            display: flex; 
+            text-align: center;
+        
+        }
+        .setting-block {
+        background-color: #fff;
+        border: 2px solid #0078d4;
+        line-height:0.9;
+        font-size:19x ;
+        width:100%;
+        height: 80px;
+        }
+       
+        .setting-block .bom-option{
+        font-size:18px ;
+        }
+
+        .setting-block .setting-set h3 {
+        color: #0078d4;
+        /* background-color: #f0000f;*/
+        width:80%;
+        /*margin-bottom: 10px;*/
+        }
+        .setting-block h3 {
+        color: #0078d4;
+        
+        /*margin-bottom: 10px;*/
+        }
+
+        .button-group {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;  /* 中央寄せ */
+        }
+
+        .btn {
+            font-size:20px;
+            width:100%;
+        background-color: #3378d4;
+        color: white;
+        border: none;
+        padding: 7px 20px;
+        margin: 1px;
+        border-radius: 5px;
+        cursor: pointer;
+        }
+
+        .btn:hover {
+        background-color: #005fa3;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: end;   /* 中央寄せ */
+            gap: 10px;                 /* ボタン間の余白 */
+            margin-top: 1px;          /* button-group のすぐ下に配置 */
+        }
+
+        .btn-blue-outline {
+            border: 2px solid #0078d4;
+            background: white;
+            color: #0078d4;
+            padding: 7px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .toolpanel {
+        display: flex; /* 子要素を横並びにする   border: 1px dashed #707801; */ 
+        align-items: stretch; /* 追加：横並びの要素の高さを一番高いものに揃える */
+        }
+        .ToolNasi{
+        /*width: 10%; */
+        flex-basis: 15%;  /*空っぽでも15%の幅を強制的に確保する */
+        flex-shrink: 0;
+        border: 2px solid #0078d4;
+        background: white;
+        height: 80px;     
+        }
+        .MianTool {
+        width: 70%;
+        flex-shrink: 0; /* 画面が狭くなっても15%を維持する */
+        }
+        .sonotcheck {  
+         font-size: 16px; 
+            
+        border: 2px solid #0078d4;
+        background: white;         
+        
+        /* 修正：248px から 15%（または全体のバランスに合わせて 15%〜16%）に戻します */
+        width: 15%; 
+
+        height: 83px;
+        align-self: flex-start; 
+        flex-shrink: 0; 
+
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column; 
+        align-items: flex-start; 
+
+        padding: 5px 8px;
+        box-sizing: border-box; 
+
+}
+
+/* タイトルの見た目を左側の【文字コード】たちと完全に揃えます */
+.sonotcheck h3 {
+        color: #0078d4;
+        font-size: 16px; /* 大きさを統一 */
+        margin: 0 0 -2px 0; /* 下に少しだけ隙間を作る */
+}
+.sonot_seikei {
+    display: flex ;
+    flex-direction: column ; /* ★中身を絶対に上から下の「縦並び」にする指示 */
+    align-items: flex-start ; /* ★左端をピシッと揃える指示 */
+    margin-top: 0px; /* タイトルとの隙間の微調整 */
+}
+
+/* 追加：行間（上下の隙間）を広げてバランスを整える */
+.sonot_seikei label {
+     margin-top: 3px; /* お好みで隙間の広さを調整してください */
+
+    margin-bottom: -3px; /* お好みで隙間の広さを調整してください */
+}
+
+
+
+        #csvTextArea::placeholder {
+            font-size: 18px; /* ★ここで文字の大きさを自由に調整できます */
+            line-height: 2.4; /* 改行したときの行間を少し広げて見やすくする */
+        }
+        .drop-zone {
+        border: 2px dashed #0078d4;
+        padding: 0px;
+        margin: 20px auto;
+        border-radius: 8px;
+        background-color: #f0f8ff;
+        }
+        /*.tableContainer{
+            position: relative;
+            top: -20px;  引っ張りたい分だけマイナスの値を指定
+        } */
+        .links {
+        text-align: center;
+        margin: 30px auto;
+        }
+
+        .link-group {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        }
+
+        .link-box {
+        background-color: #e6f0ff;
+        border: 1px solid #0078d4;
+        border-radius: 8px;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #0078d4;
+        font-weight: bold;
+        font-size:20px;
+        }
+
+        .link-box:hover {
+        background-color: #0078d4;
+        color: white;
+        }
+        /* ポインタが乗ったとき、中の補足文字も一緒に白くする */
+        .link-box:hover #btn-subtext {
+            color: #ffffff;            /* カッコの文字色も白にする */
+        }
+
+        .footer {
+        text-align: center;
+        margin: 30px 0;
+        font-size: 20px;
+        }
+
+        .footer a {
+        margin: 0 10px;
+        color: #0078d4;
+        text-decoration: none;
+        }
+
+        .footer a:hover {
+        text-decoration: underline;
+        }
+        
+        .scroll-hint {
+            background: #fff3cd;
+            padding: 15px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 0px;
+            border-radius: 6px;
+            margin-bottom: 0px; /* ← まずはこのくらいが最適 */
+        }
+
+        /* ポップアップ自体のスタイル */
+        #encoding_dialog {
+            border: none;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 320px;
+        }
+        /* ポップアップが出た時の、後ろの画面の暗さ */
+        #encoding_dialog::backdrop {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        /* ボタンの配置 */
+        .dialog-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .dialog-buttons button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .dialog-buttons button:hover {
+            background-color: #e0e0e0;
+        }
+        .btn-cancel {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+        }
+
+
+
+        /* ポップアップのコンテナスタイル */
+        #zoom-popup {
+        display: none; /* 初期状態は非表示 */
+        position: fixed;
+        top: 20%;
+        left: 85%;
+        transform: translate(-50%, -50%);
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        text-align: center;
+        min-width: 200px;
+        }
+
+        /* ポップアップ内の要素スタイル */
+        #zoom-popup h3 {
+        margin-top: 0;
+        font-size: 16px;
+        }
+        #zoom-popup h5 {
+        margin: 10px 0 0 0;
+        font-size: 16px;     /* 小さめで控えめなサイズ */
+        color: #666666;      /* 読みやすいグレー */
+        font-weight: normal; /* 太字を解除してすっきりと */
+        }
+
+        .zoom-btn {
+        margin: 5px;
+        padding: 8px 12px;
+        font-size: 14px;
+        width:5rem;
+        cursor: pointer;
+        }
+        .zoom-control-wrapper {
+        margin: 15px 0;
+        font-size: 16px;
+        }
+        /* 数値入力欄のスタイル */
+        #zoom-input {
+        width: 70px;
+        padding: 5px;
+        font-size: 16px;
+        text-align: right;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        }
+      
+
+            /* IDをカンマで区切って指定 */
+    #btn-tooltip, #bom-tooltip {
+    position: relative;
+    cursor: pointer;
+    
+    
+    }
+
+    /* ツールチップ本体の設定 */
+    #btn-tooltip::after, #bom-tooltip::after {
+    content: attr(data-tooltip);
+    white-space: pre-wrap;
+    position: absolute;
+    bottom: 125%;                /* 要素の上側に配置 */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    width: max-content; 
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+    z-index: 9999;               /* 最前面に表示 */
+    text-align: left;
+    line-height: 1.6; 
+    }
+
+/* マウスが乗ったときの設定 */
+#btn-tooltip:hover::after, #bom-tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+      /* IDをカンマで区切って指定 */
+
+/*
+margin-top: 60px;（プラス）:自分の「外側の上」に 60px の空間あける（遠ざける）
+margin-top: -60px;（マイナス）:その逆（上にある要素との距離をマイナスにする＝自分を上に引き上げる）
+
+padding-top: 60px; との違いは動くのが「要素の外側」か「内側」か
+margin-top:要素の外側の余白です。要素の「位置そのもの」が上下に動く。
+要素の位置は動かず、要素全体の縦幅（高さ）が上に 60px 分広がり、中にある文字やボタンが下に押し下げら
+padding-top: -60px; （マイナス）:マイナスはできない
+
+
+        */
+        
+        .btn-cancel{
+        font-size: 18px;    
+       
+
+
+        }
+		.container {
+		  display: flex;
+		  flex-direction: row; /* PCは横並び */
+		}
+		.sidebar {
+		  width: 300px; /* PCは幅300pxに固定 */
+		}
+
+        #btn-subtext {
+            font-size: 18px;     /* 文字を小さくする */
+            color: #0078d4;        /*   文字色を少し薄くして補足情報だと分かりやすくする */
+            /* display: block;      改行してボタン内の中央に配置する */
+          
+        }
+
+        #cle-subtext {
+            font-size: 20px;     /* 文字を小さくする */
+           
+        }
+
+		/* ===================================================
+		   2. ファイルの一番下に、タブレット用の上書き設定を書く
+		   =================================================== */
+		@media screen and (max-width: 1024px) {
+		  .container {
+		    flex-direction: column; /* タブレット以下では「縦並び」に上書き */
+		  }
+		  .sidebar {
+		    width: 100%; /* タブレット以下では「横幅いっぱい」に上書き */
+		  }
+		}
+
+       
+
+        .ToolNasi {
+        /* flex-basis: 15%; を削除、または以下のように上書き */
+        flex-basis: 30px; 
+        flex-shrink: 0;
+        }
+        .MianTool {
+        /* width: 70%;  ←これを削除するか、以下のように auto にします */
+        width: auto; 
+        
+        flex-grow: 1; /* ★追加：余ったスペースをすべて使って横いっぱいに広がる指示 */
+        flex-shrink: 0; 
+        }
+
+        /* ▼ ここからボタン用の設定を追加 ▼ */
+        .special-pages {
+            display: flex;
+            flex-direction: column; /* タブレットではボタンを上から下の縦並びにする */
+            align-items: center;    /* ボタンを中央に揃える */
+            gap: 12px;              /* ボタン同士の上下の隙間を広げてタップしやすくする */
+            padding: 0 15px;        /* 画面端にピッタリくっつかないように余白を作る */
+        }
+
+        .link-box {
+            width: 100%;            /* ボタンの横幅を画面いっぱいに広げる */
+            max-width: 400px;       /* ただし、広がりすぎないように最大幅を制限する */
+            text-align: center;     /* 文字を中央寄せにする */
+            padding: 12px 8px;      /* ボタンの上下の厚みを増やして、指で押しやすくする */
+            box-sizing: border-box; /* パディングを含めたサイズ計算にする */
+        }
+        
+
+        /* ==========================================
+        画面幅が800px以下（タブレット縦持ちなど）のときだけ
+        自動でレイアウトを「縦並び」に変えて崩れを防ぐ設定
+        ========================================== */
+        @media screen and (max-width: 800px) {
+        .toolpanel {
+            flex-direction: column; /* 全体を縦並びにする */
+            height: auto;           /* 高さを自動で広がるようにする */
+        }
+        
+        .ToolNasi {
+            display: none;          /* 縦並びの時は3pxの線が邪魔になるので消す */
+        }
+        
+        .MianTool {
+            width: 100%;            /* 横幅いっぱいに広げる */
+        }
+        
+        .settings-contain {
+            flex-direction: column; /* 【文字コード】と【区切り文字】も縦並びにする */
+            gap: 15px;              /* ブロック同士の上下の隙間 */
+        }
+        
+        .sonotcheck {  
+            width: 100%;            /* 【データ整形】も横幅いっぱいに広げる */
+            height: auto;           /* 高さを固定せず自動にする */
+            margin-top: 15px;       /* 上のブロックとの隙間 */
+        }
+        }
+
+        /* アコーディオン式 */
+        .csv-faq-section {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+        font-family: sans-serif;
+        margin-top:-40px;
+        }
+
+        /* アコーディオンの枠 */
+        .accordion-item {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        background-color: #ffffff;
+        overflow: hidden;
+        }
+
+        /* タイトル部分（クリックする場所） */
+        .accordion-title {
+        padding: 16px 20px;
+        font-weight: bold;
+        color: #333333;
+        cursor: pointer;
+        list-style: none; /* デフォルトの矢印を消す */
+        position: relative;
+        transition: background-color 0.2s ease;
+        }
+
+        /* タイトルにマウスを乗せたとき */
+        .accordion-title:hover {
+        background-color: #A9f9f9;
+        }
+
+        /* カスタム矢印アイコン（右側に配置） */
+        .accordion-title::after {
+        content: "";
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%) rotate(0deg);
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid #666666;
+        border-bottom: 2px solid #666666;
+        transition: transform 0.3s ease;
+        }
+
+        /* アコーディオンが開いているときの矢印の動き */
+        .accordion-item[open] .accordion-title::after {
+        transform: translateY(-50%) rotate(45deg);
+        }
+
+        /* 開いたときの中身のコンテナ */
+        .accordion-content {
+        border-top: 1px solid #e0e0e0;
+        padding: 10px 20px 20px 20px;
+        background-color: #fafafa;
+        }
+
+        /* 各質問のボックス */
+        .faq-box {
+        margin-top: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px dashed #e0e0e0;
+        }
+        .faq-box:last-child {
+        border-bottom: none; /* 最後の線は消す */
+        padding-bottom: 0;
+        }
+
+        /* 質問と回答の文字デザイン */
+        .faq-q {
+        font-size: 15px;
+        color: #222222;
+        margin: 0 0 6px 0;
+        }
+        .faq-a {
+        font-size: 14px;
+        color: #555555;
+        line-height: 1.6;
+        margin: 0;
+        }
+
