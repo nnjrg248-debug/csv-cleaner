@@ -152,7 +152,7 @@
         <p>ここにCSVファイルをドラッグ＆ドロップ<br>またはクリックしてファイルを選択<br>Ctrl + V でテキストを貼り付けてもOK</p>
     </div>
         -->
-    </div>
+    
     <div class="bottom-actions-container-top" id="ConceptInfo-top">
         <section class="links">
             <div class="scroll-hint">
@@ -198,94 +198,95 @@
                 </p>
             </div>        
         </div>    
-    </div>
 
-    
-    <!-- アコーディオン式 -->
-    <div class="csv-faq-section">    
-    <details class="accordion-item">
-        <summary class="accordion-title">
-        CSVスッキリの詳しい使い方とよくある質問（FAQ）
-        </summary>
-        <div class="accordion-content">
+
         
-        <!-- 質問1 -->
-        <div class="faq-box">
-            <p class="faq-q"><strong>Q. エクセルで開くと文字化けするCSVも直せますか？</strong></p>
-            <p class="faq-a">A. はい、直せます。Excelで文字化けが発生する原因の多くは、文字コード（UTF-8とShift-JIS）の不一致です。本ツールにCSVファイルを読み込ませるだけで、自動で文字コードを判別し、文字化けをクレンジング（解消）します。</p>
-        </div>
-
-        <!-- 質問2 -->
-        <div class="faq-box">
-            <p class="faq-q"><strong>Q. 大容量のCSVファイルでもクレンジングできますか？</strong></p>
-            <p class="faq-a">A. 本ツールはサーバーにデータを送信せず、お使いのブラウザ上で高速に処理を行うため、一般的なオンラインツールよりも大きなファイルに対応しています。</p>
-        </div>
-
-        <!-- 質問3 -->
-        <div class="faq-box">
-            <p class="faq-q"><strong>Q. 完全無料で利用できますか？商用利用は可能ですか？</strong></p>
-            <p class="faq-a">A. すべての機能を完全無料でご利用いただけます。企業の業務効率化や、データ移行時のCSV整形など、商用目的での利用も大歓迎です。</p>
-        </div>
-
-        </div>
-    </details>
-    </div>
-
-    <dialog id="encoding_dialog">
-        <form method="dialog">
-            <h3>【文字コードの設定】</h3>
-            <p>設定したい文字コードを選択してください。</p>
+        <!-- アコーディオン式 -->
+        <div class="csv-faq-section" >    
+        <details class="accordion-item">
+            <summary class="accordion-title">
+            CSVスッキリの詳しい使い方とよくある質問（FAQ）
+            </summary>
+            <div class="accordion-content">
             
-            <div class="dialog-buttons">
-                <button value="auto">自動判定</button>
-                <button value="utf8">UTF-8</button>
-                <!--<button value="utf8_bom">UTF-8（BOMあり）</button>-->
-                <button value="utf8_bom" id="btn-tooltip" data-tooltip="【Excel用】UTF-8（BOMあり）&#xa;※「CSVファイルで保存」の時のみ使用してください。&#xa;効果：Excelで直接開いたときの文字化けを防ぎます。&#xa;（元データの状態に関わらず、&#xa;Excelに最適な形式で安全に出力されます）">UTF-8（BOMあり）</button>
-                <!--<button value="utf8_bom"  title="【Excel用】UTF-8（BOMあり）
-                ※「CSVで保存」の時のみ使用してください。
-                効果：Excelで直接開いたときの文字化けを防ぎます。
-                （元データの状態に関わらず、Excelに最適な形式で安全に出力されます）">UTF-8（BOMあり）</button>
-                <button value="utf8_bom"  title="【Excel用】UTF-8（BOMあり）">UTF-8（BOMあり）</button>-->
-                <button value="sjis">Shift-JIS</button>
+            <!-- 質問1 -->
+            <div class="faq-box">
+                <p class="faq-q"><strong>Q. エクセルで開くと文字化けするCSVも直せますか？</strong></p>
+                <p class="faq-a">A. はい、直せます。Excelで文字化けが発生する原因の多くは、文字コード（UTF-8とShift-JIS）の不一致です。本ツールにCSVファイルを読み込ませるだけで、自動で文字コードを判別し、文字化けをクレンジング（解消）します。</p>
             </div>
-            
-            <button value="cancel" class="btn-cancel">キャンセル</button>
-        </form>
-    </dialog>
-    <dialog id="kugiri_dialog">
-        <form method="dialog">
-            <h3>【区切り文字の設定】</h3>
-            <p>設定したい区切り文字を選択してください。</p>
-            
-            <div class="dialog-buttons">
-                <button value="kanme">カンマ（「.」）</button>
-                <button value="tab">タブ</button>
-                <button value="semi">セミコロン（「;」）</button>
-                <button value="han">半角スペース</button>
+
+            <!-- 質問2 -->
+            <div class="faq-box">
+                <p class="faq-q"><strong>Q. 大容量のCSVファイルでもクレンジングできますか？</strong></p>
+                <p class="faq-a">A. 本ツールはサーバーにデータを送信せず、お使いのブラウザ上で高速に処理を行うため、一般的なオンラインツールよりも大きなファイルに対応しています。</p>
             </div>
-            
-            <button value="cancel" class="btn-cancel">キャンセル</button>
-        </form>
-    </dialog>
 
-    <div id="zoom-popup">
-        <div>
-            <h3>表示縮尺の変更</h3>
-            
-            <button class="zoom-btn" data-size="0.25">25%</button>
-            <button class="zoom-btn" data-size="0.5">50%</button>
-            <button class="zoom-btn" data-size="0.8">80%</button>
-            <button class="zoom-btn" data-size="1.0">100%</button>
+            <!-- 質問3 -->
+            <div class="faq-box">
+                <p class="faq-q"><strong>Q. 完全無料で利用できますか？商用利用は可能ですか？</strong></p>
+                <p class="faq-a">A. すべての機能を完全無料でご利用いただけます。企業の業務効率化や、データ移行時のCSV整形など、商用目的での利用も大歓迎です。</p>
+            </div>
+
+            </div>
+        </details>
         </div>
 
-         <div class="zoom-control-wrapper">
-            <input type="number" id="zoom-input" value="100" min="10" max="200" step="1"> %
+        <dialog id="encoding_dialog">
+            <form method="dialog">
+                <h3>【文字コードの設定】</h3>
+                <p>設定したい文字コードを選択してください。</p>
+                
+                <div class="dialog-buttons">
+                    <button value="auto">自動判定</button>
+                    <button value="utf8">UTF-8</button>
+                    <!--<button value="utf8_bom">UTF-8（BOMあり）</button>-->
+                    <button value="utf8_bom" id="btn-tooltip" data-tooltip="【Excel用】UTF-8（BOMあり）&#xa;※「CSVファイルで保存」の時のみ使用してください。&#xa;効果：Excelで直接開いたときの文字化けを防ぎます。&#xa;（元データの状態に関わらず、&#xa;Excelに最適な形式で安全に出力されます）">UTF-8（BOMあり）</button>
+                    <!--<button value="utf8_bom"  title="【Excel用】UTF-8（BOMあり）
+                    ※「CSVで保存」の時のみ使用してください。
+                    効果：Excelで直接開いたときの文字化けを防ぎます。
+                    （元データの状態に関わらず、Excelに最適な形式で安全に出力されます）">UTF-8（BOMあり）</button>
+                    <button value="utf8_bom"  title="【Excel用】UTF-8（BOMあり）">UTF-8（BOMあり）</button>-->
+                    <button value="sjis">Shift-JIS</button>
+                </div>
+                
+                <button value="cancel" class="btn-cancel">キャンセル</button>
+            </form>
+        </dialog>
+        <dialog id="kugiri_dialog">
+            <form method="dialog">
+                <h3>【区切り文字の設定】</h3>
+                <p>設定したい区切り文字を選択してください。</p>
+                
+                <div class="dialog-buttons">
+                    <button value="kanme">カンマ（「.」）</button>
+                    <button value="tab">タブ</button>
+                    <button value="semi">セミコロン（「;」）</button>
+                    <button value="han">半角スペース</button>
+                </div>
+                
+                <button value="cancel" class="btn-cancel">キャンセル</button>
+            </form>
+        </dialog>
+
+        <div id="zoom-popup">
+            <div>
+                <h3>表示縮尺の変更</h3>
+                
+                <button class="zoom-btn" data-size="0.25">25%</button>
+                <button class="zoom-btn" data-size="0.5">50%</button>
+                <button class="zoom-btn" data-size="0.8">80%</button>
+                <button class="zoom-btn" data-size="1.0">100%</button>
+            </div>
+
+            <div class="zoom-control-wrapper">
+                <input type="number" id="zoom-input" value="100" min="10" max="200" step="1"> %
+            </div>
+            <h5>外枠をクリックすると<br>閉じます</h5>
         </div>
-        <h5>外枠をクリックすると<br>閉じます</h5>
-    </div>
-        
-    <div style="text-align: left;">
-        <a href="https://nnjrg248.pythonanywhere.com/">To Blogsite</a>
+            
+        <div style="text-align: left;">
+            <a href="https://nnjrg248.pythonanywhere.com/">To Blogsite</a>
+        </div>
     </div>
 </body>
 </html>
