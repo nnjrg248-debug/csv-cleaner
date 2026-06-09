@@ -633,10 +633,13 @@
             font-weight: 700;
         }
 
-        .bottom-actions-container-top {
-             text-align: left;
-             position: relative;/* 上の余白を減らす padding-top、margin-top:でダメな時top:を伴ってpositionをつかう*/
-             top: -70px;   /* 好きな値に調整 *//* 上の余白を減らす padding-top: 0px;  ←マイナスはできない margin-top: -70px これ使うと位置は上がるがその上の要素と重なりボタンが機能しなくなる*/
+       .bottom-actions-container-top {
+            text-align: left;
+            /* position: relative; と top: -70px; は削除します */
+            
+            margin-top: -70px; /* 位置を上に引き上げる */
+            position: relative; /* z-indexを有効にするために必要 */
+            z-index: 10;       /* 数字を大きくすることで、上の要素に重なってもボタンが押せるようになります */
         }
         .bottom-actions-container {
             display: block;
@@ -1140,12 +1143,19 @@ padding-top: -60px; （マイナス）:マイナスはできない
         }
 
         /* アコーディオン式 */
-        .csv-faq-section {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 0 20px;
-        font-family: sans-serif;
-        margin-top:-40px;
+       .csv-faq-section {
+            max-width: 800px;
+            font-family: sans-serif;
+            padding: 0 20px;
+            
+            /* ▼ 1. 重なりを防ぐため、上の余白をちょうどいい「プラスの値」に変更します */
+            margin-top: 60px;    /* 重なりが直るまで、ここの数字を 30px や 50px に調整してください */
+            margin-bottom: 40px;  /* 一番下の空白を消すために 0 に固定 */
+            margin-left: auto;
+            margin-right: auto;
+            
+            /* 一旦、複雑なflex指定は削除してシンプルにします */
+            text-align: center;
         }
 
         /* アコーディオンの枠 */
