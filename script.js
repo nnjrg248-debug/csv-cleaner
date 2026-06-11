@@ -1109,6 +1109,7 @@
                 if(directInputZone) directInputZone.style.display = 'block';
                 if(convertBtn) convertBtn.style.display = 'inline-block'; // ボタンを出す
                 if(clearBtn) clearBtn.style.display = 'inline-flex'; // クリアボタンを出す
+                if(cancelClear) cancelClear.style.display = 'inline-block'; 
 
                 // 【追加】記憶していたテキストを、テキストエリアに表示させる
                 if (csvTextArea) {
@@ -1128,6 +1129,7 @@
                 if(directInputZone) directInputZone.style.display = 'none';
                 if(convertBtn) convertBtn.style.display = 'none'; // ボタンを隠す
                 if(clearBtn) clearBtn.style.display = 'none'; // クリアボタンを隠す
+                if(cancelClear) cancelClear.style.display = 'none'; // ボタンを隠す
             }
         }
 
