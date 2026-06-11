@@ -125,7 +125,7 @@
         <div class="btn-container">
             <div id="fileInfo" style="display: none;"><!--style="display: none;"、ファイル貼付けよりjsで"display: flex"となり表示となる-->
                 <span id="fileName"></span>
-                <span id="cancelClear" class="cancel-btn">キャンセル</span>
+                <!--<span id="cancelClear" class="cancel-btn">キャンセル</span>-->
                 <button id="copyBtn" class="secondary-btn">表データをコピー</button>
                 <!-- 【追加】Excel保存ボタン -->
                 <button id="exportExcelBtn" class="success-btn">Excelで保存</button>
@@ -134,6 +134,9 @@
             </div>
         </div>
         <div class="button-row">
+             <button class="btn-blue-outline" id="cancelClear">               
+                表のキャンセル
+            </button>
             <button class="btn-blue-outline" id="clearBtn">
                 <span class="btn-icon">🧹</span>
                 入力クリア
