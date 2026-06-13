@@ -16,9 +16,9 @@
 
     <meta name="description" content="【簡単・直感操作】長々とした説明をなくし、一目で使い方がわかる優れたアクセシビリティを実現。大きな文字と明快な解説で、年齢問わず誰でもストレスなく操作できます。まずはシンプルな使いやすさをご体感ください。">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="page" content="5">
-    <!--インデックス設定用
-    <link rel="canonical" href="https://nnjrg248-debug.github.io/csv-cleaner/" />-->
+    <meta name="page" content="1">
+    <!--インデックス設定用-->
+    <link rel="canonical" href="https://nnjrg248-debug.github.io/csv-cleaner/" />
     
     <link rel="icon" href="data:,">
    
@@ -212,7 +212,10 @@
                 </p>
             </div>        
         </div>    
-            
+    </div>
+
+
+        
         <!-- アコーディオン式 -->
         <div class="csv-faq-section" >    
         <details class="accordion-item">
@@ -242,63 +245,62 @@
             </div>
         </details>
         </div>
+
+        <dialog id="encoding_dialog">
+            <form method="dialog">
+                <h3>【文字コードの設定】</h3>
+                <p>設定したい文字コードを選択してください。</p>
+                
+                <div class="dialog-buttons">
+                    <button value="auto">自動判定</button>
+                    <button value="utf8">UTF-8</button>
+                    <!--<button value="utf8_bom">UTF-8（BOMあり）</button>-->
+                    <button value="utf8_bom" id="btn-tooltip" data-tooltip="【Excel用】UTF-8（BOMあり）&#xa;※「CSVファイルで保存」の時のみ使用してください。&#xa;効果：Excelで直接開いたときの文字化けを防ぎます。&#xa;（元データの状態に関わらず、&#xa;Excelに最適な形式で安全に出力されます）">UTF-8（BOMあり）</button>
+                    <!--<button value="utf8_bom"  title="【Excel用】UTF-8（BOMあり）
+                    ※「CSVで保存」の時のみ使用してください。
+                    効果：Excelで直接開いたときの文字化けを防ぎます。
+                    （元データの状態に関わらず、Excelに最適な形式で安全に出力されます）">UTF-8（BOMあり）</button>
+                    <button value="utf8_bom"  title="【Excel用】UTF-8（BOMあり）">UTF-8（BOMあり）</button>-->
+                    <button value="sjis">Shift-JIS</button>
+                </div>
+                
+                <button value="cancel" class="btn-cancel">キャンセル</button>
+            </form>
+        </dialog>
+        <dialog id="kugiri_dialog">
+            <form method="dialog">
+                <h3>【区切り文字の設定】</h3>
+                <p>設定したい区切り文字を選択してください。</p>
+                
+                <div class="dialog-buttons">
+                    <button value="kanme">カンマ（「.」）</button>
+                    <button value="tab">タブ</button>
+                    <button value="semi">セミコロン（「;」）</button>
+                    <button value="han">半角スペース</button>
+                </div>
+                
+                <button value="cancel" class="btn-cancel">キャンセル</button>
+            </form>
+        </dialog>
+
+        <div id="zoom-popup">
+            <div>
+                <h3>表示縮尺の変更</h3>
+                
+                <button class="zoom-btn" data-size="0.25">25%</button>
+                <button class="zoom-btn" data-size="0.5">50%</button>
+                <button class="zoom-btn" data-size="0.8">80%</button>
+                <button class="zoom-btn" data-size="1.0">100%</button>
+            </div>
+
+            <div class="zoom-control-wrapper">
+                <input type="number" id="zoom-input" value="100" min="10" max="200" step="1"> %
+            </div>
+            <h5>外枠をクリックすると<br>閉じます</h5>
+        </div>
+            
         <div style="text-align: left;">
             <a href="https://nnjrg248.pythonanywhere.com/">To Blogsite</a>
-        </div>
     </div>
-
-    <dialog id="encoding_dialog">
-        <form method="dialog">
-            <h3>【文字コードの設定】</h3>
-            <p>設定したい文字コードを選択してください。</p>
-            
-            <div class="dialog-buttons">
-                <button value="auto">自動判定</button>
-                <button value="utf8">UTF-8</button>
-                <!--<button value="utf8_bom">UTF-8（BOMあり）</button>-->
-                <button value="utf8_bom" id="btn-tooltip" data-tooltip="【Excel用】UTF-8（BOMあり）&#xa;※「CSVファイルで保存」の時のみ使用してください。&#xa;効果：Excelで直接開いたときの文字化けを防ぎます。&#xa;（元データの状態に関わらず、&#xa;Excelに最適な形式で安全に出力されます）">UTF-8（BOMあり）</button>
-                <!--<button value="utf8_bom"  title="【Excel用】UTF-8（BOMあり）
-                ※「CSVで保存」の時のみ使用してください。
-                効果：Excelで直接開いたときの文字化けを防ぎます。
-                （元データの状態に関わらず、Excelに最適な形式で安全に出力されます）">UTF-8（BOMあり）</button>
-                <button value="utf8_bom"  title="【Excel用】UTF-8（BOMあり）">UTF-8（BOMあり）</button>-->
-                <button value="sjis">Shift-JIS</button>
-            </div>
-            
-            <button value="cancel" class="btn-cancel">キャンセル</button>
-        </form>
-    </dialog>
-    <dialog id="kugiri_dialog">
-        <form method="dialog">
-            <h3>【区切り文字の設定】</h3>
-            <p>設定したい区切り文字を選択してください。</p>
-            
-            <div class="dialog-buttons">
-                <button value="kanme">カンマ（「.」）</button>
-                <button value="tab">タブ</button>
-                <button value="semi">セミコロン（「;」）</button>
-                <button value="han">半角スペース</button>
-            </div>
-            
-            <button value="cancel" class="btn-cancel">キャンセル</button>
-        </form>
-    </dialog>
-
-    <div id="zoom-popup">
-        <div>
-            <h3>表示縮尺の変更</h3>
-            
-            <button class="zoom-btn" data-size="0.25">25%</button>
-            <button class="zoom-btn" data-size="0.5">50%</button>
-            <button class="zoom-btn" data-size="0.8">80%</button>
-            <button class="zoom-btn" data-size="1.0">100%</button>
-        </div>
-
-        <div class="zoom-control-wrapper">
-            <input type="number" id="zoom-input" value="100" min="10" max="200" step="1"> %
-        </div>
-        <h5>外枠をクリックすると<br>閉じます</h5>
-    </div>
-                   
 </body>
 </html>
