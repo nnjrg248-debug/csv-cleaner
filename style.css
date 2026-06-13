@@ -326,7 +326,7 @@
         .input-wrapper {
             margin-top: -5px ; /* マイナス値で全体を上に引っ張り上げる */
          /*    position: relative; ボタンの配置基準にする */
-            padding-bottom: 60px; /* ボタンがテキストと被らないように下部に余白を作る */
+            padding-bottom: 0px; /* ボタンがテキストと被らないように下部に余白を作る */
         }
         
 
@@ -487,8 +487,20 @@
             width: 100%;
             height: 200px;         /* ★min-heightではなく「height」で高さをカチッと固定 */
             box-sizing: border-box;
+            
         }
+       
 
+        .bookmark-inline {
+        position: relative;
+        z-index: 11;        /* .bottom-actions-container-top の z-index:10 より上にする保険 */
+        left: 8px;
+        font-size: 0.8em;
+        text-align:left;
+        color: #555;
+        margin: 4px 0 0 0;
+        pointer-events: none;
+        }
         /* --- textareaをdropZoneと完全に同じサイズにする --- */
         #csvTextArea {
             width: 100%;
@@ -637,7 +649,7 @@
             text-align: left;
             /* position: relative; と top: -70px; は削除します */
             
-            margin-top: -70px; /* 位置を上に引き上げる */
+            margin-top: -32px; /* 位置を上に引き上げる */
             position: relative; /* z-indexを有効にするために必要 */
             z-index: 10;       /* 数字を大きくすることで、上の要素に重なってもボタンが押せるようになります */
         }
@@ -853,6 +865,7 @@
         justify-content: center;
         flex-wrap: wrap;
         gap: 15px;
+        margin-top: -3px;/*ボタンに位置調整*/
         }
 
         .link-box {
@@ -937,8 +950,16 @@
             border: none;
             color: #888;
             cursor: pointer;
+           
         }
-
+        #kugiri_dialog {
+            border: none;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;   /* ← これが必要 */
+            width: 320px;
+        }
 
 
         /* ポップアップのコンテナスタイル */
@@ -989,7 +1010,11 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         }
-      
+        
+       
+
+
+
 
             /* IDをカンマで区切って指定 */
     #btn-tooltip, #bom-tooltip {
@@ -1232,3 +1257,121 @@ padding-top: -60px; （マイナス）:マイナスはできない
         margin: 0;
         }
 
+
+
+
+        /* ==========================================
+        画面幅が800px以下（タブレット縦持ちなど）のときだけ
+        自動でレイアウトを「縦並び」に変えて崩れを防ぐ設定
+        ========================================== */
+        @media screen and (max-width: 320px) {
+         .button { 
+    width: 100%; 
+    font-size: 13px; 
+  }
+
+  .container { 
+    padding: 8px; 
+  }
+
+  body { 
+    font-size: 14px; 
+  }
+
+  .main-title {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .tool-name{
+    font-size: 17px;
+  }
+.delimiter-options label {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+/* 入力エリア全体 */
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ボタン行（表のキャンセル / 入力クリア / 表形式へ） */
+.button-row {
+    display: flex;
+    flex-wrap: wrap;       /* スマホでは自然に折り返す */
+    gap: 10px;
+    margin: 15px 0;
+    position: relative;
+    z-index: 10;           /* テーブルより前面に出す */
+}
+
+.button-row button {
+    flex: 1;               /* 横幅を均等にする */
+    min-width: 120px;
+}
+
+/* テーブル外側コンテナ */
+#tableContainer_out {
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;            /* ボタンより後ろに配置 */
+}
+
+/* テーブル本体 */
+#tableContainer {
+    max-height: 350px;     /* 表が長くてもボタンを押し流さない */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+.btn-blue-outline {
+    display: flex;
+    align-items: center;   /* ← これで上下中央揃え */
+    justify-content: center;
+    padding: 10px 14px;
+    line-height: 1.4;
+}
+#fileInfo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+.secondary-btn,
+.success-btn,
+.info-btn {
+    display: inline-flex;      /* ← 高さが暴れない */
+    align-items: center;       /* ← 文字を中央に */
+    justify-content: center;
+    padding: 8px 12px;         /* ← 縦長を防ぐ */
+    line-height: 1.3;
+    height: 38px;              /* ← 高さを固定（最も安定） */
+    box-sizing: border-box;
+}
+
+
+/* スマホ最適化 */
+@media (max-width: 480px) {
+    .button-row {
+        flex-direction: column; /* スマホでは縦並びで自然に */
+        gap: 8px;
+    }
+
+    .button-row button {
+        width: 100%;
+        min-width: auto;
+    }
+
+    #tableContainer {
+        max-height: 250px;
+    }
+}
+
+
+
+
+}

@@ -130,7 +130,7 @@
                // topTitle.innerHTML="@CSVクレンジングツール"
                 const mainTitle = document.querySelector('.main-title');
                 //mainTitle.innerHTML="ブラウザだけで使える@CSVクレンジングツール"
-                mainTitle.innerHTML = 'ブラウザだけで使える　<span style="color: orange;">@</span>　CSVクレンジングツール';
+                mainTitle.innerHTML = 'ブラウザだけで使える　<span style="color: orange;">@</span>　CSVクレンジングツール <br><span class="tool-name">CSVスッキリ</span>';
                 const descrip = document.querySelector('.sub-title .description P');
                 /*descrip.innerHTML="CSVスッキリは、CSVの@クレンジング・整形ができる無料オンラインツールです。<br>" 
                                 +"文字化け、区切りズレ、不要な改行や重複行の修正などを一瞬で解決。<br>"
@@ -141,7 +141,7 @@
                 case '2':                    
                     document.getElementById('chkTab').checked  = true;  
                     //topTitle.innerHTML = topTitle.innerHTML.replace('@', '[TSV→CSV]変換専用');
-                    mainTitle.innerHTML = mainTitle.innerHTML.replace('@', '[TSV→CSV]変換専用');
+                    mainTitle.innerHTML = mainTitle.innerHTML.replace('@', '[TSV→CSV] 変換専用');
                     //descrip.innerHTML = descrip.innerHTML.replace('@', '[TSV→CSV]変換専用');    
                     //descripcont.style.width="60%" 
                     separator_labelkid.innerHTML="【区切り文字】：タブ"
@@ -151,7 +151,7 @@
                 case '3':
                     document.getElementById('chkSemicolon').checked  = true;  
                     //topTitle.innerHTML = topTitle.innerHTML.replace('@', '[セミコロン→CSV]変換専用');
-                    mainTitle.innerHTML = mainTitle.innerHTML.replace('@', '[セミコロン→CSV]変換専用');
+                    mainTitle.innerHTML = mainTitle.innerHTML.replace('@', '[セミコロン→CSV] 変換専用');
                     //descrip.innerHTML = descrip.innerHTML.replace('@', '[セミコロン→CSV]変換専用');
                     //descripcont.style.width="62%"
                     separator_labelkid.innerHTML="【区切り文字】：セミコロン"        
@@ -159,7 +159,7 @@
                 case '4':
                     document.getElementById('chkSpace').checked  = true; 
                    // topTitle.innerHTML = topTitle.innerHTML.replace('@', '[半角スペース→CSV]変換専用');
-                    mainTitle.innerHTML = mainTitle.innerHTML.replace('@', '[半角スペース→CSV]変換専用');
+                    mainTitle.innerHTML = mainTitle.innerHTML.replace('@', '[半角スペース→CSV] 変換専用');
                    // descrip.innerHTML = descrip.innerHTML.replace('@', '[半角スペース→CSV]変換専用');
                   //  descripcont.style.width="62%"
                     separator_labelkid.innerHTML="【区切り文字】：半角スペース"    
@@ -1109,6 +1109,7 @@
                 if(directInputZone) directInputZone.style.display = 'block';
                 if(convertBtn) convertBtn.style.display = 'inline-block'; // ボタンを出す
                 if(clearBtn) clearBtn.style.display = 'inline-flex'; // クリアボタンを出す
+                if(cancelClear) cancelClear.style.display = 'inline-block'; 
 
                 // 【追加】記憶していたテキストを、テキストエリアに表示させる
                 if (csvTextArea) {
@@ -1128,6 +1129,7 @@
                 if(directInputZone) directInputZone.style.display = 'none';
                 if(convertBtn) convertBtn.style.display = 'none'; // ボタンを隠す
                 if(clearBtn) clearBtn.style.display = 'none'; // クリアボタンを隠す
+                if(cancelClear) cancelClear.style.display = 'none'; // ボタンを隠す
             }
         }
 

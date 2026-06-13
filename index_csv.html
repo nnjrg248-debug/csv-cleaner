@@ -10,13 +10,20 @@
   gtag('config', 'G-0BZV0EVRXP');
 </script>
 
-    <meta charset="UTF-8">
-    <meta name="page" content="5">
+	<meta charset="UTF-8">
+    <title>マイ CSV クリーナー（データクレンジング） | CSVの文字化け修復・データ整形ツール（無料）</title>
+    
+
     <meta name="description" content="【簡単・直感操作】長々とした説明をなくし、一目で使い方がわかる優れたアクセシビリティを実現。大きな文字と明快な解説で、年齢問わず誰でもストレスなく操作できます。まずはシンプルな使いやすさをご体感ください。">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>マイ CSV クリーナー（データクレンジング） | CSVの文字化け修復・データ整形ツール（無料）</title>
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <meta name="page" content="5">
+    <!--インデックス設定用
+    <link rel="canonical" href="https://nnjrg248-debug.github.io/csv-cleaner/" />-->
+    
+    <link rel="icon" href="data:,">
+   
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/encoding-japanese@2.0.0/encoding.min.js"></script>
 </head>
@@ -120,7 +127,10 @@
                     placeholder="　　　　　　　　　　ＣＳＶテキストを直接入力・編集し、「表形式」ボタンを押してください。
 　　　　　　　　　　（「ファイル選択／コピペ」ボタンで元のファイル選択、貼付けの領域に戻せます）"></textarea>
         </div>
-      
+        <div class="bookmarktext-area">
+              <p class="bookmark-inline">※よく使う方はブックマークしておくと便利です</p>
+        </div>
+
         <!-- ファイル名とキャンセル、コピーボタンを表示するコンテナ -->
         <div class="btn-container">
             <div id="fileInfo" style="display: none;"><!--style="display: none;"、ファイル貼付けよりjsで"display: flex"となり表示となる-->
@@ -150,12 +160,13 @@
         <div id="tableContainer_out">
         <div id="tableContainer"></div>
         </div>
+       
     </div>
     <!-- <div class="drop-zone">
         <p>ここにCSVファイルをドラッグ＆ドロップ<br>またはクリックしてファイルを選択<br>Ctrl + V でテキストを貼り付けてもOK</p>
     </div>
         -->
-    
+    </div>
     <div class="bottom-actions-container-top" id="ConceptInfo-top">
         <section class="links">
             <div class="scroll-hint">
@@ -201,6 +212,7 @@
                 </p>
             </div>        
         </div>    
+    </div>
 
 
         
@@ -289,7 +301,6 @@
             
         <div style="text-align: left;">
             <a href="https://nnjrg248.pythonanywhere.com/">To Blogsite</a>
-        </div>
     </div>
 </body>
 </html>

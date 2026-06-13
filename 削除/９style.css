@@ -37,21 +37,6 @@
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
         th { background-color: #f1f5f9; color: #334155; font-weight: bold; }
 
-        /* 2. タイトルに色をつけ、改行とメリハリをつける */
-        .top-title {            
-           /*   display: inline-block;
-            margin-top: 10px;      ★数値を小さく（または 0 に）すると、もっと上に移動します */
-            margin-bottom: 25px;   /* ★数値を大きくすると、下のタイトルとの行間が広がります */
-            text-align: center;    /* 中央寄せにする場合 */            
-            /* もし文字が小さすぎる場合はここでお好みで調整してください */
-            font-size: 1rem;    
-            background-color: #e0f2fe; /* 薄い青のバッジ */
-            color: #0369a1;
-            font-size: 1.0rem;
-            border-radius: 5px;
-            border-radius: 9999px;
-
-        }
         
         .main-title {
             font-size: 2rem;
@@ -63,7 +48,8 @@
         
         /* ツール名だけを鮮やかなグラデーションにして目立たせる */
         .tool-name {
-                        font-size: 1.9rem;
+            font-size: 1.9rem;
+            font-weight: 800;
             background: linear-gradient(135deg, #0066cc, #00c6ff);
             -webkit-background-clip: text;
              background-clip: text; /* ★この標準プロパティを1行追加する */
@@ -78,8 +64,9 @@
         
         .sub-REDLINE{
           
-            margin-left: auto; margin-right: auto;/* margin: 0 auto;のこと 文字でないのでtext-align:center;は適用されない*/
-            margin-top: 0; /* 上の余白をゼロにする */
+            margin-left: auto; 
+            margin-right: auto;/* margin: 0 auto;のこと 文字でないのでtext-align:center;は適用されない*/
+            margin-top: 18px; /* 上の余白をゼロにする */
             background-color: #ffe6ea;   /* 薄いピンク */
             border-left: 6px solid #ff8800; /* 左端オレンジの帯 */
             width:60%;
@@ -646,10 +633,13 @@
             font-weight: 700;
         }
 
-        .bottom-actions-container-top {
-             text-align: left;
-             position: relative;/* 上の余白を減らす padding-top、margin-top:でダメな時top:を伴ってpositionをつかう*/
-             top: -70px;   /* 好きな値に調整 *//* 上の余白を減らす padding-top: 0px;  ←マイナスはできない margin-top: -70px これ使うと位置は上がるがその上の要素と重なりボタンが機能しなくなる*/
+       .bottom-actions-container-top {
+            text-align: left;
+            /* position: relative; と top: -70px; は削除します */
+            
+            margin-top: -70px; /* 位置を上に引き上げる */
+            position: relative; /* z-indexを有効にするために必要 */
+            z-index: 10;       /* 数字を大きくすることで、上の要素に重なってもボタンが押せるようになります */
         }
         .bottom-actions-container {
             display: block;
@@ -1151,3 +1141,94 @@ padding-top: -60px; （マイナス）:マイナスはできない
             margin-top: 15px;       /* 上のブロックとの隙間 */
         }
         }
+
+        /* アコーディオン式 */
+       .csv-faq-section {
+            max-width: 800px;
+            font-family: sans-serif;
+            padding: 0 20px;
+            
+            /* ▼ 1. 重なりを防ぐため、上の余白をちょうどいい「プラスの値」に変更します */
+            margin-top: 60px;    /* 重なりが直るまで、ここの数字を 30px や 50px に調整してください */
+            margin-bottom: 40px;  /* 一番下の空白を消すために 0 に固定 */
+            margin-left: auto;
+            margin-right: auto;
+            
+            /* 一旦、複雑なflex指定は削除してシンプルにします */
+            text-align: center;
+        }
+
+        /* アコーディオンの枠 */
+        .accordion-item {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        background-color: #ffffff;
+        overflow: hidden;
+        }
+
+        /* タイトル部分（クリックする場所） */
+        .accordion-title {
+        padding: 16px 20px;
+        font-weight: bold;
+        color: #333333;
+        cursor: pointer;
+        list-style: none; /* デフォルトの矢印を消す */
+        position: relative;
+        transition: background-color 0.2s ease;
+        }
+
+        /* タイトルにマウスを乗せたとき */
+        .accordion-title:hover {
+        background-color: #A9f9f9;
+        }
+
+        /* カスタム矢印アイコン（右側に配置） */
+        .accordion-title::after {
+        content: "";
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%) rotate(0deg);
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid #666666;
+        border-bottom: 2px solid #666666;
+        transition: transform 0.3s ease;
+        }
+
+        /* アコーディオンが開いているときの矢印の動き */
+        .accordion-item[open] .accordion-title::after {
+        transform: translateY(-50%) rotate(45deg);
+        }
+
+        /* 開いたときの中身のコンテナ */
+        .accordion-content {
+        border-top: 1px solid #e0e0e0;
+        padding: 10px 20px 20px 20px;
+        background-color: #fafafa;
+        }
+
+        /* 各質問のボックス */
+        .faq-box {
+        margin-top: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px dashed #e0e0e0;
+        }
+        .faq-box:last-child {
+        border-bottom: none; /* 最後の線は消す */
+        padding-bottom: 0;
+        }
+
+        /* 質問と回答の文字デザイン */
+        .faq-q {
+        font-size: 15px;
+        color: #222222;
+        margin: 0 0 6px 0;
+        }
+        .faq-a {
+        font-size: 14px;
+        color: #555555;
+        line-height: 1.6;
+        margin: 0;
+        }
+
