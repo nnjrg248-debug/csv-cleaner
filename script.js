@@ -394,29 +394,29 @@
         }
 
         function detectUTF16(buffer) {
-        const bytes = new Uint8Array(buffer);
+            const bytes = new Uint8Array(buffer);
 
-        // 1. BOM チェック
-        if (bytes[0] === 0xFF && bytes[1] === 0xFE) {
-            return "UTF-16LE";
-        }
-        if (bytes[0] === 0xFE && bytes[1] === 0xFF) {
-            return "UTF-16BE";
-        }
+            // 1. BOM チェック
+            if (bytes[0] === 0xFF && bytes[1] === 0xFE) {
+                return "UTF-16LE";
+            }
+            if (bytes[0] === 0xFE && bytes[1] === 0xFF) {
+                return "UTF-16BE";
+            }
 
-        // 2. BOM がない場合でも、ヌル文字の頻度で判定
-        let nullCount = 0;
-        for (let i = 0; i < bytes.length; i++) {
-            if (bytes[i] === 0x00) nullCount++;
-        }
+            // 2. BOM がない場合でも、ヌル文字の頻度で判定
+            let nullCount = 0;
+            for (let i = 0; i < bytes.length; i++) {
+                if (bytes[i] === 0x00) nullCount++;
+            }
 
-        // 全体の 20% 以上が 0x00 → UTF-16 の可能性が高い
-        if (nullCount / bytes.length > 0.2) {
-            return "UTF-16 (no BOM)";
-        }
+            // 全体の 20% 以上が 0x00 → UTF-16 の可能性が高い
+            if (nullCount / bytes.length > 0.2) {
+                return "UTF-16 (no BOM)";
+            }
 
-        return null; // UTF-16 ではない
-        }
+            return null; // UTF-16 ではない
+            }
 
 
         // CSVデータを現在の選択モードに合わせて自動保存する共通関数
@@ -566,7 +566,7 @@
 
 
 
-        // チェックボックスイベントを設定
+        // 列数ずれ直しチェックボックスイベントを設定
         chkColumnCnt.addEventListener('change', () => {
         // チェックがついている（true）ときだけ実行する
             if ((chkColumnCnt.checked) &&(csvTextArea.value)) {//if (csvTextArea.value === '')よりif (csvTextArea.value)のほうが予期せぬバグが起きにくい頑丈なコードとのこと
@@ -756,7 +756,7 @@
                     }
                     currentRawText = inputText; // 直接書き換えた場合のために更新
                     showFileInfo("直接入力されたテキスト");
-                    displayCSV(inputText);//文字の表示処理だがが文字コード変換は必要なし（文字コード変換はﾌｧｲﾙからの読出しで使うもの）
+                    displayCSV(inputText);//文字の表示処理（文字コード変換は必要なし（文字コード変換はﾌｧｲﾙからの読出しで使うもの））
                
                     setTimeout(() => {
                         tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -857,16 +857,126 @@
             //reader.readreader.readAsText(file, getSelectedEncoding(file));AsText(file, 'Shift_JIS');
             //FileCode=file;
         }
+            
+        function HankakuAsshuku(text, delimiters) {
+            // 半角スペースが区切り文字に含まれていたら圧縮
+            if (delimiters.includes(" ")) {
+                text = text.replace(/ {2,}/g, " ");
+            }
+            return text;
+        }
 
+        function parseCSV(text) {
+
+            // 1. 区切り文字を配列で取得
+            const delimiters = [];
+            if (chkComma.checked)     delimiters.push(",");
+            if (chkTab.checked)       delimiters.push("\t");
+            if (chkSemicolon.checked) delimiters.push(";");
+            if (chkSpace.checked)     delimiters.push(" ");
+            // ★ 区切り文字なし → 1 行をそのまま 1 セルとして扱う（今までの仕様）
+            if (delimiters.length === 0) {
+                const lines = text.split(/\r?\n/);//?:直前の\r が「0 回または 1 回」(「*」の場合は直前文字が0回以上)
+                return lines.map(line => [line]);  // ← 1 行 = 1 セル　　　　
+            }//\r:キャリッジリターン（CR）＝ Windows の改行の前半、\n:ラインフィード（LF）＝ 改行本体、\r\n:Windows改行コード、\n:Linux改行コード
+
+            // 2. 前処理（スペース圧縮など）
+            text = HankakuAsshuku(text, delimiters);
+
+            // 3. 最初の区切り文字でパース
+            let result = Papa.parse(text, {//正式仕様（RFC4180）に沿って引用符内のカンマ、改行、""のｴｽｹｰﾌﾟ、BOM等のCSV処理関数
+                delimiter: delimiters[0],
+                skipEmptyLines: true//改行スキップ処理
+            });//resultはPapaParse が返す「解析結果ｵﾌﾞｼﾞｪｸﾄ」でその中のdataﾌﾟﾛﾊﾟﾃｨは2次元配列
+            let rows = result.data;//rows:(行と区切り文字で区切られた)2次元配列」例：[ ["Tom","Jones","Director"], ["Ian","Dury","Engineer"] ]
+
+            // 4. 2つ目以降の区切り文字で再パース
+            for (let i = 1; i < delimiters.length; i++) {
+                const d = delimiters[i];                
+                
+                rows = rows.map(row => {//rows（2次元配列）を、行ごとに変換して新しい rows に作り直す処理：rows1行(row)ごと受取り別の形にしrowsとして返す
+                    const joined = row.join("§§§TEMP§§§");//row配列を被らない特殊文字"§§§TEMP§§§"でくっつける(dでの区切り処理のため)例[Tom§§§TEMP§§§Jones‥
+                    return Papa.parse(joined, {delimiter: d}).data[0];//joinedをdで区切り、区切った配列の0番目を返すだが0番目とは
+                });//Papa.parse("A B C", { delimiter: " " }) のとき [["A", "B", "C"]  (← これが data[0])　]　(※：「パースさせる」は “分割する”)
+            }//結合文字§§§TEMP§§§は残ってるがユーザーに見えない、とのこと
+
+            return rows;
+        }
+
+        function displayCSV(text) {
+
+            const rows = parseCSV(text);  // ← 文字処理とパースは別関数に任せる
+
+            let htmlParts = ['<table>'];
+            let cleanedLines = [];
+            let seenLines = new Set();
+
+            const maxcntColumns = Math.max(...rows.map(r => r.length));
+
+            rows.forEach((cells, index) => {
+
+                let rowHtml = '<tr>';
+                let cleanedCells = [];
+
+                cells.forEach(cell => {
+                    // 前後の空白とダブルクォーテーションを削除
+                    let cleanCell = cell
+                        .replace(/^ +| +$/g, '')   // 前後の半角スペースを削除
+                        .replace(/^"|"$/g, '');    // 前後のダブルクォーテーションを削除
+                    cleanedCells.push(cleanCell);
+
+                    rowHtml += index === 0        //先頭行ならth、それ以外はtd
+                        ? `<th>${cleanCell}</th>`
+                        : `<td>${cleanCell}</td>`;
+                });
+
+                // 列数揃え
+                if (chkColumnCnt.checked) {
+                    while (cleanedCells.length < maxcntColumns) {
+                        cleanedCells.push('');
+                        rowHtml += index === 0 ? `<th></th>` : `<td></td>`;
+                    }
+                }
+
+                let joinedLine = cleanedCells.join(',');//配列cleanedCellsをカンマで区切りくっつける
+
+                if (chkdelcnm.checked) {
+                    joinedLine = joinedLine.replace(/,+$/, '');//行末カンマ削除
+                }
+
+                if (index > 0 && seenLines.has(joinedLine)) return;
+                seenLines.add(joinedLine);// 1行目（ヘッダー）以外で、すでに同じ行が存在する場合はスキップ（重複行削除）
+
+                htmlParts.push(rowHtml + '</tr>');//htmlParts += rowHtml + '</tr>'; ← これだと文字列に変わるので
+                cleanedLines.push(joinedLine);
+            });
+
+            htmlParts.push('</table>');
+            tableContainer.innerHTML = htmlParts.join('');
+            cleanedTextForCopy = cleanedLines.join('\n');
+        }
+
+
+
+
+
+
+/*
         // CSVのテキストを分解してテーブルにする関数
         function displayCSV(text) {
-            const lines = text.split(/\r?\n/); // /\r?\n/について([/]:正規表現を囲むマーク、[?]:「直前の文字が0回、または1回だけ存在する(\rがあってもなくてもいい)という意味」)\r：きゃりっじリターン、\nラインフィード
+            
+            const result = Papa.parse(text, {// ★ CSV をパース
+                skipEmptyLines: true
+            });
+            const rows = result.data; // ← 壊れない 2次元配列
+            //const lines = text.split(/\r?\n/); // /\r?\n/について([/]:正規表現を囲むマーク、[?]:「直前の文字が0回、または1回だけ存在する(\rがあってもなくてもいい)という意味」)\r：きゃりっじリターン、\nラインフィード
             let htmlParts = ['<table>'];//let htmlParts = '<table>';            
             let cleanedLines = []; // コピー用の行配列
             let seenLines = new Set(); // 重複チェック用のセットを追加
-            const maxcntColumns = Math.max(...lines.map(line => splitCsvLine(line).length));
+            //const maxcntColumns = Math.max(...lines.map(line => splitCsvLine(line).length));
             //const maxcntColumns = Math.max(...lines.map(line => line.split(',').length));
-            lines.forEach((line, index) => {//forEach((line:ループで今処理している要素のデータ,index:その順番（インデックス番号）)
+            const maxcntColumns = Math.max(...rows.map(r => r.length));
+            rows.forEach((line, index) => {//forEach((line:ループで今処理している要素のデータ,index:その順番（インデックス番号）)
                 if (line.trim() === '') return; //forEach内のreturnはVBのContinue For （forを抜けるExit Forでなく）' これ以降の処理をスキップして、次のline（行）に進む
                 let rowHtml = '';
                 // カンマ、タブ、セミコロンのなどで区切れるように調整
@@ -886,13 +996,13 @@
                     cleanedCells.push(cleanCell);//配列cleanedCellsの後ろに配列としてcleanCellを追加
                     
                     rowHtml += index === 0 ? `<th>${cleanCell}</th>` : `<td>${cleanCell}</td>`;
-                    /*
+                    
                     if (index === 0) {
                         html2 += `<th>${cleanCell}</th>`;//${変数} を使って文字列の中に変数を埋め込む機能（テンプレートリテラル）としてﾊﾞｯｸｸｫｰﾂ（`）で囲む
                     } else {
                         html2 += `<td>${cleanCell}</td>`;
                     }
-                    */
+                    
                 });
                  // もし行全体のセルがすべて空っぽ（または無視された）ならスキップ
                 if (cleanedCells.length === 0) return;
@@ -949,26 +1059,51 @@
       //          tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
       //      }, 1000);            
         }
-
+*/
 
         
-
+/*
         function splitCsvLine(line) {
             let result = [];
             let currentCell = "";
             let insideQuote = false; 
 
+            
             // 1. 各チェックボックスのON/OFF状態（true/false）を取得
             const useComma     = document.getElementById('chkComma').checked;
             const useTab       = document.getElementById('chkTab').checked;
             const useSemicolon = document.getElementById('chkSemicolon').checked;
             const useSpace     = document.getElementById('chkSpace').checked;
+           
+            const delimiters = [];
+            if (chkComma.checked)     delimiters.push(",");
+            if (chkTab.checked)       delimiters.push("\t");
+            if (chkSemicolon.checked) delimiters.push(";");
+            if (chkSpace.checked)     delimiters.push(" ");
+            
+            for (let i = 1; i < delimiters.length; i++) {
+                const d = delimiters[i];
 
-            // 2. 半角スペースが有効な場合のみ、連続する半角スペースを1つにまとめる
-            if (useSpace) {
-                line = line.replace(/ {2,}/g, ' ');//{2,}は２つ以上の連続ということ、{2,4}のときは２つ以上4つ以下の連続といこと
+                // 2. 半角スペースが有効な場合のみ、連続する半角スペースを1つにまとめる
+                if (delimiters.includes(" ")) {
+                    line = line.replace(/ {2,}/g, ' ');//{2,}は２つ以上の連続ということ、{2,4}のときは２つ以上4つ以下の連続といこと
+                }
+
+                line = line.map(row => {
+                    // row は ["Tom", "Jones", "Senior Director"] のような配列
+                    const joined = row.join("§§§TEMP§§§"); // 一時的に結合
+                    const reParsed = Papa.parse(joined, {
+                        delimiter: d
+                    }).data[0];
+
+                    return reParsed;
+                });
             }
 
+            */ 
+            
+            
+            /*
             for (let i = 0; i < line.length; i++) {
                 let char = line[i];
 
@@ -987,9 +1122,11 @@
                     currentCell += char;
                 }
             }
+            
             result.push(currentCell); 
             return result;
-        }
+           
+        } */
 
         /*
         document.addEventListener('DOMContentLoaded', () => {//スライドしたのイベントで、どちらの項目になったかを監視してその際の処理を記載
