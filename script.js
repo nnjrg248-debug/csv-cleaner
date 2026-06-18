@@ -32,6 +32,7 @@
         const popup = document.getElementById('zoom-popup');
         const zoomButtons = document.querySelectorAll('.zoom-btn');
         const zoominput = document.getElementById('zoom-input');
+        const bottomActions = document.querySelector(".bottom-actions-container-top");
        // const separator_labelkid = document.getElementById('separator_labelkid');
         //const encodingInputs = document.querySelectorAll('.setting-block input[name="encoding_mode"], .setting-block input[name="utf8_bom"]');//文字コード欄内のrんこーどのらひおボックスとbomのチェックボックス
 
@@ -1284,6 +1285,7 @@
                 if(convertBtn) convertBtn.style.display = 'inline-block'; // ボタンを出す
                 if(clearBtn) clearBtn.style.display = 'inline-flex'; // クリアボタンを出す
                 if(cancelClear) cancelClear.style.display = 'inline-block'; 
+                bottomActions.classList.add("adjusted");//肌色ライン下げる
 
                 // 【追加】記憶していたテキストを、テキストエリアに表示させる
                 if (csvTextArea) {
@@ -1304,6 +1306,7 @@
                 if(convertBtn) convertBtn.style.display = 'none'; // ボタンを隠す
                 if(clearBtn) clearBtn.style.display = 'none'; // クリアボタンを隠す
                 if(cancelClear) cancelClear.style.display = 'none'; // ボタンを隠す
+                bottomActions.classList.remove("adjusted");//肌色ライン上げる
             }
         }
 

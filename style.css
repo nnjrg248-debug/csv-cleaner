@@ -597,13 +597,9 @@
         }
 
 
-
-
         /* 青枠の丸長ボタンの基本スタイル */
         .btn-blue-outline {
-        /* display: inline-flex;
-        align-items: center;     アイコンと文字を縦方向で中央に揃える
-        justify-content: flex-end ; */
+       
         padding: 10px 24px;      /* 上下と左右の余白（画像に合わせたサイズ感） */
         min-width: 160px;        /* ボタンの最低横幅 */
         
@@ -618,6 +614,11 @@
         cursor: pointer;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* ほんの少しの影 */
         transition: all 0.2s ease; /* マウスホバー時の変化を滑らかにする */
+        display: flex;
+        align-items: center;   /* ← これで上下中央揃え */
+        justify-content: center;
+    
+        line-height: 1.4;
         }
 
         /* アイコンと文字の間のすき間 */
@@ -666,16 +667,25 @@
             width: 100%;
 
         }
-        .tableContainer_out{
-            /*position: relative;
-             top: -1000px;
-        */
-        }
+
+        
 
         .bottom-actions-container{
             margin-top: 30px;
            text-align: left;     
         }
+
+        .button-blue-row {
+            display: flex;
+            justify-content: flex-end; /* ← 右端固定 */
+            gap: 12px;
+            width: 100%;
+        }
+
+        .bottom-actions-container-top.adjusted {
+            margin-top: 40px; /* 好きな値に調整 */
+        }
+
         .concept-text {
             display: block;
             
@@ -769,15 +779,7 @@
             margin-top: 1px;          /* button-group のすぐ下に配置 */
         }
 
-        .btn-blue-outline {
-            border: 2px solid #0078d4;
-            background: white;
-            color: #0078d4;
-            padding: 7px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-        }
+  
 
         .toolpanel {
         display: flex; /* 子要素を横並びにする   border: 1px dashed #707801; */ 
@@ -1328,13 +1330,7 @@ padding-top: -60px; （マイナス）:マイナスはできない
     border: 1px solid #ccc;
     background: #fff;
 }
-.btn-blue-outline {
-    display: flex;
-    align-items: center;   /* ← これで上下中央揃え */
-    justify-content: center;
-    padding: 10px 14px;
-    line-height: 1.4;
-}
+
 #fileInfo {
     display: flex;
     flex-wrap: wrap;
