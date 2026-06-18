@@ -908,8 +908,21 @@
                     return newRow;
                 });
             }
-            return rows;
-        }
+             // ★ 5. 【追加】行末の空セル削除（チェックがある場合のみ）
+            if (chkdelcnm.checked) {
+                rows = rows.map(row => {
+                    let i = row.length - 1;//rowは二次元配列要素の1行配列データでrow[i]はその最後尾の配列
+                    // 配列の末尾から順に、空文字（または前後の空白を消して空になるもの）を探す
+                    while (i >= 0 && (row[i] === '' || row[i].replace(/^ +| +$/g, '') === '')) {
+                        i--;
+                    }
+                    // 空ではない最後の要素までの部分配列を切り出す
+                    return row.slice(0, i + 1);
+        });
+    }
+
+    return rows;
+}
 
             /*
             for (let i = 1; i < delimiters.length; i++) {
@@ -962,9 +975,11 @@
 
                 let joinedLine = cleanedCells.join(',');//配列cleanedCellsをカンマで区切りくっつける
 
+                /*
                 if (chkdelcnm.checked) {
                     joinedLine = joinedLine.replace(/,+$/, '');//行末カンマ削除
                 }
+                */
 
                 if (index > 0 && seenLines.has(joinedLine)) return;
                 seenLines.add(joinedLine);// 1行目（ヘッダー）以外で、すでに同じ行が存在する場合はスキップ（重複行削除）
