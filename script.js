@@ -25,12 +25,12 @@
 
         const encodingLabel = document.getElementById('encoding_labelid');
         const encodingDialog = document.getElementById('encoding_dialog');
-        
+        const dlg = document.getElementById("report_dialog");
         
         
         const separatorBlock = document.getElementById('separatorblock');
         const kugiriDialog = document.getElementById('kugiri_dialog');
-        const popup = document.getElementById('zoom-popup');
+        const zoompopup = document.getElementById('zoom-popup');
         const zoomButtons = document.querySelectorAll('.zoom-btn');
         const zoominput = document.getElementById('zoom-input');
         const bottomActions = document.querySelector(".bottom-actions-container-top");
@@ -56,8 +56,9 @@
 
         const setAll = document.getElementById('setAll');
         const set = document.getElementById('setSelect');
-
-        
+        let lastReportHtml;
+        let lastReportText;
+        let zoomflg;
 
 
 
@@ -248,6 +249,28 @@
         function switchToDirectMode() {
             currentFileInputMode = 'input';
             toggleMode();
+        }
+
+
+        function showReportDialog(title, message, extraHtml = "") {
+            dlg.innerHTML = `
+                <div class="report-box">
+                    <h3>${title}</h3>
+                    <div class="report-body">
+                        ${message}
+                        ${extraHtml}
+                    </div>
+                    <button id="closeReport" class="btn-cancel">閉じる</button>
+                </div>
+            `;
+
+            dlg.showModal();
+
+            document.getElementById("closeReport").addEventListener("click", () => {
+                dlg.close();
+                if(zoomflg===1)zoompopup.style.display = 'block'; 
+                zoomflg=0;
+            });
         }
 
         function updateBomStatus() {
@@ -496,9 +519,9 @@
         // 2. ポップアップ内のボタンが押された時の処理
         encodingDialog.addEventListener('close', () => {
             // どのボタン（value値）が押されたかを取得
-            const selectedValue = encodingDialog.returnValue;
+            const selectedValue = encodingDialog.returnValue;//ダイアログ内で押されたボタンの値がreturnValueに入る
 
-            // キャンセルされた場合は何もしない
+            // ｷｬﾝｾﾙ又は!selectedValue(=returnValue) が空（""）(⁼「何も選ばれずに閉じられた場合」)の時は何もしない
             if (selectedValue === 'cancel' || !selectedValue) return;
                 document.getElementById('mode_auto').checked = false;
                 document.getElementById('mode_utf8').checked = false;
@@ -528,7 +551,7 @@
 
         // 1. ラベルをクリックしたら、alert風にポップアップを表示する
         
-            if(pageValue==='6'){
+        if(pageValue==='6'){
             separator_labelkid.style.backgroundColor= '#b4c5f5';
             separator_labelkid.addEventListener('click', () => {
                 const kugiriDialog = document.getElementById('kugiri_dialog');
@@ -780,18 +803,29 @@
             cleanedTextForCopy = '';
         });
 
-
+        Lookseikei.addEventListener('click', () => {
+             if (!lastReportHtml) {
+                alert("まだ整形結果がありません");
+                return;
+            }
+            showReportDialog(
+                "整形結果",
+                lastReportHtml,
+                `<pre>${lastReportText}</pre>`
+            );
+        });
+     
 
 
         /* 1. ポップアップを開くボタンの処理
         openBtn.addEventListener('click', (event) => {
-        popup.style.display = 'block';
+        zoompopup.style.display = 'block';
         event.stopPropagation(); // bodyのクリックイベントを発火させない
         });
         */
 
         // 2. ポップアップ自体をクリックした時の処理
-        popup.addEventListener('click', (event) => {
+        zoompopup.addEventListener('click', (event) => {
         // ポップアップ内の操作でbodyのクリックイベント（消える処理）が動かないようにブロック
         event.stopPropagation();
         });
@@ -805,14 +839,14 @@
             document.body.style.zoom = scale;
             
             // 【重要】ポップアップ自体が一緒に拡大縮小されるのを防ぐ（等倍に固定）
-            popup.style.zoom = 1 / scale; 
+            zoompopup.style.zoom = 1 / scale; 
             });
         });
 
         // 4. HPのbody（ポップアップの外側）を触ると消える処理
         // bodyだけでなく、ドキュメント全体（空白部分含む）のクリックを検知できるようにdocumentに変更
         document.addEventListener('click', () => {
-        popup.style.display = 'none';
+        zoompopup.style.display = 'none';
         });
         
         // 3. 数値調節（NumericUpDown）が変更された時の処理
@@ -833,7 +867,7 @@
         document.body.style.zoom = scale;
         
         // ポップアップ自体が一緒に拡大縮小されるのを防ぐ
-        popup.style.zoom = 1 / scale; 
+        zoompopup.style.zoom = 1 / scale; 
         });
 
 
@@ -853,8 +887,8 @@
                 setTimeout(() => {
                 tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 1000);   
-
-                popup.style.display = 'block';
+                zoomflg=1;
+                //popup.style.display = 'block';
             });            
             //reader.readreader.readAsText(file, getSelectedEncoding(file));AsText(file, 'Shift_JIS');
             //FileCode=file;
@@ -869,6 +903,9 @@
         }
 
         function parseCSV(text) {
+
+            let warnings = []; 
+            
 
             // 1. 区切り文字を配列で取得
             const delimiters = [];
@@ -920,11 +957,89 @@
                     }
                     // 空ではない最後の要素までの部分配列を切り出す
                     return row.slice(0, i + 1);
-        });
-    }
+                });
+            }
 
-    return rows;
-}
+            let expectedCols = null;
+            rows.forEach((row, index) => {
+                if (expectedCols === null) expectedCols = row.length;
+
+                if (row.length !== expectedCols) {
+                    warnings.push({
+                        type: "列数異常",
+                        line: index + 1,
+                        expected: expectedCols,
+                        actual: row.length,
+                        raw: row.join(delimiters[0])
+                    });
+                }
+            });
+            rows.forEach((row, index) => {
+                const rawLine = row.join(delimiters[0]);
+
+                const hasDelimiter = delimiters.some(d => rawLine.includes(d));
+
+                if (!hasDelimiter && row.length === 1) {
+                    warnings.push({
+                        type: "区切り文字異常",
+                        line: index + 1,
+                        message: "区切り文字が見つかりません",
+                        raw: rawLine
+                    });
+                }
+            });
+
+            rows.forEach((row, index) => {
+                const rawLine = row.join(delimiters[0]);
+                const quoteCount = (rawLine.match(/"/g) || []).length;
+
+                if (quoteCount % 2 !== 0) {
+                    warnings.push({
+                        type: "クォート不整合",
+                        line: index + 1,
+                        message: "ダブルクォートが閉じていません",
+                        raw: rawLine
+                    });
+                }
+            });
+
+            const originalLines = text.split(/\r?\n/);
+
+            originalLines.forEach((line, index) => {
+                if (line.trim() === "") {
+                    warnings.push({
+                        type: "空行",
+                        line: index + 1,
+                        message: "空行を検出しました"
+                    });
+                }
+            });
+
+            rows.forEach((row, index) => {
+                const rawLine = row.join(delimiters[0]);
+                if (!looksLikeUTF8(rawLine)) {
+                    warnings.push({
+                        type: "文字化け疑い",
+                        line: index + 1,
+                        message: "UTF-8 として不正なバイト列の可能性",
+                        raw: rawLine
+                    });
+                }
+            });
+            
+            //return rows;
+            return { rows, warnings };
+        }
+
+        function looksLikeUTF8(str) {
+            try {
+                new TextEncoder().encode(str);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
 
             /*
             for (let i = 1; i < delimiters.length; i++) {
@@ -942,7 +1057,7 @@
 
         function displayCSV(text) {
 
-            const rows = parseCSV(text);  // ← 文字処理とパースは別関数に任せる
+            const { rows, warnings } = parseCSV(text); // ← 文字処理とパースは別関数に任せる
 
             let htmlParts = ['<table>'];
             let cleanedLines = [];
@@ -993,8 +1108,73 @@
             htmlParts.push('</table>');
             tableContainer.innerHTML = htmlParts.join('');
             cleanedTextForCopy = cleanedLines.join('\n');
+
+           ReportShori(rows,maxcntColumns,cleanedLines,cleanedTextForCopy,warnings); 
+           /* 
+           // ★ 整形後テキスト
+            const cleanedText = cleanedLines.join('\n');
+
+            // ★ 行数・列数
+            const rowCount = cleanedLines.length;
+            const colCount = maxcntColumns;
+            */
+
+            
         }
 
+        function ReportShori(irows,iColumns,icleanedLines,icleanedText,iwarnings){
+            const fileName = document.getElementById("fileName")?.textContent || "（直接入力）";
+            //基本情報の取得
+            const now = new Date().toLocaleString();
+            //const fileName = document.getElementById("fileName")?.textContent || "（直接入力）";
+            let status = "成功";
+            //サマリーの計算
+            const totalRows = irows.length;
+            const validRows = icleanedLines.length;
+            const removedRows = totalRows - validRows;
+            //適用された整形ルールの収集
+            let appliedRules = [];
+            if (chkOneROW.checked) appliedRules.push("1行目をヘッダーとして扱う");
+            if (chkColumnCnt.checked) appliedRules.push("列数揃え");
+            if (chkdelcnm.checked) appliedRules.push("行末カンマ削除");
+            appliedRules.push("重複行削除"); // seenLines を使っているため
+
+
+
+
+
+
+            let reportHtml = `
+            <h3>基本情報</h3>
+            <p>処理日時：${now}</p>
+            <p>ファイル名：${fileName}</p>
+            <p>ステータス：${iwarnings.length > 0 ? "警告あり" : "成功"}</p>
+
+            <h3>処理サマリー</h3>
+            <p>総レコード数：${totalRows}</p>
+            <p>有効レコード数：${validRows}</p>
+            <p>除外レコード数：${removedRows}</p>
+            <p>（整形後）列数：${iColumns}</p>
+
+            <h3>適用された整形内容</h3>
+            <ul>${appliedRules.map(r => `<li>${r}</li>`).join("")}</ul>
+            `;
+
+            if (iwarnings.length > 0) {
+                reportHtml += `
+                <h3>警告・エラー</h3>
+                <ul>
+                ${iwarnings.map(w => `
+                    <li>行 ${w.line}：${w.message || w.type}</li>
+                    `).join("")}
+                </ul>
+                `;
+            }//messageが空の時あるので type を fallback （代替値）に使う
+
+            lastReportHtml=reportHtml;
+            lastReportText=icleanedText;
+            showReportDialog("整形結果",reportHtml,`<pre>${icleanedText}</pre>`);
+        }
 
 
 
