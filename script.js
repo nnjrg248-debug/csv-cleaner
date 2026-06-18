@@ -12,6 +12,7 @@
         const modeDirectInput = document.getElementById('modeDirect');
             //const dropZone = document.getElementById('dropZone');
         const directInputZone = document.getElementById('directInputZone');
+        const Lookseikei = document.getElementById('Lookseikei');
         const convertBtn = document.getElementById('convertBtn');
         const clearBtn = document.getElementById('clearBtn');
         const chkColumnCnt = document.getElementById('chkColumnCnt');
@@ -1283,7 +1284,8 @@
                 if(dropZone) dropZone.style.display = 'none';
                 if(directInputZone) directInputZone.style.display = 'block';
                 if(convertBtn) convertBtn.style.display = 'inline-block'; // ボタンを出す
-                if(clearBtn) clearBtn.style.display = 'inline-flex'; // クリアボタンを出す
+                if(Lookseikei) Lookseikei.style.display = 'inline-block';
+                if(clearBtn) clearBtn.style.display = 'inline-flex'; // 絵が入ってるのでinline-flex
                 if(cancelClear) cancelClear.style.display = 'inline-block'; 
                 bottomActions.classList.add("adjusted");//肌色ライン下げる
 
@@ -1304,6 +1306,7 @@
                 if(dropZone) dropZone.style.display = 'block';
                 if(directInputZone) directInputZone.style.display = 'none';
                 if(convertBtn) convertBtn.style.display = 'none'; // ボタンを隠す
+                if(Lookseikei) Lookseikei.style.display = 'none';
                 if(clearBtn) clearBtn.style.display = 'none'; // クリアボタンを隠す
                 if(cancelClear) cancelClear.style.display = 'none'; // ボタンを隠す
                 bottomActions.classList.remove("adjusted");//肌色ライン上げる

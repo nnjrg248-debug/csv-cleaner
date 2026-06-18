@@ -668,23 +668,31 @@
 
         }
 
-        
-
         .bottom-actions-container{
             margin-top: 30px;
-           text-align: left;     
+           /* margin-bottom: 50px !important;*/
+            text-align: left;     
         }
+
+        .bottom-actions-container-top.adjusted {
+            margin-top: 40px; /* 好きな値に調整 */
+        }
+
+
+
+        #tableContainer table {
+            margin-top: 20px ;/*上のボタンとの距離*/
+        }
+
 
         .button-blue-row {
             display: flex;
             justify-content: flex-end; /* ← 右端固定 */
             gap: 12px;
             width: 100%;
+            margin-top: 12px; /* CSVボタン領域距離 */
         }
 
-        .bottom-actions-container-top.adjusted {
-            margin-top: 40px; /* 好きな値に調整 */
-        }
 
         .concept-text {
             display: block;
@@ -1364,7 +1372,7 @@ padding-top: -60px; （マイナス）:マイナスはできない
     display: block;
     width: 100%;
 }
-  .button-blue-row {
+  .button-blue-row {/*スマホ画面用320*/
     display: block;
     width: 100%;
     }
