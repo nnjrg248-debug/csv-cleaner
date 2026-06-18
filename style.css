@@ -804,7 +804,7 @@
         background: white;         
         
         /* 修正：248px から 15%（または全体のバランスに合わせて 15%〜16%）に戻します */
-        width: 15%; 
+        width:30%; 
 
         height: 83px;
         align-self: flex-start; 
@@ -828,7 +828,7 @@
 }
 .sonot_seikei {
     display: flex ;
-    flex-direction: column ; /* ★中身を絶対に上から下の「縦並び」にする指示 */
+    flex-direction: row ; /* ★中身を絶対に上から下の「縦並び」にする指示 */
     align-items: flex-start ; /* ★左端をピシッと揃える指示 */
     margin-top: 0px; /* タイトルとの隙間の微調整 */
 }
@@ -1262,11 +1262,40 @@ padding-top: -60px; （マイナス）:マイナスはできない
 
 
 
-        /* ==========================================
+    
+/* スマホ最適化 */
+@media (max-width: 480px) {
+    .button-row {
+        flex-direction: column; /* スマホでは縦並びで自然に */
+        gap: 8px;
+    }
+
+    .button-row button {
+        width: 100%;
+        min-width: auto;
+    }
+
+    #tableContainer {
+        max-height: 250px;
+    }
+}
+
+    /* ==========================================
         画面幅が800px以下（タブレット縦持ちなど）のときだけ
         自動でレイアウトを「縦並び」に変えて崩れを防ぐ設定
         ========================================== */
-        @media screen and (max-width: 320px) {
+   @media screen and (max-width: 320px) {
+
+    /* ボタンを包んでいる親コンテナに flex を適用 */
+    .bottom-actions-container{
+       
+        flex-direction: column;
+    }
+
+    
+
+
+ 
          .button { 
     width: 100%; 
     font-size: 13px; 
@@ -1303,17 +1332,17 @@ padding-top: -60px; （マイナス）:マイナスはできない
 
 /* ボタン行（表のキャンセル / 入力クリア / 表形式へ） */
 .button-row {
-    display: flex;
-    flex-wrap: wrap;       /* スマホでは自然に折り返す */
-    gap: 10px;
-    margin: 15px 0;
-    position: relative;
-    z-index: 10;           /* テーブルより前面に出す */
+       display: flex;
+    gap: 10px;              /* ボタン間のすき間 */
+    justify-content: flex-start; /* 左寄せ（中央にしたいなら center） */
+    align-items: center;    /* 高さを揃える */
+    margin-top: 10px;
 }
 
 .button-row button {
-    flex: 1;               /* 横幅を均等にする */
-    min-width: 120px;
+  flex: 1;
+        white-space: nowrap;    /* ボタン内の改行を防ぐ */
+    padding: 8px 16px;
 }
 
 /* テーブル外側コンテナ */
@@ -1330,6 +1359,20 @@ padding-top: -60px; （マイナス）:マイナスはできない
     border: 1px solid #ccc;
     background: #fff;
 }
+
+.btn-blue-outline {
+    display: block;
+    width: 100%;
+}
+  .button-blue-row {
+    display: block;
+    width: 100%;
+    }
+
+    .button-blue-row button {
+        flex: 1;            /* ← ボタン幅を均等にして押しやすくする */
+        min-width: 120px;
+    }
 
 #fileInfo {
     display: flex;
@@ -1350,24 +1393,7 @@ padding-top: -60px; （マイナス）:マイナスはできない
 }
 
 
-/* スマホ最適化 */
-@media (max-width: 480px) {
-    .button-row {
-        flex-direction: column; /* スマホでは縦並びで自然に */
-        gap: 8px;
-    }
-
-    .button-row button {
-        width: 100%;
-        min-width: auto;
-    }
-
-    #tableContainer {
-        max-height: 250px;
-    }
-}
-
-
-
 
 }
+
+
