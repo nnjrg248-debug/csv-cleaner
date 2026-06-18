@@ -255,23 +255,27 @@
         function showReportDialog(title, message, extraHtml = "") {
             dlg.innerHTML = `
                 <div class="report-box">
-                    <h3>${title}</h3>
+                    <h2 class="report-title">${title}</h2>
                     <div class="report-body">
                         ${message}
                         ${extraHtml}
                     </div>
-                    <button id="closeReport" class="btn-cancel">閉じる</button>
+                    <div class="report-actions">
+                        <button id="closeReport" class="btn-close">閉じる</button>
+                    </div>
                 </div>
             `;
 
             dlg.showModal();
 
-            document.getElementById("closeReport").addEventListener("click", () => {
+            document.getElementById("closeReport").addEventListener("click", (e) => {
+                e.stopPropagation();//外枠押下でzoompopupが消えるのでこの関数のクリックが連鎖して消えぬように
                 dlg.close();
-                if(zoomflg===1)zoompopup.style.display = 'block'; 
+                zoompopup.style.display = 'block';
                 zoomflg=0;
             });
         }
+
 
         function updateBomStatus() {
             // 1. 各要素を関数内で確実に取得する（「使用不可」エラーの防止）
