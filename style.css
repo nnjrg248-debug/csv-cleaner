@@ -767,13 +767,13 @@
         .btn {
             font-size:20px;
             width:100%;
-        background-color: #3378d4;
-        color: white;
-        border: none;
-        padding: 7px 20px;
-        margin: 1px;
-        border-radius: 5px;
-        cursor: pointer;
+            background-color: #3378d4;
+            color: white;
+            border: none;
+            padding: 7px 20px;
+            margin: 1px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         .btn:hover {
@@ -826,27 +826,27 @@
         padding: 5px 8px;
         box-sizing: border-box; 
 
-}
+        }
 
-/* タイトルの見た目を左側の【文字コード】たちと完全に揃えます */
-.sonotcheck h3 {
-        color: #0078d4;
-        font-size: 16px; /* 大きさを統一 */
-        margin: 0 0 -2px 0; /* 下に少しだけ隙間を作る */
-}
-.sonot_seikei {
-    display: flex ;
-    flex-direction: row ; /* ★中身を絶対に上から下の「縦並び」にする指示 */
-    align-items: flex-start ; /* ★左端をピシッと揃える指示 */
-    margin-top: 0px; /* タイトルとの隙間の微調整 */
-}
+        /* タイトルの見た目を左側の【文字コード】たちと完全に揃えます */
+        .sonotcheck h3 {
+                color: #0078d4;
+                font-size: 16px; /* 大きさを統一 */
+                margin: 0 0 -2px 0; /* 下に少しだけ隙間を作る */
+        }
+        .sonot_seikei {
+            display: flex ;
+            flex-direction: row ; /* ★中身を絶対に上から下の「縦並び」にする指示 */
+            align-items: flex-start ; /* ★左端をピシッと揃える指示 */
+            margin-top: 0px; /* タイトルとの隙間の微調整 */
+        }
 
-/* 追加：行間（上下の隙間）を広げてバランスを整える */
-.sonot_seikei label {
-     margin-top: 3px; /* お好みで隙間の広さを調整してください */
+        /* 追加：行間（上下の隙間）を広げてバランスを整える */
+        .sonot_seikei label {
+            margin-top: 3px; /* お好みで隙間の広さを調整してください */
 
-    margin-bottom: -3px; /* お好みで隙間の広さを調整してください */
-}
+            margin-bottom: -3px; /* お好みで隙間の広さを調整してください */
+        }
 
 
 
@@ -875,7 +875,7 @@
         justify-content: center;
         flex-wrap: wrap;
         gap: 15px;
-        margin-top: -3px;/*ボタンに位置調整*/
+        margin-top: -10px;/*ボタンに位置調整*/
         }
 
         .link-box {
@@ -919,11 +919,20 @@
             padding: 15px;
             font-weight: bold;
             text-align: center;
-            margin-top: 0px;
+       /*     margin-top: -29px;*/
             border-radius: 6px;
-            margin-bottom: 0px; /* ← まずはこのくらいが最適 */
+            margin-bottom: 0px; /* ← まずはこのくらいが最適 上端のボタンの位置を調整できる */
         }
 
+        #ConceptInfo-top,
+        .links {
+            margin-top: -7px ;/* 「▼ さらに便利な専用ページがあります」文字の位置調整 */
+            padding-top: 0 ;
+        }
+
+        section.links {
+        /* margin-block-start: 0;*/
+        }   
         /* ポップアップ自体のスタイル */
         #encoding_dialog {
             border: none;
