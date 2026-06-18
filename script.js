@@ -961,7 +961,7 @@
                         .replace(/^"|"$/g, '');    // 前後のダブルクォーテーションを削除
                     cleanedCells.push(cleanCell);
 
-                    rowHtml += index === 0        //先頭行ならth、それ以外はtd
+                    rowHtml += (index === 0 && chkOneROW.checked)     //先頭行ならth、それ以外はtd
                         ? `<th>${cleanCell}</th>`
                         : `<td>${cleanCell}</td>`;
                 });
@@ -970,7 +970,7 @@
                 if (chkColumnCnt.checked) {
                     while (cleanedCells.length < maxcntColumns) {
                         cleanedCells.push('');
-                        rowHtml += index === 0 ? `<th></th>` : `<td></td>`;
+                        rowHtml += (index === 0 && chkOneROW.checked) ? `<th></th>` : `<td></td>`;
                     }
                 }
 
