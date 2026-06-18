@@ -17,15 +17,22 @@
     <meta name="description" content="【簡単・直感操作】長々とした説明をなくし、一目で使い方がわかる優れたアクセシビリティを実現。大きな文字と明快な解説で、年齢問わず誰でもストレスなく操作できます。まずはシンプルな使いやすさをご体感ください。">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="page" content="4">
-    <!--インデックス設定用
+    <!--インデックス設定用 他のページに上書きするとき下の行消すこと
     <link rel="canonical" href="https://nnjrg248-debug.github.io/csv-cleaner/" />-->
     
     <link rel="icon" href="data:,">
    
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-    <script src="script.js" defer></script>
+
+    <!-- 外部ライブラリ（道具箱）を先にすべて読み込む -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/encoding-japanese@2.0.0/encoding.min.js"></script>
+
+    <!-- 最後に、すべての道具を使う自分のプログラム（script.js）を読み込む -->
+    <script src="script.js" defer></script>
+
 </head>
 <body>
     <div class="top-container">
@@ -99,7 +106,7 @@
                 <h3>【データ整形】</h3>
                 <div class="sonot_seikei">
                     <label><input type="checkbox"  id="chkColumnCnt" > 列数ずれ直し</label>
-                    <label><input type="checkbox"  id="chkdelcnm"> 行末カンマ削除</label>
+                    <label><input type="checkbox"  id="chkdelcnm"> 行末区切り文字削除</label>
                 </div>
             </div> 
         </div>
