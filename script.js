@@ -350,7 +350,7 @@
                     } catch (e) {
                         // 3. どれでも読めなかった → 対応外
                         alert("このファイルは UTF-8 でも Shift-JIS  でもありません。対応外です。");
-                        callback("", "UNKNOWN");
+                        callback("", "UNKNOWN");//エラーが起きたときでも、画面の処理（バトンリレー）を途中で止めずに、最後まで安全に終わらせるため実行される
                     }
                 };
             } else {
@@ -892,6 +892,27 @@
 
             // 4. 2つ目以降の区切り文字で再パース
             for (let i = 1; i < delimiters.length; i++) {
+                const d = delimiters[i];               
+                rows = rows.map(row => {//←2次元配列rowsの1要素rowに対し毎回以下の関数(=処理)を繰り返すﾏｰｸ
+                    let newRow = [];
+                    row.forEach(cell => {//rowは2次元配列の1要素でcellはその中の1要素：[ ["Tom","Jones","Director"], ・・のなかの"Tom"等
+                        // 1つのセルの中に、別の区切り文字（タブやスペースなど）が含まれていたらさらに分割する
+                        if (cell.includes(d)) {
+                            // Papa.parse を使ってセルの中身だけを安全にパースする
+                            const parsedCell = Papa.parse(cell, { delimiter: d }).data[0];
+                            newRow = newRow.concat(parsedCell);
+                        } else {
+                            newRow.push(cell);
+                        }
+                    });
+                    return newRow;
+                });
+            }
+            return rows;
+        }
+
+            /*
+            for (let i = 1; i < delimiters.length; i++) {
                 const d = delimiters[i];                
                 
                 rows = rows.map(row => {//rows（2次元配列）を、行ごとに変換して新しい rows に作り直す処理：rows1行(row)ごと受取り別の形にしrowsとして返す
@@ -901,7 +922,8 @@
             }//結合文字§§§TEMP§§§は残ってるがユーザーに見えない、とのこと
 
             return rows;
-        }
+            */
+        
 
         function displayCSV(text) {
 
