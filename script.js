@@ -261,10 +261,11 @@
                 //csvTextArea.value = text;
 
 
-                toggleMode();
+                //toggleMode();
                 showFileInfo(path.split("/").pop());
                 // CSV 表示処理を実行
                 displayCSV(text);
+                switchToDirectMode();
 
             } catch (e) {
                 alert("サンプルデータの読み込みに失敗しました");
