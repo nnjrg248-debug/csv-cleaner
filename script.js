@@ -55,8 +55,8 @@
         //const pageValue = document.querySelector('meta[name="page"]').getAttribute('content');
         const pageValue = document.querySelector('meta[name="page"]')?.content;
 
-        const setAll = document.getElementById('setAll');
-        const setSelect = document.getElementById('setSelect');
+        //const setAll = document.getElementById('setAll');
+        //const setSelect = document.getElementById('setSelect');
         let lastReportHtml;
         let lastReportText;
         let zoomflg;
@@ -819,7 +819,7 @@
                 return;
             }
             showReportDialog(
-                "整形結果",
+                "整形完了！",
                 lastReportHtml,
                 `<pre>${lastReportText}</pre>`
             );
@@ -1183,7 +1183,7 @@
 
             lastReportHtml=reportHtml;
             lastReportText=icleanedText;
-            showReportDialog("整形結果",reportHtml,`<pre>${icleanedText}</pre>`);
+            showReportDialog("整形完了！",reportHtml,`<pre>${icleanedText}</pre>`);
         }
 
 
