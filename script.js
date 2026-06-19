@@ -258,8 +258,11 @@
                 // テキストエリアにセット
                // const textarea = document.getElementById("csvTextArea");
                 //textarea.value = text;
-                csvTextArea.value = text;
+                //csvTextArea.value = text;
+
+
                 toggleMode();
+                showFileInfo(path);
                 // CSV 表示処理を実行
                 displayCSV(text);
 
