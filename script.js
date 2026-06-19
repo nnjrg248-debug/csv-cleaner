@@ -195,7 +195,10 @@
     //if(chkMojicode){chkMojicodeの表示非表示のもとになるsetA.style.displayで判定　表示非表示にchkMojicodeオブジェクトに変化はないから
     if( set && set.style.display === 'block' ){//ラジオボタン式文字コード選択形式以外の表示とき(つまりindex.htmlでないとき)
         chkMojicode.addEventListener('change', () => {//文字コードダイアログで文字コード選択を変更したときの処理の登録
+    if( set && set.style.display === 'block' ){//ラジオボタン式文字コード選択形式以外の表示とき(つまりindex.htmlでないとき)
+        chkMojicode.addEventListener('change', () => {//文字コードダイアログで文字コード選択を変更したときの処理の登録
             const encodingInputs = document.querySelectorAll('#mode_auto, #mode_utf8, #utf8_with_bom, #mode_sjis');          
+            encodingInputs.forEach(target => { //上記 '#mode_auto, ・・で示す各文字ｺｰﾄﾞのﾙｰﾌﾟで対象の文字ｺｰﾄﾞのﾗｼﾞｵﾎﾞﾀﾝをtargetとしている                     
             encodingInputs.forEach(target => { //上記 '#mode_auto, ・・で示す各文字ｺｰﾄﾞのﾙｰﾌﾟで対象の文字ｺｰﾄﾞのﾗｼﾞｵﾎﾞﾀﾝをtargetとしている                     
                     target.disabled = !chkMojicode.checked;
         });
@@ -273,6 +276,9 @@
             document.getElementById("closeReport").addEventListener("click", (e) => {
                 e.stopPropagation();//外枠押下でzoompopupが消えるのでこの関数のクリックが連鎖して消えぬように
                 dlg.close();
+                if(zoomflg===1)
+                    zoompopup.style.display = 'block';
+
                 if(zoomflg===1)
                     zoompopup.style.display = 'block';
 
