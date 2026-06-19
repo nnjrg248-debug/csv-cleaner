@@ -1149,6 +1149,16 @@
             if (chkdelcnm.checked) appliedRules.push("行末カンマ削除");
             appliedRules.push("重複行削除"); // seenLines を使っているため
 
+            // --- 【修正箇所】チェックされている区切り文字を取得してテキストにする ---
+            let selectedDelimiters = [];
+            if (document.getElementById("chkComma")?.checked) selectedDelimiters.push("カンマ");
+            if (document.getElementById("chkTab")?.checked) selectedDelimiters.push("タブ");
+            if (document.getElementById("chkSemicolon")?.checked) selectedDelimiters.push("セミコロン");
+            if (document.getElementById("chkSpace")?.checked) selectedDelimiters.push("半角スペース");
+            
+            // 例：「カンマ, タブ」のように文字で結合（何もなければ "なし"）
+            const delimiter = selectedDelimiters.length > 0 ? selectedDelimiters.join(", ") : "なし";
+            // -----------------------------------------------------------------
 
 
 
@@ -1161,11 +1171,12 @@
             <!--<p>ステータス：${iwarnings.length > 0 ? "警告あり" : "成功"}</p>-->
 
             <h3>処理サマリー</h3>
+            <p>（整形後）列数：${iColumns}</p>
             <p>総レコード数：${totalRows}</p>
             <p>有効レコード数：${validRows}</p>
             <p>除外レコード数：${removedRows}</p>
-            <p>（整形後）列数：${iColumns}</p>
-
+            
+            <p>区切り文字：${delimiter}</p>
             <h3>適用された整形内容</h3>
             <ul>${appliedRules.map(r => `<li>${r}</li>`).join("")}</ul>
             `;
