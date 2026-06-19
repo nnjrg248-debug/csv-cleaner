@@ -1109,6 +1109,13 @@ padding-top: -60px; （マイナス）:マイナスはできない
 }
 
 #report_dialog {
+ position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+
+
     border: none;
     padding: 0;
     margin: auto; 
@@ -1298,7 +1305,7 @@ padding-top: -60px; （マイナス）:マイナスはできない
 
         /* アコーディオン式 */
        .csv-faq-section {
-            max-width: 800px;
+            max-width: 768px;
             font-family: sans-serif;
             padding: 0 20px;
             
@@ -1390,30 +1397,28 @@ padding-top: -60px; （マイナス）:マイナスはできない
 
 
     
-/* スマホ最適化 */
+/* スマホ最適化 
 @media (max-width: 768px) {
     .button-row {
-        flex-direction: column; /* スマホでは縦並びで自然に */
+        flex-direction: column; 
         gap: 8px;
     }
 
-   /* 枠内のテキストエリア全体の共通設定 */
+    
 #dropzone{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;         /* 文字を中央揃えにする */
+  text-align: center;       
+  width: 100%;                
+  max-width: 100%;            
+  box-sizing: border-box;    
   
-  width: 100%;                /* 画面幅に応じて伸縮させる */
-  max-width: 100%;            /* 親要素からはみ出さない */
-  box-sizing: border-box;     /* 余白を幅に含める（はみ出し防止） */
-  
-  padding: 15px 10px;         /* 左右の余白を狭めて文字の一行の幅を確保 */
-  font-size: 13px;            /* スマホで溢れないよう文字サイズを少し小さめに調整 */
-  line-height: 1.5;           /* 行間を適度に開けて見やすくする */
-  word-break: break-word;     /* 長い単語があっても枠内で折り返す */
-}
+  padding: 15px 10px;         
+  font-size: 13px;            
+  line-height: 1.5;           
+  word-break: break-word;    
 #csvTextArea::placeholder{
     padding-left: 0%;
 }
@@ -1425,15 +1430,35 @@ padding-top: -60px; （マイナス）:マイナスはできない
         display: block;
         width: 100%;
     }
-    .button-blue-row {/*スマホ画面用320*/
+    .button-blue-row {
         display: block;
         width: 100%;
         }
 
         .button-blue-row button {
-            flex: 1;            /* ← ボタン幅を均等にして押しやすくする */
+            flex: 1;           
             min-width: 120px;
         }
+
+}
+*/
+@media (max-width: 480px) {
+    #report_dialog {   
+    left: 8px;
+}
+/* ボタン行（表のキャンセル / 入力クリア / 表形式へ） */
+        .btn-blue-outline {
+        display: block;
+        width: 100%;
+        
+    }
+    .button-blue-row {
+        display: block;
+        width: 100%;
+        }
+    #csvTextArea::placeholder{
+        padding-left: 0px;
+    }
 
 }
 
@@ -1514,8 +1539,11 @@ padding-top: -60px; （マイナス）:マイナスはできない
     }
     #csvTextArea::placeholder{
         font-size: 13px;
+        padding-left: 0px;
     }
-
+    #report_dialog {
+        left: 50%;
+    }
     .btn-blue-outline {
         display: block;
         width: 100%;
