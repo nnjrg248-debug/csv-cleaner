@@ -44,7 +44,8 @@
         // 【追加】貼り付けられた生テキストを記憶しておく変数
         let currentRawText = ""; 
         let currentFileInputMode = 'file'; // 現在のモードを記憶する変数
-        let chkMojicode = document.getElementById('chkMojicode');
+        //let chkMojicode = document.getElementById('chkMojicode');
+        //let chkMojicodeflg;
         const encodingRadios = document.querySelectorAll('input[name="encoding_mode"]');
         const bomCheckbox = document.getElementById('utf8_with_bom');
         // HTMLのクラス名「.bom-option」に完全に合わせる
@@ -55,7 +56,7 @@
         const pageValue = document.querySelector('meta[name="page"]')?.content;
 
         const setAll = document.getElementById('setAll');
-        const set = document.getElementById('setSelect');
+        const setSelect = document.getElementById('setSelect');
         let lastReportHtml;
         let lastReportText;
         let zoomflg;
@@ -65,13 +66,13 @@
         switch (pageValue) {// 2. switch文の中は「画面の表示・非表示の切り替え」以外の処理は書かない
             case '1':
             case '6':
-                if(setAll)setAll.style.display ='block';//index.html時に表示される文字ｺｰﾄﾞﾗｼﾞｵﾎﾞﾀﾝ
-                if(set)set.style.display = 'none';//index.html以外で表示される文字ｺｰﾄﾞパネル
-                if(chkMojicode)chkMojicode.style.display = 'none'; 
+          //      if(setAll)setAll.style.display ='none';//index.html時に表示される文字ｺｰﾄﾞﾗｼﾞｵﾎﾞﾀﾝ
+             //   if(setSelect)setSelect.style.display = 'none';//index.html以外で表示される文字ｺｰﾄﾞパネル
+                //if(chkMojicode)chkMojicode.style.display = 'block'; 
                 break;
             default:
-                if(setAll)setAll.style.display ='none';
-                if(set)set.style.display = 'block';
+             //   if(setAll)setAll.style.display ='none';
+            //    if(setSelect)setSelect.style.display = 'block';
                 //separatorBlock.style.backgroundColor= '#AAAAAA';
                 break;
         }
@@ -190,6 +191,7 @@
         }
     }
    
+    /*
     //if(chkMojicode){chkMojicodeの表示非表示のもとになるsetA.style.displayで判定　表示非表示にchkMojicodeオブジェクトに変化はないから
     if( set && set.style.display === 'block' ){//ラジオボタン式文字コード選択形式以外の表示とき(つまりindex.htmlでないとき)
         chkMojicode.addEventListener('change', () => {//文字コードダイアログで文字コード選択を変更したときの処理の登録
@@ -216,7 +218,7 @@
         // 初期状態でチェックをクリックするイベントをさせ初期値を設定する
         chkMojicode.dispatchEvent(new Event('change'));  
     }
-     
+*/     
 
 
 
@@ -300,8 +302,10 @@
                 isEnabled = isUtf8Selected;
             } else {
                 // ◆ setAll が見えないとき：UTF-8がON、かつ chkMojicodeがONなら活性
-                const isMojicodeChecked = chkMojicode ? chkMojicode.checked : false;
-                isEnabled = isUtf8Selected && isMojicodeChecked;
+                //const isMojicodeChecked = chkMojicode ? chkMojicode.checked : false;
+                //const isMojicodeChecked = true;
+                //isEnabled = isUtf8Selected && isMojicodeChecked;
+                isEnabled = isUtf8Selected;
             }
 
             // 4. 判定結果をBOMチェックボックスに反映（有効なら disabled = false）

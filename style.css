@@ -725,8 +725,8 @@
             display: flex;     /* 横並びなら必要 */
 
         }
-        .set{ background-color: #f00fff;}
-        .setting-set{ /* background-color: #00ffff;  */
+       /* .set{ background-color: #f00fff;}*/
+        .setting-set{ /* background-color: #00ffff; */ 
             display: flex; 
             text-align: center;
         
@@ -1115,7 +1115,7 @@ padding-top: -60px; （マイナス）:マイナスはできない
  position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -30%);/*整形結果の画面位置*/
+    transform: translate(-50%, -50%);
 
 
 
