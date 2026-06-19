@@ -256,9 +256,10 @@
                 const text = await response.text();
 
                 // テキストエリアにセット
-                const textarea = document.getElementById("inputText");
-                textarea.value = text;
-
+               // const textarea = document.getElementById("csvTextArea");
+                //textarea.value = text;
+                csvTextArea.value = text;
+                toggleMode();
                 // CSV 表示処理を実行
                 displayCSV(text);
 
