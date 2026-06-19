@@ -141,10 +141,8 @@
             
             <!-- 【モード2】直接テキスト入力ゾーン（初期状態は非表示） -->
             <div id="directInputZone" style="display: none;">
-                <!--<textarea id="csvTextArea" placeholder="ここにCSVテキストを直接入力・編集してください...">-->
-                <textarea id="csvTextArea" 
-                        placeholder="　　　　　　　　　　ＣＳＶテキストを直接入力・編集し、「表形式」ボタンを押してください。
-    　　　　　　　　　　（「ファイル選択／コピペ」ボタンで元のファイル選択、貼付けの領域に戻せます）"></textarea>
+                <!--<textarea id="csvTextArea" placeholder="ここにCSVテキストを直接入力・編集してください..."> &#10はtextareaにおける改行コード-->
+                <textarea id="csvTextArea" placeholder="ＣＳＶテキストを直接入力・編集し、「表形式」ボタンを押してください。&#10;（「ファイル選択／コピペ」ボタンで元のファイル選択、貼付けの領域に戻せます）"></textarea>
             </div>
             <div class="bookmarktext-area">
                 <p class="bookmark-inline">※よく使う方はブックマークしておくと便利です</p>
