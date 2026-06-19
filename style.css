@@ -345,28 +345,7 @@
         }
         */
         /* textareaをdropZoneの見た目・サイズと完全に重ね合わせる */
-        #csvTextArea {
-            width: 100%;
-            /*  height: 100%;      親要素いっぱいに広げる */
-            height: 200px;  /* 高さをdropZoneと一致させる */
-          /*     padding: 20px;    内側の余白 */
-            border: 2px dashed #ccc; /* dropZoneの点線枠に合わせる */
-            border-radius: 8px;      /* 丸みを合わせる */
-            font-family: monospace;
-            font-size: 14px;
-            resize: none;       /* サイズがズレないよう手動引き伸ばしを禁止 */
-            box-sizing: border-box;
-            outline: none;
-            background-color: #fafafa;
-            margin: 0;
-            display: block;
-        }
-
-        #csvTextArea:focus {
-            border-color: #4a90e2;
-            background-color: #fff;
-        }
-
+       
 
 
         /* --- スイッチとボタンを横並びにする設定 --- */
@@ -502,26 +481,42 @@
         pointer-events: none;
         }
         /* --- textareaをdropZoneと完全に同じサイズにする --- */
-        #csvTextArea {
+         #csvTextArea {
             width: 100%;
-            height: 100%;          /* ★親要素（directInputZone）の高さを100%継承する */
-            padding: 20px;         /* 内側の余白 */
-            border: 2px dashed #ccc; /* 点線の太さとスタイルをdropZoneに完全一致させる */
-            border-radius: 8px;    /* 角の丸みを合わせる */
+            /*height: 100%;      親要素いっぱいに広げる */  
+            height: 200px;  /* 高さをdropZoneと一致させる */
+          /*     padding: 20px;    内側の余白 */
+            border: 2px dashed #ccc; /* dropZoneの点線枠に合わせる */
+            border-radius: 8px;      /* 丸みを合わせる */
             font-family: monospace;
             font-size: 14px;
-            resize: none;          /* 手動の引き伸ばしを禁止 */
-            box-sizing: border-box; /* ★余白や枠線を高さ（200px）の中に含めて計算する（最重要） */
+            resize: none;       /* サイズがズレないよう手動引き伸ばしを禁止 */
+            box-sizing: border-box;
             outline: none;
             background-color: #fafafa;
             margin: 0;
             display: block;
+        
+             width: 100%;
+            height: 150px;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         #csvTextArea:focus {
             border-color: #4a90e2;
             background-color: #fff;
         }
+
+        #csvTextArea::placeholder {
+            
+            font-size: 18px; /* ★ここで文字の大きさを自由に調整できます */
+            line-height: 2.4; /* 改行したときの行間を少し広げて見やすくする */
+            padding-left: 20%; 
+            text-align: left;
+            line-height: 1.6;
+        }
+
 
         /* 「BOMあり」の文字とチェックボックスを囲むグループの設定 */
         .bom-option {
@@ -850,10 +845,6 @@
 
 
 
-        #csvTextArea::placeholder {
-            font-size: 18px; /* ★ここで文字の大きさを自由に調整できます */
-            line-height: 2.4; /* 改行したときの行間を少し広げて見やすくする */
-        }
         .drop-zone {
         border: 2px dashed #0078d4;
         padding: 0px;
@@ -1400,20 +1391,50 @@ padding-top: -60px; （マイナス）:マイナスはできない
 
     
 /* スマホ最適化 */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .button-row {
         flex-direction: column; /* スマホでは縦並びで自然に */
         gap: 8px;
     }
 
-    .button-row button {
-        width: 100%;
-        min-width: auto;
-    }
+   /* 枠内のテキストエリア全体の共通設定 */
+#dropzone{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;         /* 文字を中央揃えにする */
+  
+  width: 100%;                /* 画面幅に応じて伸縮させる */
+  max-width: 100%;            /* 親要素からはみ出さない */
+  box-sizing: border-box;     /* 余白を幅に含める（はみ出し防止） */
+  
+  padding: 15px 10px;         /* 左右の余白を狭めて文字の一行の幅を確保 */
+  font-size: 13px;            /* スマホで溢れないよう文字サイズを少し小さめに調整 */
+  line-height: 1.5;           /* 行間を適度に開けて見やすくする */
+  word-break: break-word;     /* 長い単語があっても枠内で折り返す */
+}
+#csvTextArea::placeholder{
+    padding-left: 0%;
+}
 
     #tableContainer {
         max-height: 250px;
     }
+      .btn-blue-outline {
+        display: block;
+        width: 100%;
+    }
+    .button-blue-row {/*スマホ画面用320*/
+        display: block;
+        width: 100%;
+        }
+
+        .button-blue-row button {
+            flex: 1;            /* ← ボタン幅を均等にして押しやすくする */
+            min-width: 120px;
+        }
+
 }
 
     /* ==========================================
@@ -1427,106 +1448,105 @@ padding-top: -60px; （マイナス）:マイナスはできない
        
         flex-direction: column;
     }
-
-    
-
-
  
-         .button { 
-    width: 100%; 
-    font-size: 13px; 
-  }
-
-  .container { 
-    padding: 8px; 
-  }
-
-  body { 
-    font-size: 14px; 
-  }
-
-  .main-title {
-    font-size: 15px;
-    line-height: 1.6;
-    margin-bottom: 12px;
-  }
-  .tool-name{
-    font-size: 17px;
-  }
-.delimiter-options label {
-    font-size: 13px;
-    white-space: nowrap;
-  }
-
-/* 入力エリア全体 */
-.input-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-/* ボタン行（表のキャンセル / 入力クリア / 表形式へ） */
-.button-row {
-       display: flex;
-    gap: 10px;              /* ボタン間のすき間 */
-    justify-content: flex-start; /* 左寄せ（中央にしたいなら center） */
-    align-items: center;    /* 高さを揃える */
-    margin-top: 10px;
-}
-
-.button-row button {
-  flex: 1;
-        white-space: nowrap;    /* ボタン内の改行を防ぐ */
-    padding: 8px 16px;
-}
-
-/* テーブル外側コンテナ */
-#tableContainer_out {
-    margin-top: 10px;
-    position: relative;
-    z-index: 1;            /* ボタンより後ろに配置 */
-}
-
-/* テーブル本体 */
-#tableContainer {
-    max-height: 350px;     /* 表が長くてもボタンを押し流さない */
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    background: #fff;
-}
-
-.btn-blue-outline {
-    display: block;
-    width: 100%;
-}
-  .button-blue-row {/*スマホ画面用320*/
-    display: block;
-    width: 100%;
+    .button { 
+        width: 100%; 
+        font-size: 13px; 
     }
 
-    .button-blue-row button {
-        flex: 1;            /* ← ボタン幅を均等にして押しやすくする */
-        min-width: 120px;
+    .container { 
+        padding: 8px; 
     }
 
-#fileInfo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-}
-.secondary-btn,
-.success-btn,
-.info-btn {
-    display: inline-flex;      /* ← 高さが暴れない */
-    align-items: center;       /* ← 文字を中央に */
-    justify-content: center;
-    padding: 8px 12px;         /* ← 縦長を防ぐ */
-    line-height: 1.3;
-    height: 38px;              /* ← 高さを固定（最も安定） */
-    box-sizing: border-box;
-}
+    body { 
+        font-size: 14px; 
+    }
+
+    .main-title {
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+    .tool-name{
+        font-size: 17px;
+    }
+    .delimiter-options label {
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    /* 入力エリア全体 */
+    .input-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* ボタン行（表のキャンセル / 入力クリア / 表形式へ） */
+    .button-row {
+        display: flex;
+        gap: 10px;              /* ボタン間のすき間 */
+        justify-content: flex-start; /* 左寄せ（中央にしたいなら center） */
+        align-items: center;    /* 高さを揃える */
+        margin-top: 10px;
+    }
+
+    .button-row button {
+    flex: 1;
+            white-space: nowrap;    /* ボタン内の改行を防ぐ */
+        padding: 8px 16px;
+    }
+
+    /* テーブル外側コンテナ */
+    #tableContainer_out {
+        margin-top: 10px;
+        position: relative;
+        z-index: 1;            /* ボタンより後ろに配置 */
+    }
+
+    /* テーブル本体 */
+    #tableContainer {
+        max-height: 350px;     /* 表が長くてもボタンを押し流さない */
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        background: #fff;
+    }
+    #csvTextArea::placeholder{
+        font-size: 13px;
+    }
+
+    .btn-blue-outline {
+        display: block;
+        width: 100%;
+    }
+    .button-blue-row {/*スマホ画面用320*/
+        display: block;
+        width: 100%;
+        }
+
+        .button-blue-row button {
+            flex: 1;            /* ← ボタン幅を均等にして押しやすくする */
+            min-width: 120px;
+        }
+
+    #fileInfo {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+    }
+    .secondary-btn,
+    .success-btn,
+    .info-btn {
+        display: inline-flex;      /* ← 高さが暴れない */
+        align-items: center;       /* ← 文字を中央に */
+        justify-content: center;
+        padding: 8px 12px;         /* ← 縦長を防ぐ */
+        line-height: 1.3;
+        height: 38px;              /* ← 高さを固定（最も安定） */
+        box-sizing: border-box;
+    }
 
 
 
