@@ -262,7 +262,7 @@
 
 
                 toggleMode();
-                showFileInfo(path);
+                showFileInfo(path.split("/").pop());
                 // CSV 表示処理を実行
                 displayCSV(text);
 
