@@ -533,10 +533,11 @@
 
             // ｷｬﾝｾﾙ又は!selectedValue(=returnValue) が空（""）(⁼「何も選ばれずに閉じられた場合」)の時は何もしない
             if (selectedValue === 'cancel' || !selectedValue) return;
-                document.getElementById('mode_auto').checked = false;
-                document.getElementById('mode_utf8').checked = false;
-                document.getElementById('utf8_with_bom').checked = false;
-                document.getElementById('mode_sjis').checked = false;
+
+            document.getElementById('mode_auto').checked = false;
+            document.getElementById('mode_utf8').checked = false;
+            document.getElementById('utf8_with_bom').checked = false;
+            document.getElementById('mode_sjis').checked = false;
 
             // 選択された値に応じて元の設定（非表示にしているラジオボタン）と連動させる
             if (selectedValue === 'auto') {
@@ -576,10 +577,11 @@
 
             // キャンセルされた場合は何もしない
             if (selectedValue === 'cancel' || !selectedValue) return;
-                document.getElementById('chkComma').checked = false;
-                document.getElementById('chkTab').checked = false;
-                document.getElementById('chkSemicolon').checked = false;
-                document.getElementById('chkSpace').checked = false;
+
+            document.getElementById('chkComma').checked = false;
+            document.getElementById('chkTab').checked = false;
+            document.getElementById('chkSemicolon').checked = false;
+            document.getElementById('chkSpace').checked = false;
 
             // 選択された値に応じて元の設定（非表示にしているラジオボタン）と連動させる
             if (selectedValue === 'kanme') {
@@ -935,7 +937,8 @@
             // 3. 最初の区切り文字でパース
             let result = Papa.parse(text, {//正式仕様（RFC4180）に沿って引用符内のカンマ、改行、""のｴｽｹｰﾌﾟ、BOM等のCSV処理関数
                 delimiter: delimiters[0],
-                skipEmptyLines: true//改行スキップ処理
+                skipEmptyLines: true,//改行スキップ処理
+                bom: true   // ★ BOM を自動削除
             });//resultはPapaParse が返す「解析結果ｵﾌﾞｼﾞｪｸﾄ」でその中のdataﾌﾟﾛﾊﾟﾃｨは2次元配列
             let rows = result.data;//rows:(行と区切り文字で区切られた)2次元配列」例：[ ["Tom","Jones","Director"], ["Ian","Dury","Engineer"] ]
 
