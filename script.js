@@ -245,21 +245,27 @@
         
 //sampleデータ置き場
         async function loadSample(path) {
-        try {
-            const response = await fetch(path);
-            const text = await response.text();
+            try {
+                const response = await fetch(path);
 
-            // テキストエリアにセット
-            const textarea = document.getElementById("inputText");
-            textarea.value = text;
+                if (!response.ok) {
+                    alert("ファイルが見つかりません: " + path);
+                    return;
+                }
 
-            // CSV 表示処理を実行
-            displayCSV(text);
+                const text = await response.text();
 
-        } catch (e) {
-            alert("サンプルデータの読み込みに失敗しました");
-            console.error(e);
-        }
+                // テキストエリアにセット
+                const textarea = document.getElementById("inputText");
+                textarea.value = text;
+
+                // CSV 表示処理を実行
+                displayCSV(text);
+
+            } catch (e) {
+                alert("サンプルデータの読み込みに失敗しました");
+                console.error(e);
+            }
         }
 
         // ダイアログ開閉
