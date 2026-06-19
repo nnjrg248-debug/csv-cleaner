@@ -931,6 +931,7 @@
                 return lines.map(line => [line]);  // ← 1 行 = 1 セル　　　　
             }//\r:キャリッジリターン（CR）＝ Windows の改行の前半、\n:ラインフィード（LF）＝ 改行本体、\r\n:Windows改行コード、\n:Linux改行コード
 
+            text = text.replace(/^\uFEFF/, "");//BOM除去　後ほどpapaparseで削除するがより確実にするため
             // 2. 前処理（スペース圧縮など）
             text = HankakuAsshuku(text, delimiters);
 
@@ -1172,13 +1173,11 @@
             <p>処理日時：${now}</p>
             <p>ファイル名：${fileName}</p>
             <!--<p>ステータス：${iwarnings.length > 0 ? "警告あり" : "成功"}</p>-->
-
-            <h3>処理サマリー</h3>
-            <p>（整形後）列数：${iColumns}</p>
+            <h3>処理サマリー</h3>            
             <p>総レコード数：${totalRows}</p>
             <p>有効レコード数：${validRows}</p>
             <p>除外レコード数：${removedRows}</p>
-            
+            <p>（整形後）列数：${iColumns}</p>
             <p>区切り文字：${delimiter}</p>
             <h3>適用された整形内容</h3>
             <ul>${appliedRules.map(r => `<li>${r}</li>`).join("")}</ul>
