@@ -1115,7 +1115,7 @@ padding-top: -60px; （マイナス）:マイナスはできない
  position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -30%);/*整形結果の画面位置*/
 
 
 
