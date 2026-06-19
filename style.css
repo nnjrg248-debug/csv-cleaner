@@ -645,9 +645,10 @@
             text-align: left;
             /* position: relative; と top: -70px; は削除します */
             
-            margin-top: -32px; /* 位置を上に引き上げる */
+            margin-top: 0px; /* 位置を上に引き上げる */
             position: relative; /* z-indexを有効にするために必要 */
             z-index: 10;       /* 数字を大きくすることで、上の要素に重なってもボタンが押せるようになります */
+            padding-top: 0px;
         }
         .bottom-actions-container {
             display: block;
@@ -669,9 +670,9 @@
             text-align: left;     
         }
 
-        .bottom-actions-container-top.adjusted {
-            margin-top: 40px; /* 好きな値に調整 */
-        }
+     /*   .bottom-actions-container-top.adjusted {
+            margin-top: 40px; 好きな値に調整
+        } */
 
 
 
@@ -685,7 +686,11 @@
             justify-content: flex-end; /* ← 右端固定 */
             gap: 12px;
             width: 100%;
-            margin-top: 12px; /* CSVボタン領域距離 */
+            margin-top: 12px; /* 専用ページボタンの領域距離 */
+            
+        }
+        .button-blue-row.adjusted {
+            margin-bottom: 20px;
         }
 
 
@@ -1450,9 +1455,8 @@ padding-top: -60px; （マイナス）:マイナスはできない
         .btn-blue-outline {
         display: block;
         width: 100%;
-        
     }
-    .button-blue-row {
+    .button-blue-row {/*スマホ画面用320*/
         display: block;
         width: 100%;
         }

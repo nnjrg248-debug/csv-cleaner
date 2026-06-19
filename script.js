@@ -33,7 +33,7 @@
         const zoompopup = document.getElementById('zoom-popup');
         const zoomButtons = document.querySelectorAll('.zoom-btn');
         const zoominput = document.getElementById('zoom-input');
-        const bottomActions = document.querySelector(".bottom-actions-container-top");
+        const bottomActions = document.querySelector(".button-blue-row");
        // const separator_labelkid = document.getElementById('separator_labelkid');
         //const encodingInputs = document.querySelectorAll('.setting-block input[name="encoding_mode"], .setting-block input[name="utf8_bom"]');//文字コード欄内のrんこーどのらひおボックスとbomのチェックボックス
 
