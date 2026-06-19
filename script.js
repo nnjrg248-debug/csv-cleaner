@@ -65,8 +65,8 @@
         switch (pageValue) {// 2. switch文の中は「画面の表示・非表示の切り替え」以外の処理は書かない
             case '1':
             case '6':
-                if(setAll)setAll.style.display ='block';
-                if(set)set.style.display = 'none';
+                if(setAll)setAll.style.display ='block';//index.html時に表示される文字ｺｰﾄﾞﾗｼﾞｵﾎﾞﾀﾝ
+                if(set)set.style.display = 'none';//index.html以外で表示される文字ｺｰﾄﾞパネル
                 if(chkMojicode)chkMojicode.style.display = 'none'; 
                 break;
             default:
@@ -191,10 +191,10 @@
     }
    
     //if(chkMojicode){chkMojicodeの表示非表示のもとになるsetA.style.displayで判定　表示非表示にchkMojicodeオブジェクトに変化はないから
-    if( set && set.style.display === 'block' ){
-        chkMojicode.addEventListener('change', () => {
+    if( set && set.style.display === 'block' ){//ラジオボタン式文字コード選択形式以外の表示とき(つまりindex.htmlでないとき)
+        chkMojicode.addEventListener('change', () => {//文字コードダイアログで文字コード選択を変更したときの処理の登録
             const encodingInputs = document.querySelectorAll('#mode_auto, #mode_utf8, #utf8_with_bom, #mode_sjis');          
-            encodingInputs.forEach(target => {                                
+            encodingInputs.forEach(target => { //上記 '#mode_auto, ・・で示す各文字ｺｰﾄﾞのﾙｰﾌﾟで対象の文字ｺｰﾄﾞのﾗｼﾞｵﾎﾞﾀﾝをtargetとしている                     
                     target.disabled = !chkMojicode.checked;
         });
         if(!(document.getElementById('mode_utf8').checked))
@@ -271,7 +271,9 @@
             document.getElementById("closeReport").addEventListener("click", (e) => {
                 e.stopPropagation();//外枠押下でzoompopupが消えるのでこの関数のクリックが連鎖して消えぬように
                 dlg.close();
-                zoompopup.style.display = 'block';
+                if(zoomflg===1)
+                    zoompopup.style.display = 'block';
+
                 zoomflg=0;
             });
         }
