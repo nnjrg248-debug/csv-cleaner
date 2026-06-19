@@ -1106,129 +1106,129 @@ padding-top: -60px; （マイナス）:マイナスはできない
         }
 
 
-      #report_dialog::backdrop {
-    background: rgba(0, 0, 0, 0.5); /* 背景を少し暗くしてダイアログを強調 */
-    backdrop-filter: blur(2px);     /* 後ろの画面を軽くぼかす（モダンな演出） */
-}
+        #report_dialog::backdrop {
+        background: rgba(0, 0, 0, 0.5); /* 背景を少し暗くしてダイアログを強調 */
+        backdrop-filter: blur(2px);     /* 後ろの画面を軽くぼかす（モダンな演出） */
+        }
 
-#report_dialog {
- position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -30%);
+        #report_dialog {
+        position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -30%);
 
 
 
-    border: none;
-    padding: 0;
-    margin: auto; 
-    width: 600px;        
-    max-width: 90vw;     
-    max-height: 85vh;
-    border-radius: 12px; /* 少し丸みを強めて柔らかい印象に */
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-    overflow: hidden;    
-    background: #f8f9fa; /* ダイアログ全体の背景をうっすらグレーに */
-}
+            border: none;
+            padding: 0;
+            margin: auto; 
+            width: 600px;        
+            max-width: 90vw;     
+            max-height: 85vh;
+            border-radius: 12px; /* 少し丸みを強めて柔らかい印象に */
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+            overflow: hidden;    
+            background: #f8f9fa; /* ダイアログ全体の背景をうっすらグレーに */
+        }
 
-.report-box {
-    display: flex;
-    flex-direction: column;
-    max-height: 85vh;
-    background: #f8f9fa;
-}
+        .report-box {
+            display: flex;
+            flex-direction: column;
+            max-height: 85vh;
+            background: #f8f9fa;
+        }
 
-/* タイトル部分 */
-.report-title {
-    margin: 0;
-    padding: 20px;
-    text-align: center;
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #333;
-    background: #fff;
-    border-bottom: 1px solid #e9ecef;
-}
+        /* タイトル部分 */
+        .report-title {
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+            background: #fff;
+            border-bottom: 1px solid #e9ecef;
+        }
 
-/* スクロールする中身のエリア */
-.report-body {
-    padding: 24px;
-    overflow-y: auto;
-    text-align: left;
-    word-break: break-all;       
-    overflow-wrap: anywhere;     
-    color: #495057;
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
+        /* スクロールする中身のエリア */
+        .report-body {
+            padding: 24px;
+            overflow-y: auto;
+            text-align: left;
+            word-break: break-all;       
+            overflow-wrap: anywhere;     
+            color: #495057;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
 
-/* 各セクションの見出し（基本情報、処理サマリーなど） */
-.report-body h3, 
-.report-body h4 {
-    margin-top: 24px;
-    margin-bottom: 12px;
-    padding-left: 8px;
-    border-left: 4px solid #007bff; /* 青いアクセントライン */
-    font-size: 1.1rem;
-    color: #212529;
-}
-.report-body h3:first-child {
-    margin-top: 0; /* 最初の見出しの上の余白を消す */
-}
+        /* 各セクションの見出し（基本情報、処理サマリーなど） */
+        .report-body h3, 
+        .report-body h4 {
+            margin-top: 24px;
+            margin-bottom: 12px;
+            padding-left: 8px;
+            border-left: 4px solid #007bff; /* 青いアクセントライン */
+            font-size: 1.1rem;
+            color: #212529;
+        }
+        .report-body h3:first-child {
+            margin-top: 0; /* 最初の見出しの上の余白を消す */
+        }
 
-/* リスト（箇条書き）のスタイル */
-.report-body ul {
-    padding-left: 20px;
-    margin: 8px 0 16px 0;
-}
+        /* リスト（箇条書き）のスタイル */
+        .report-body ul {
+            padding-left: 20px;
+            margin: 8px 0 16px 0;
+        }
 
-.report-body li {
-    margin-bottom: 6px;
-}
+        .report-body li {
+            margin-bottom: 6px;
+        }
 
-/* CSVデータやログなどのテキスト（プレーンテキスト、生データ）の表示 */
-/* もしJavaScript側でpreやcodeタグ、または特定のクラスを使っていればそこに適用してください */
-.report-body pre, 
-.report-body .csv-data,
-.report-body p:last-of-type {
-    background: #fff;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    padding: 12px;
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 10px;
-    max-height: 150px;
-    overflow-x: auto; /* 生データ専用の横スクロール */
-    overflow-y: auto;
-}
+        /* CSVデータやログなどのテキスト（プレーンテキスト、生データ）の表示 */
+        /* もしJavaScript側でpreやcodeタグ、または特定のクラスを使っていればそこに適用してください */
+        .report-body pre, 
+        .report-body .csv-data,
+        .report-body p:last-of-type {
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-x: auto; /* 生データ専用の横スクロール */
+            overflow-y: auto;
+        }
 
-/* 下部のボタンエリア */
-.report-actions {
-    padding: 16px;
-    background: #fff;
-    border-top: 1px solid #e9ecef;
-    display: flex;
-    justify-content: center;
-}
+        /* 下部のボタンエリア */
+        .report-actions {
+            padding: 16px;
+            background: #fff;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: center;
+        }
 
-/* 閉じるボタンのモダンなデザイン */
-.btn-close {
-    background: #6c757d;
-    color: white;
-    border: none;
-    padding: 10px 32px;
-    font-size: 0.95rem;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
+        /* 閉じるボタンのモダンなデザイン */
+        .btn-close {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 32px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-.btn-close:hover {
-    background: #5a6268;
-}
+        .btn-close:hover {
+            background: #5a6268;
+        }
 
 
 		/* ===================================================

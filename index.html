@@ -233,6 +233,11 @@
                 </div>        
             </div>    
                 
+
+            <button id="btnOpenSampleDialog" style="float:right; margin-top:-5px;">
+                サンプルデータ
+            </button>
+
             <!-- アコーディオン式 -->
             <div class="csv-faq-section" >    
             <details class="accordion-item">
@@ -319,8 +324,114 @@
             </div>
             <h5>外枠をクリックすると<br>閉じます</h5>
         </div>
-
+        <!--報告レポート（整形結果）-->
         <dialog id="report_dialog"></dialog> 
+   
+
+<!-- サンプル選択ダイアログ -->
+<dialog id="sampleDialog">
+    <div class="sample-box">
+        <h3>サンプルデータを選択</h3>
+
+        <ul class="sample-list">
+            <li><button class="sampleBtn" data-path="./samples/sample_normal.csv">正常系サンプル</button></li>
+            <li><button class="sampleBtn" data-path="./samples/sample_error.csv">異常系サンプル</button></li>
+            <li><button class="sampleBtn" data-path="./samples/sample_shiftjis.csv">Shift-JIS サンプル</button></li>
+        </ul>
+
+        <button id="btnCloseSampleDialog" class="btn-cancel">閉じる</button>
+    </div>
+</dialog>
+
+<style>
+
+/* 背景の暗幕 */
+#sampleDialog::backdrop {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+#sampleDialog {
+    border: none;
+    padding: 0;
+    border-radius: 22px;     /* 外側の丸み */
+    overflow: hidden;        /* はみ出し防止 */
+}
+
+.sample-box {
+    background: #fff;
+    padding: 32px 36px;
+    border-radius: 0;        /* ← 中身は丸くしない（外側と二重になるため） */
+    width: 400px;
+    
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.28);
+}
+
+/* タイトル */
+.sample-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* リスト */
+.sample-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+}
+
+.sample-list li {
+    margin: 12px 0;
+}
+
+/* サンプルボタン */
+.sampleBtn {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    border-radius: 10px;          /* ← ボタンも丸く */
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.sampleBtn:hover {
+    background: #eaeaea;
+    transform: translateY(-1px);
+}
+
+/* 閉じるボタン */
+.btn-close {
+    width: 100%;
+    padding: 12px;
+    background: #ddd;
+    border: none;
+    border-radius: 10px;          /* ← ここも丸く */
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.15s;
+}
+
+.btn-close:hover {
+    background: #ccc;
+}
+
+/* フェードイン */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
+</style>
 
     </body>
     </html>

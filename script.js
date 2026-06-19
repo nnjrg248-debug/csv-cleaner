@@ -25,8 +25,8 @@
 
         const encodingLabel = document.getElementById('encoding_labelid');
         const encodingDialog = document.getElementById('encoding_dialog');
-        const dlg = document.getElementById("report_dialog");
-        
+        const report_dialog = document.getElementById("report_dialog");
+        //const sampleDialog = document.getElementById("sampleDialog");
         
         const separatorBlock = document.getElementById('separatorblock');
         const kugiriDialog = document.getElementById('kugiri_dialog');
@@ -235,14 +235,52 @@
 
         //let FileCode ="";
         let lastDetectedEncoding = 'UTF-8'
-        // 「BOMあり」チェックボックスのデフォルトをチェック付きにする
-
-
-        
+        // 「BOMあり」チェックボックスのデフォルトをチェック付きにする       
         if (bomCheckbox) {
             bomCheckbox.checked = true;
         }
 
+
+
+        
+//sampleデータ置き場
+        async function loadSample(path) {
+        try {
+            const response = await fetch(path);
+            const text = await response.text();
+
+            // テキストエリアにセット
+            const textarea = document.getElementById("inputText");
+            textarea.value = text;
+
+            // CSV 表示処理を実行
+            displayCSV(text);
+
+        } catch (e) {
+            alert("サンプルデータの読み込みに失敗しました");
+            console.error(e);
+        }
+        }
+
+        // ダイアログ開閉
+        const sanpdlog = document.getElementById("sampleDialog");
+
+        document.getElementById("btnOpenSampleDialog").addEventListener("click", () => {
+            sanpdlog.showModal();
+        });
+
+        document.getElementById("btnCloseSampleDialog").addEventListener("click", () => {
+            sanpdlog.close();
+        });
+
+        // サンプル選択ボタン
+        document.querySelectorAll(".sampleBtn").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const path = btn.dataset.path;
+                await loadSample(path);
+                sanpdlog.close();
+            });
+        });
 
 
 
@@ -258,7 +296,7 @@
 
 
         function showReportDialog(title, message, extraHtml = "") {
-            dlg.innerHTML = `
+            report_dialog.innerHTML = `
                 <div class="report-box">
                     <h2 class="report-title">${title}</h2>
                     <div class="report-body">
@@ -271,11 +309,11 @@
                 </div>
             `;
 
-            dlg.showModal();
+            report_dialog.showModal();
 
             document.getElementById("closeReport").addEventListener("click", (e) => {
                 e.stopPropagation();//外枠押下でzoompopupが消えるのでこの関数のクリックが連鎖して消えぬように
-                dlg.close();
+                report_dialog.close();
                 if(zoomflg===1)
                     zoompopup.style.display = 'block';
 
