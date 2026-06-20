@@ -243,7 +243,7 @@
 
 
         
-//sampleデータ置き場
+        //sampleデータ置き場
         async function loadSample(path) {
             try {
                 const response = await fetch(path);
@@ -253,19 +253,27 @@
                     return;
                 }
 
-                const text = await response.text();
+                //const text = await response.text();
+                //文字化け対応の為 response.text() ではなく、生のデータ（Blob）として受け取る
+                const blob = await response.blob();
 
-                // テキストエリアにセット
-               // const textarea = document.getElementById("csvTextArea");
-                //textarea.value = text;
-                //csvTextArea.value = text;
+                // 2. loadFileWithAutoEncoding が使えるように File オブジェクトに変換する
+                const fileName = path.split("/").pop();
+                const file = new File([blob], fileName, { type: "text/csv" });
 
+                // 3. すでに作成してある自動判定・読み込み関数にファイルを渡す
+                loadFileWithAutoEncoding(file, (text, encoding) => {
+                    
+                    console.log(`サンプル読み込み成功（文字コード: ${encoding}）`);
 
-                //toggleMode();
-                showFileInfo(path.split("/").pop());
-                // CSV 表示処理を実行
-                displayCSV(text);
-                switchToDirectMode();
+                    // 4. これまで行っていた「読み込み完了後の処理」をここに引っ越す
+                    // csvTextArea.value = text; // 必要に応じてコメントアウトを解除してください
+                    showFileInfo(fileName);
+                    
+                    // CSV 表示処理を実行
+                    displayCSV(text);
+                    switchToDirectMode();
+                });
 
             } catch (e) {
                 alert("サンプルデータの読み込みに失敗しました");
@@ -368,20 +376,7 @@
         }   
         
         
-        function showFileInfo(name) {//キャンセル、コピー、CSV・excel保存ボタン表示切替
-            fileName.textContent = `選択データ: ${name}`;
-            fileInfo.style.display = 'flex'; 
-            ConceptInfo_top.style.display = 'none';
-            body.style.overflowX = 'visible'; 
-            // ボタンの表示を初期化
-            copyBtn.textContent = '表データをコピー';
-            exportExcelBtn.textContent = 'Excelで保存';
-            exportCsvBtn.textContent = 'CSVファイルで保存';
-            // ★先にcheckedを切り替えてからtoggleModeを呼ぶ
-           // modeFileInput.checked = true;
-           // toggleMode({ target: modeFileInput });
-        }
-
+        
         
 
         
@@ -665,14 +660,7 @@
                 displayCSV(csvTextArea.value);
             }
         });
-        /*
-        chkdelcnm.addEventListener('change', () => {
-        // チェックがついている（true）ときだけ実行する
-            if ((chkdelcnm.checked) &&(csvTextArea.value)) {
-                displayCSV(csvTextArea.value);
-            }
-        }); 
-        */
+        
 
         // ラジオボタンが変更されたら状態を更新するイベントを設定
         encodingRadios.forEach(radio => {
@@ -937,6 +925,19 @@
         zoompopup.style.zoom = 1 / scale; 
         });
 
+        function showFileInfo(name) {//キャンセル、コピー、CSV・excel保存ボタン表示切替
+            fileName.textContent = `選択データ: ${name}`;
+            fileInfo.style.display = 'flex'; 
+            ConceptInfo_top.style.display = 'none';
+            body.style.overflowX = 'visible'; 
+            // ボタンの表示を初期化
+            copyBtn.textContent = '表データをコピー';
+            exportExcelBtn.textContent = 'Excelで保存';
+            exportCsvBtn.textContent = 'CSVファイルで保存';
+            // ★先にcheckedを切り替えてからtoggleModeを呼ぶ
+           // modeFileInput.checked = true;
+           // toggleMode({ target: modeFileInput });
+        }
 
         
         function processFile(file) {//ファイル選択時、ファイル貼付け時呼び出される（テキスト貼付け時は呼び出されない）
@@ -1109,20 +1110,7 @@
             }
         }
 
-
-            /*
-            for (let i = 1; i < delimiters.length; i++) {
-                const d = delimiters[i];                
-                
-                rows = rows.map(row => {//rows（2次元配列）を、行ごとに変換して新しい rows に作り直す処理：rows1行(row)ごと受取り別の形にしrowsとして返す
-                    const joined = row.join("§§§TEMP§§§");//row配列を被らない特殊文字"§§§TEMP§§§"でくっつける(dでの区切り処理のため)例[Tom§§§TEMP§§§Jones‥
-                    return Papa.parse(joined, {delimiter: d}).data[0];//joinedをdで区切り、区切った配列の0番目を返すだが0番目とは
-                });//Papa.parse("A B C", { delimiter: " " }) のとき [["A", "B", "C"]  (← これが data[0])　]　(※：「パースさせる」は “分割する”)
-            }//結合文字§§§TEMP§§§は残ってるがユーザーに見えない、とのこと
-
-            return rows;
-            */
-        
+   
 
         function displayCSV(text) {
 
@@ -1258,260 +1246,8 @@
 
 
 
-/*
-        // CSVのテキストを分解してテーブルにする関数
-        function displayCSV(text) {
-            
-            const result = Papa.parse(text, {// ★ CSV をパース
-                skipEmptyLines: true
-            });
-            const rows = result.data; // ← 壊れない 2次元配列
-            //const lines = text.split(/\r?\n/); // /\r?\n/について([/]:正規表現を囲むマーク、[?]:「直前の文字が0回、または1回だけ存在する(\rがあってもなくてもいい)という意味」)\r：きゃりっじリターン、\nラインフィード
-            let htmlParts = ['<table>'];//let htmlParts = '<table>';            
-            let cleanedLines = []; // コピー用の行配列
-            let seenLines = new Set(); // 重複チェック用のセットを追加
-            //const maxcntColumns = Math.max(...lines.map(line => splitCsvLine(line).length));
-            //const maxcntColumns = Math.max(...lines.map(line => line.split(',').length));
-            const maxcntColumns = Math.max(...rows.map(r => r.length));
-            rows.forEach((line, index) => {//forEach((line:ループで今処理している要素のデータ,index:その順番（インデックス番号）)
-                if (line.trim() === '') return; //forEach内のreturnはVBのContinue For （forを抜けるExit Forでなく）' これ以降の処理をスキップして、次のline（行）に進む
-                let rowHtml = '';
-                // カンマ、タブ、セミコロンのなどで区切れるように調整
-                const cells = splitCsvLine(line);//const cells = line.split(/,|\t|;/);splitで line が "," の時長さ2の配列配列 ["", ""]を返す
-
-                htmlParts.push('<tr>');//文字列でなく配列にするため htmlParts += '<tr>';
-                let cleanedCells = []; // コピー用の空のセル配列
-                
-                cells.forEach(cell => {//cells配列を1つずつループ処理,取出した1つ分のデータを cell という変数名で扱う
-                    // 前後の空白とダブルクォーテーションを自動で削除
-                    //let cleanCell = cell.trim().replace(/^"|"$/g, '');trim()だと半角以外に全角スペースも対象にするので却下
-                    let cleanCell = cell.replace(/^ +| +$/g, '').replace(/^"|"$/g, '');
-                    //let cleanCell = cell.replace(/^[\s\u3000]+|[\s\u3000]+$/g, '').replace(/^"|"$/g, '');//let cleanCell = cell.trim().replace(/^"|"$/g, '');                    
-                    //g は 「マッチするものをすべて対象にする」(最初の1つだけでない)グローバル検索フラグ、[\s\u3000]は全角スペース(\u3000)半角スペース(\s)を合わせたもの
-                    //+$ とは（末尾に1文字以上連続する
-                    //+ ： 「直前の文字が1文字以上連続、$ ： 「文字列の末尾」（* ： 「直前の文字が0文字以上連続、. ： 「任意の文字(空文字含まず)」、.*：任意の文字が0回以上(任意の文字なのでどんな文字列でもよいとなる)
-                    cleanedCells.push(cleanCell);//配列cleanedCellsの後ろに配列としてcleanCellを追加
-                    
-                    rowHtml += index === 0 ? `<th>${cleanCell}</th>` : `<td>${cleanCell}</td>`;
-                    
-                    if (index === 0) {
-                        html2 += `<th>${cleanCell}</th>`;//${変数} を使って文字列の中に変数を埋め込む機能（テンプレートリテラル）としてﾊﾞｯｸｸｫｰﾂ（`）で囲む
-                    } else {
-                        html2 += `<td>${cleanCell}</td>`;
-                    }
-                    
-                });
-                 // もし行全体のセルがすべて空っぽ（または無視された）ならスキップ
-                if (cleanedCells.length === 0) return;
-
-                // --- 重複検証行addCnmaLine ---
-                //let addCnmaLine = cleanedCells.join(',');
-
-                // ▼ 列数のズレを整える（チェックONのときだけ）
-                if (chkColumnCnt && chkColumnCnt.checked) {
-                  //  const maxColumns = GlobalmaxColumns || cleanedCells.length;//|| は「左側が “空” や “未定義” のとき、右側を使う」という意味
-                  //  GlobalmaxColumns = Math.max(maxColumns, cleanedCells.length);
-
-                    //while (cleanedCells.length < GlobalmaxColumns) {maxcntColumns
-                    while (cleanedCells.length < maxcntColumns) {
-                        cleanedCells.push('');
-                        rowHtml += index === 0 ? `<th></th>` : `<td></td>`;
-                    }
-
-                    // 列数を揃えた後、addCnmaLine を作り直す
-                   // addCnmaLine = cleanedCells.join(',');
-                }
-                
-                let joinedLine = cleanedCells.join(',');
-                // 1. まず要素が存在するかチェックし、2. さらにチェックがオンかを判定する
-                if (chkdelcnm && chkdelcnm.checked) {
-                    joinedLine = joinedLine.replace(/,+$/, '');//行末カンマ削除　←やってることは最後がカンマとならぬよう末尾カンマの削除での列数カウント（のための配列作成）
-                }
-
-                // --- 重複検証行 joinedLine ---
-               
-    
-                // 1行目（ヘッダー）以外で、すでに同じ行が存在する場合はスキップ（重複削除）
-                if (index > 0 && seenLines.has(joinedLine)) return;
-
-                // 重複なし行を記録
-                seenLines.add(joinedLine);
-                htmlParts.push(rowHtml + '</tr>'); //htmlParts += rowHtml + '</tr>'; ← これだと文字列に変わってしまう！
-                //htmlParts.push(rowHtml + '</tr>');               
-                // クリーニングしたセルをカンマで再結合して（配列として）行に追加
-                cleanedLines.push(joinedLine);
-            });
-            
-            
-            //htmlParts += '</table>';
-            htmlParts.push('</table>');
-
-            //tableContainer.innerHTML = htmlParts;
-            tableContainer.innerHTML = htmlParts.join('');
-            //tableContainer.innerHTML = htmlParts.join('');
-            // クリーニング済みの全行を改行で結合して変数に格納
-            cleanedTextForCopy = cleanedLines.join('\n');
-            // 表示完了後、1秒後に表の位置までスクロール
-      //      setTimeout(() => {
-      //          tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      //      }, 1000);            
-        }
-*/
 
         
-/*
-        function splitCsvLine(line) {
-            let result = [];
-            let currentCell = "";
-            let insideQuote = false; 
-
-            
-            // 1. 各チェックボックスのON/OFF状態（true/false）を取得
-            const useComma     = document.getElementById('chkComma').checked;
-            const useTab       = document.getElementById('chkTab').checked;
-            const useSemicolon = document.getElementById('chkSemicolon').checked;
-            const useSpace     = document.getElementById('chkSpace').checked;
-           
-            const delimiters = [];
-            if (chkComma.checked)     delimiters.push(",");
-            if (chkTab.checked)       delimiters.push("\t");
-            if (chkSemicolon.checked) delimiters.push(";");
-            if (chkSpace.checked)     delimiters.push(" ");
-            
-            for (let i = 1; i < delimiters.length; i++) {
-                const d = delimiters[i];
-
-                // 2. 半角スペースが有効な場合のみ、連続する半角スペースを1つにまとめる
-                if (delimiters.includes(" ")) {
-                    line = line.replace(/ {2,}/g, ' ');//{2,}は２つ以上の連続ということ、{2,4}のときは２つ以上4つ以下の連続といこと
-                }
-
-                line = line.map(row => {
-                    // row は ["Tom", "Jones", "Senior Director"] のような配列
-                    const joined = row.join("§§§TEMP§§§"); // 一時的に結合
-                    const reParsed = Papa.parse(joined, {
-                        delimiter: d
-                    }).data[0];
-
-                    return reParsed;
-                });
-            }
-
-            */ 
-            
-            
-            /*
-            for (let i = 0; i < line.length; i++) {
-                let char = line[i];
-
-                if (char === '"') {//"で囲って（例： "2,000"として）配列にいれている、その直後の cells.forEach ループで replace(/^"|"$/g, '')とするので
-                    insideQuote = !insideQuote; // クォートの状態を反転
-                    currentCell += char; 
-                } else if (!insideQuote && (
-                (char === ','  && useComma) ||
-                (char === '\t' && useTab) ||
-                (char === ';'  && useSemicolon) ||
-                (char === ' '  && useSpace)
-                )) {
-                    result.push(currentCell);
-                    currentCell = "";
-                } else {
-                    currentCell += char;
-                }
-            }
-            
-            result.push(currentCell); 
-            return result;
-           
-        } */
-
-        /*
-        document.addEventListener('DOMContentLoaded', () => {//スライドしたのイベントで、どちらの項目になったかを監視してその際の処理を記載
-            //DOMContentLoaded が必要なのは、HTMLの読み込みが終わる前にスクリプトが実行される場合に、getElementById などがまだ存在しないDOMを
-            //参照してしまうのを防ぐため、ただし、それは <head> の中や <body> より先にスクリプトを書いたが場合のことで、DOMContentLoadedはここでいらない
-           DOMContentLoaded の中身を見ると、やっていることは3つだけ
-           modeFileInput.addEventListener('change', toggleMode);
-           modeDirectInput.addEventListener('change', toggleMode);
-           convertBtn.addEventListener('click', ...);
-           toggleMode(); // 初期表示の切り替え
-           //
-           //
-           //
-        */
-           
-           
-            // モード切り替え要素の取得
-            //const modeFileInput = document.getElementById('modeFile');
-            //const modeDirectInput = document.getElementById('modeDirect');
-            //const dropZone = document.getElementById('dropZone');
-            //const directInputZone = document.getElementById('directInputZone');
-            //const convertBtn = document.getElementById('convertBtn');
-            /*
-            // --- 【追加・修正】貼り付け（paste）イベントのスライド処理 ---
-            if (dropZone) {//if (dropZone) となってるのは、htmlが読込まれるときdropZoneが存在する場合という条件の為だが、html読込中の処理とかは不要なのでいらない
-                dropZone.addEventListener('paste', (e) => {　　//←この処理はすでに丈夫に同じ処理書いているので必要ない
-                    e.preventDefault();
-                    // クリップボードからテキストを取得
-                    const pastedText = e.clipboardData.getData('text');
-                    
-                    if (pastedText.trim() !== "") {
-                        // 変数への保存（グローバル変数 currentRawText がある前提）
-                        if (typeof currentRawText !== 'undefined') {
-                            currentRawText = pastedText;
-                        }
-
-                        // 「直接テキスト入力」のラジオボタンを取得してチェックを入れる
-                        if (modeDirectInput) {
-                            modeDirectInput.checked = true;
-                            
-                            // ブラウザに「切り替わった」イベントを人工的に発生させる
-                            // これにより、元の function toggleMode() が引数なしのままであっても確実に連動します
-                            modeDirectInput.dispatchEvent(new Event('change'));
-                        }
-
-                        // データの解析と表示を実行（既存の関数）
-                        if (typeof showFileInfo === 'function') showFileInfo("貼り付けられたテキスト");
-                        if (typeof displayCSV === 'function') displayCSV(pastedText);
-                    }
-                });
-                
-                
-                dropZone.addEventListener('dragover', (e) => {//上と被るからいらない
-                    e.preventDefault(); // ドロップできるようにデフォルト挙動を制限
-                });
-
-                dropZone.addEventListener('drop', (e) => {//上と被るからいらない
-                    e.preventDefault();
-                    
-                    // ドロップされたファイルを取得
-                    const files = e.dataTransfer.files;
-                    if (files.length === 0) return;
-
-                    const file = files[0];
-                    //const reader = new FileReader();
-                    // ⭕ 修正後：async/await は不要。見やすく1つにまとまります
-                    loadFileWithAutoEncoding(file, (fileText, encoding) => {
-                        // 1. 変数にテキストを保存
-                        if (typeof currentRawText !== 'undefined') {
-                            currentRawText = fileText;
-                            lastDetectedEncoding = encoding;
-                        }
-
-                        // 2. ラジオボタンを「直接テキスト入力」に切り替えてイベントを発生させる
-                        if (modeDirectInput) {
-                            modeDirectInput.checked = true;
-                            modeDirectInput.dispatchEvent(new Event('change'));
-                        }
-
-                        // 3. データの解析と表示を実行
-                        if (typeof showFileInfo === 'function') showFileInfo(file.name);
-                        if (typeof displayCSV === 'function') displayCSV(fileText);
-                    });
-                    //FileCode=file;
-                });               
-
-            }
-            */
         if (modeFileInput && modeDirectInput) {//切り替えスイッチのHTML要素が存在しているか？」を確認 存在しない場合エラーになる
         //切り替えスイッチのHTML要素が2つとも無事に見つかったときだけ、次の処理（イベント登録）に進む    
             // changeイベントを確実に登録
