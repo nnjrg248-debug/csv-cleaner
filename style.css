@@ -892,22 +892,30 @@
             color: #ffffff;            /* カッコの文字色も白にする */
         }
 
-        .footer {
+        .Junfooter {
         text-align: center;
         margin: 30px 0;
         font-size: 20px;
         }
 
-        .footer a {
+        .Junfooter a {
         margin: 0 10px;
         color: #0078d4;
         text-decoration: none;
         }
 
-        .footer a:hover {
+        .Junfooter a:hover {
         text-decoration: underline;
         }
         
+        .Junfooter {
+        display: flex;
+        justify-content: center; /* 中央寄せの場合 */
+        gap: 35px; /* リンク同士の間隔（お好みで調整してください） */
+        }
+
+
+
         .scroll-hint {
             background: #fff3cd;
             padding: 15px;
@@ -1318,6 +1326,28 @@ padding-top: -60px; （マイナス）:マイナスはできない
             from { opacity: 0; transform: translateY(-6px); }
             to   { opacity: 1; transform: translateY(0); }
         }
+
+
+
+.custom-x-btn {
+    display: inline-block;
+    background-color: #000000; /* Xのブランドカラー（黒） */
+    color: #ffffff ;
+    padding: 5px 14px;
+    border-radius: 9999px; /* 丸みのあるボタン */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    margin: 0 10px; /* 左右の余白調整 */
+    vertical-align: middle;
+    transition: background-color 0.2s;
+}
+
+.custom-x-btn:hover {
+    background-color: #272727; /* マウスを乗せたときに少し明るく */
+}
+
+
 
 		/* ===================================================
 		   2. ファイルの一番下に、タブレット用の上書き設定を書く
