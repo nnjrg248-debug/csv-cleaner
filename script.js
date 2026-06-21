@@ -1215,8 +1215,8 @@
             <ul>${appliedRules.map(r => `<li>${r}</li>`).join("")}</ul>
             `;
 
-            //if (iwarnings.length > 0) { エラー処理まだ公開できないので当分　falseをくっつけて飛ばす
-             if (iwarnings.length > 0 && false) {
+            //if (iwarnings.length > 0) { //エラー処理まだ公開できないので当分　falseをくっつけて飛ばす
+            if (iwarnings.length > 0 && false) {
                 reportHtml += `
                 <h3>警告・エラー</h3>
                 <ul>
