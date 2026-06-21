@@ -273,7 +273,7 @@
                     // CSV 表示処理を実行
                     displayCSV(text);
                     switchToDirectMode();
-                    csvTextArea.value = text;
+                    csvTextArea.value = text;//csvTextArea.value = text;の位置はdisplayCSV(text)の上showFileInfo(fileName);の下でいいのでないかも時間あるとき調べる
                 });
 
             } catch (e) {
@@ -1150,11 +1150,7 @@
 
                 let joinedLine = cleanedCells.join(',');//配列cleanedCellsをカンマで区切りくっつける
 
-                /*
-                if (chkdelcnm.checked) {
-                    joinedLine = joinedLine.replace(/,+$/, '');//行末カンマ削除
-                }
-                */
+              
 
                 if (index > 0 && seenLines.has(joinedLine)) return;
                 seenLines.add(joinedLine);// 1行目（ヘッダー）以外で、すでに同じ行が存在する場合はスキップ（重複行削除）
@@ -1168,15 +1164,7 @@
             cleanedTextForCopy = cleanedLines.join('\n');
 
            ReportShori(rows,maxcntColumns,cleanedLines,cleanedTextForCopy,warnings); 
-           /* 
-           // ★ 整形後テキスト
-            const cleanedText = cleanedLines.join('\n');
-
-            // ★ 行数・列数
-            const rowCount = cleanedLines.length;
-            const colCount = maxcntColumns;
-            */
-
+           //↑普通こんな長々と出なく連想配列でスマートに渡す
             
         }
 
