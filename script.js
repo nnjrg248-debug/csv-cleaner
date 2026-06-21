@@ -273,6 +273,7 @@
                     // CSV 表示処理を実行
                     displayCSV(text);
                     switchToDirectMode();
+                    csvTextArea.value = text;
                 });
 
             } catch (e) {
