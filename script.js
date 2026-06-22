@@ -658,7 +658,7 @@
         chkColumnCnt.addEventListener('change', () => {
         // チェックがついている（true）ときだけ実行する
             if ((chkColumnCnt.checked) &&(csvTextArea.value)) {//if (csvTextArea.value === '')よりif (csvTextArea.value)のほうが予期せぬバグが起きにくい頑丈なコードとのこと
-                displayCSV(csvTextArea.value);
+               // displayCSV(csvTextArea.value);
             }
         });
         
