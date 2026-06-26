@@ -1346,6 +1346,12 @@ padding-top: -60px; （マイナス）:マイナスはできない
 .custom-x-btn:hover {
     background-color: #272727; /* マウスを乗せたときに少し明るく */
 }
+#btnOpenSampleDialog {
+    float: right; 
+    margin-top: -5px; 
+    color: red; 
+    font-size: 15px; /* 15pxの行を削除し、ここだけにします */
+}
 
 
 
