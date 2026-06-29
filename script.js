@@ -415,6 +415,20 @@ const detectedType = Encoding.detect(strArray);
 return detectedType;
 }
 
+function restoreSjisThenConvertToutf8PJ(text){
+
+      if (restoreSjisThenConvertToUtf8IfUnicode(text) === 'UNICODE' ){    
+                        // 文字化け文字列を、Encodingライブラリが処理できる配列に変換
+                        const strArray = [];
+                        for (let i = 0; i < text.length; i++) {
+                            strArray.push(text.charCodeAt(i));
+                        }                    
+                        const sjisBytes = Encoding.convert(strArray, { to: 'SJIS', from: 'UNICODE' });
+                        const utf8Bytes = Encoding.convert(sjisBytes, { to: 'UNICODE', from: 'UTF8' });
+                        text = Encoding.codeToString(utf8Bytes);
+                    }
+    return text;
+}
 
 
 
@@ -431,8 +445,6 @@ return detectedType;
             const mode = getSelectedEncoding();
             const reader = new FileReader();
 
-
-//test();
 
             if (mode === 'AUTO') {
                 // --- 【自動判定モード】 ---
@@ -463,21 +475,10 @@ return detectedType;
 
                         let text = textDecoder.decode(bytes);
 
-                // ★★★ 【自動文字化け修復ロジック】 ★★★
-                // 自動判定で「Shift_JIS」と読んだけど、中身に「縺」や「繧」などUTF-8の化け文字サインがある場合
-                //if (detectedEncoding === 'Shift_JIS' && (text.includes('縺') || text.includes('繧') || text.includes('縲'))) {
-            //    if (detectedEncoding === 'Shift_JIS' )
-                    if (restoreSjisThenConvertToUtf8IfUnicode(text) === 'UNICODE' ){    
-                        // 文字化け文字列を、Encodingライブラリが処理できる配列に変換
-                        const strArray = [];
-                        for (let i = 0; i < text.length; i++) {
-                            strArray.push(text.charCodeAt(i));
-                        }                    
-                    const sjisBytes = Encoding.convert(strArray, { to: 'SJIS', from: 'UNICODE' });
-                    const utf8Bytes = Encoding.convert(sjisBytes, { to: 'UNICODE', from: 'UTF8' });
-                    text = Encoding.codeToString(utf8Bytes);
-                    }
-                // ★★★★★★★★★★★★★★★★★★★★★
+               
+                    text=restoreSjisThenConvertToutf8PJ(text);  
+                  
+              
 
 
 
@@ -492,8 +493,8 @@ return detectedType;
                 // --- 【手動選択モード（UTF-8 / Shift_JIS）】 ---
                 reader.readAsText(file, mode);
                 reader.onload = (readerEvent) => {
-                    const text = readerEvent.target.result;
-                    
+                    let text = readerEvent.target.result;
+                    text=restoreSjisThenConvertToutf8PJ(text);
              
                     callback(text, mode);
                 };
