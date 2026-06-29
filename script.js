@@ -1411,6 +1411,7 @@ function restoreSjisThenConvertToutf8PJ(text) {
                 if(directInputZone) directInputZone.style.display = 'block';
                 if(convertBtn) convertBtn.style.display = 'inline-block'; // ボタンを出す
                 if(Lookseikei) Lookseikei.style.display = 'inline-block';
+                if(Mojibakebtn) Mojibakebtn.style.display = 'inline-block';
                 if(clearBtn) clearBtn.style.display = 'inline-flex'; // 絵が入ってるのでinline-flex
                 if(cancelClear) cancelClear.style.display = 'inline-block'; 
                 bottomActions.classList.add("adjusted");//肌色ライン下げる
@@ -1433,6 +1434,7 @@ function restoreSjisThenConvertToutf8PJ(text) {
                 if(directInputZone) directInputZone.style.display = 'none';
                 if(convertBtn) convertBtn.style.display = 'none'; // ボタンを隠す
                 if(Lookseikei) Lookseikei.style.display = 'none';
+                if(Mojibakebtn) Mojibakebtn.style.display = 'none';
                 if(clearBtn) clearBtn.style.display = 'none'; // クリアボタンを隠す
                 if(cancelClear) cancelClear.style.display = 'none'; // ボタンを隠す
                 bottomActions.classList.remove("adjusted");//肌色ライン上げる
