@@ -27,7 +27,7 @@
         const encodingDialog = document.getElementById('encoding_dialog');
         const report_dialog = document.getElementById("report_dialog");
         //const sampleDialog = document.getElementById("sampleDialog");
-        const Mojibakebtn= document.getElementById("Mojibakebtn");
+        //const Mojibakebtn= document.getElementById("Mojibakebtn");
         const separatorBlock = document.getElementById('separatorblock');
         const kugiriDialog = document.getElementById('kugiri_dialog');
         const zoompopup = document.getElementById('zoom-popup');
@@ -303,25 +303,13 @@
         });
 
 
-        Mojibakebtn.addEventListener("click", () => {
-            Mojibaketaiou();                
-        });
 
-
-       
 /*
-  Mojibakebtn.addEventListener("click", () => {
-         //  Mojibaketaiou();                
-        });
-        
-        
- document.getElementById("Mojibakebtn").addEventListener("click", () => {
-            alert(1);//   Mojibaketaiou();                
+        document.getElementById("Mojibakebtn").addEventListener("click", () => {
+           Mojibaketaiou();                
         });
 
-
-*/
-
+        
         function Mojibaketaiou() {
             if (csvTextArea.value===""){
              	alert("文字が入力されてません。");
@@ -334,7 +322,7 @@
             if (mode === 'AUTO') {              
                 try {
                       
-                     csvTextArea.value= restoreSjisThenConvertToutf8PJ(text);
+                     csvTextArea.value=restoreSjisThenConvertToutf8PJ(text);
                      
                     } catch (e) {
                         // 3. どれでも読めなかった → 対応外
@@ -344,7 +332,7 @@
             } else {
                 // --- 【手動選択モード（UTF-8 / Shift_JIS）】 ---
                     if(mode==='UTF-8'){
-                        csvTextArea.value = restoreSjisThenConvertToutf8PJ(text);
+                        csvTextArea.value=restoreSjisThenConvertToutf8PJ(text);
                     }else{
                         csvTextArea.value=text;
                     }
@@ -353,7 +341,7 @@
 
 
 
-        
+        */
 
 
 
@@ -468,55 +456,33 @@ const detectedType = Encoding.detect(strArray);
 return detectedType;
 }
 */
-
-
-
-
-
 function restoreSjisThenConvertToUtf8IfUnicode(text) {
-    // 💡 安全装置：万が一 text が空っぽ（undefinedなど）なら即座に NORMAL を返す
-    if (!text) return 'NORMAL';
-
-    // 1. 高速化のため、先頭2000文字だけを切り出す（あなたの優れたアイデア）
+    // 1. 高速化のため、先頭2000文字だけを切り出す（あなたのアイデアをそのまま採用）
     const sampleText = text.slice(0, 2000);
 
-    // -------------------------------------------------------------
-    // 【アプローチ1】文字パターンチェック（あなたとGeminiの合体版）
-    // -------------------------------------------------------------
-    const superMojibakePattern = /[縺繧髢譁鬮隧螟謌蛟螳蠎蠑蝣蠖蠢蠡蠧邨荳譛譌譎譏譟]|(莉[ｲｲ・]|蜷[√・]|驕[・])/;
-    
-    if (superMojibakePattern.test(sampleText)) {
-        return 'MOJIBAKE'; // 特徴的な文字化け漢字があればその場で確定
-    }
-
-    // -------------------------------------------------------------
-    // 【アプローチ2】文字固定なしのバイナリチェック（保険用の自動判定）
-    // -------------------------------------------------------------
     try {
-        // 引数に bytes がないので、渡された化け文字列(sampleText)から、
-        // 誤認された原因である Shift_JIS の数値（配列）を一時的に作り直します
+        // 2. 「縺ｿ繧薙↑」を本来のShift_JISのバイト配列に一度戻してみる
         const strArray = [];
         for (let i = 0; i < sampleText.length; i++) {
             strArray.push(sampleText.charCodeAt(i));
         }
-        const sampleBytes = Encoding.convert(strArray, { to: 'SJIS', from: 'UNICODE' });
+        const sjisBytes = Encoding.convert(strArray, { to: 'SJIS', from: 'UNICODE' });
 
-        // 作り直した数値配列をライブラリに渡し、本来の文字コードを判定させます
-        const detectedType = Encoding.detect(sampleBytes);
-        const mode = getSelectedEncoding();
+        // 3. 戻したバイト配列が「正しいUTF-8のルール」に適合しているかチェックする
+        // Encoding.detectに生のバイト配列(sjisBytes)を渡すと、文字化けの正体（UTF8）を見抜けます
+        const realType = Encoding.detect(sjisBytes);
 
-        // 画面で Shift_JIS系 を選んでいるのに、データの正体が UTF-8 だった場合
-        if (detectedType === 'UTF8' && (mode === 'SJIS' || mode === 'Shift_JIS')) {
+        if (realType === 'UTF8') {
+            // 「UTF-8を誤ってShift_JISで読んだ文字化け」だと100%断定できた場合
             return 'MOJIBAKE'; 
         }
     } catch (e) {
-        // 逆変換中にエラーが起きた場合は、文字化けファイルではないためスルー
+        // 変換中にエラーが起きた場合は、文字化けファイルではない（通常のファイル）
+        return 'NORMAL';
     }
 
     return 'NORMAL';
 }
-
-
 
 function restoreSjisThenConvertToutf8PJ(text) {
     // 2000文字の高速判定で「文字化け」と出たときだけ、ファイル全体を直す
