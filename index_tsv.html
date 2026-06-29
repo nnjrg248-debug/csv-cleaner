@@ -10,6 +10,12 @@
   gtag('config', 'G-0BZV0EVRXP');
 </script>
 
+<script src="https://unpkg.com/encoding-japanese@2.2.0/encoding.min.js"></script>
+
+
+
+
+
 	<meta charset="UTF-8">
     <title>マイ CSV クリーナー（データクレンジング） | CSVの文字化け修復・データ整形ツール（無料）</title>
     
@@ -162,6 +168,9 @@
                 </div>
             </div>
             <div class="button-blue-row">
+                <button class="btn-blue-outline" id="Mojibakebtn">               
+                    文字化けを直す
+                </button>
                  <button class="btn-blue-outline" id="Lookseikei">               
                     整形結果を見る
                 </button>
@@ -207,6 +216,10 @@
                 </div>
             </section>
 
+            <button id="btnOpenSampleDialog" >
+                サンプルデータ
+            </button>
+
             <div class="Junfooter">
                 <a href="resume.html">📄 レジュメを見る</a>
                 <!--
@@ -227,6 +240,8 @@
 
 
             </div> 
+
+           
 
             <div class="bottom-actions-container" id="ConceptInfo">      
                 <div class="concept-text" id="conceptBox">
@@ -249,10 +264,11 @@
                 </div>        
             </div>    
                 
-
+            <!--
             <button id="btnOpenSampleDialog" style="float:right; margin-top:-5px;">
                 サンプルデータ
             </button>
+            -->
 
             <!-- アコーディオン式 -->
             <div class="csv-faq-section" >    
