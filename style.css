@@ -1224,7 +1224,7 @@ padding-top: -60px; （マイナス）:マイナスはできない
         /* 閉じるボタンのモダンなデザイン */
         .btn-close {
             background: #6c757d;
-            color: white;
+            color: #444444;
             border: none;
             padding: 10px 32px;
             font-size: 0.95rem;

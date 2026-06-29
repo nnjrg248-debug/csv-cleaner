@@ -471,12 +471,8 @@ function restoreSjisThenConvertToutf8PJ(text){
                 try {
                         const textDecoder = new TextDecoder(detectedEncoding);
                         //const text = textDecoder.decode(bytes);
-
-
-                        let text = textDecoder.decode(bytes);
-
-               
-                    text=restoreSjisThenConvertToutf8PJ(text);  
+                        let text = textDecoder.decode(bytes);               
+                        text=restoreSjisThenConvertToutf8PJ(text);  
                   
               
 
