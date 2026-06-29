@@ -397,6 +397,30 @@
 
             return encoding;
         }
+
+
+function restoreSjisThenConvertToUtf8IfUnicode(text) {
+   const sampleText = text.slice(0, 2000);
+
+const strArray = [];
+for (let i = 0; i < sampleText.length; i++) {
+    strArray.push(sampleText.charCodeAt(i));
+}
+
+// 2. 切り出した軽いデータで、ライブラリに「この文字コードは何？」とはっきり判定させる
+const detectedType = Encoding.detect(strArray);
+
+// 3. 【判断】もし文字化け（UNICODE）だとはっきり判断できたら、
+// この時だけ、ファイル全体（text）の修復処理を実行する
+return detectedType;
+}
+
+
+
+
+
+
+
         
         // ファイルを自動判定して読み込み、完了したら callback を実行する共通関数
         //引数callbackはこの関数の内のcallback(text, detectedEncoding)のこと 呼出側loadFileWithAutoEncoding(file, (text, encoding) のtext, encodingに当る
@@ -406,6 +430,9 @@
 
             const mode = getSelectedEncoding();
             const reader = new FileReader();
+
+
+//test();
 
             if (mode === 'AUTO') {
                 // --- 【自動判定モード】 ---
@@ -431,7 +458,29 @@
 
                 try {
                         const textDecoder = new TextDecoder(detectedEncoding);
-                        const text = textDecoder.decode(bytes);
+                        //const text = textDecoder.decode(bytes);
+
+
+                        let text = textDecoder.decode(bytes);
+
+                // ★★★ 【自動文字化け修復ロジック】 ★★★
+                // 自動判定で「Shift_JIS」と読んだけど、中身に「縺」や「繧」などUTF-8の化け文字サインがある場合
+                //if (detectedEncoding === 'Shift_JIS' && (text.includes('縺') || text.includes('繧') || text.includes('縲'))) {
+            //    if (detectedEncoding === 'Shift_JIS' )
+                    if (restoreSjisThenConvertToUtf8IfUnicode(text) === 'UNICODE' ){    
+                        // 文字化け文字列を、Encodingライブラリが処理できる配列に変換
+                        const strArray = [];
+                        for (let i = 0; i < text.length; i++) {
+                            strArray.push(text.charCodeAt(i));
+                        }                    
+                    const sjisBytes = Encoding.convert(strArray, { to: 'SJIS', from: 'UNICODE' });
+                    const utf8Bytes = Encoding.convert(sjisBytes, { to: 'UNICODE', from: 'UTF8' });
+                    text = Encoding.codeToString(utf8Bytes);
+                    }
+                // ★★★★★★★★★★★★★★★★★★★★★
+
+
+
                         callback(text, detectedEncoding);
                     } catch (e) {
                         // 3. どれでも読めなかった → 対応外
@@ -445,17 +494,14 @@
                 reader.onload = (readerEvent) => {
                     const text = readerEvent.target.result;
                     
-                    // 文字化けチェック（UTF-8ファイルをSJISで読むと � が混入する）
-                    //if (text.includes('\uFFFD')) {
-                    //    alert(`文字化けが検出されました。エンコードを変えて再試行してください。\n現在の設定: ${mode}`);
-                    //    return;
-                    //}
-
-                    // 読み込み完了後の処理を実行
+             
                     callback(text, mode);
                 };
             }
         }
+
+
+
 
         
         // （参考）前回の判定関数も合わせてここに配置しておきます
