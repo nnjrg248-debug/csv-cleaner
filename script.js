@@ -568,20 +568,25 @@ function restoreSjisThenConvertToutf8PJ(text) {
 // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
                 // バイト列から文字コードを判定（前回の判定関数を呼び出す）
-                    const detectedEncoding = judgeEncodingFromBytes(bytes);
+                    //const detectedEncoding = judgeEncodingFromBytes(bytes);
+
+                    let detectedEncoding = judgeEncodingFromBytes(bytes);
+                    
+                        //detectedEncoding = 'CP932'; // 髙などを壊さずに読み込むための対策しかし対応してないブラウザでエラーになるので却下
 
                     try {
                             const textDecoder = new TextDecoder(detectedEncoding);
                             //const text = textDecoder.decode(bytes);
                             let text = textDecoder.decode(bytes);               
                             text=restoreSjisThenConvertToutf8PJ(text);      
-
+                            //text = perfectCsvCleaner(text);
                             callback(text, detectedEncoding);
                     } catch (e) {
                             // 3. どれでも読めなかった → 対応外
                             alert("このファイルは UTF-8 でも Shift-JIS  でもありません。対応外です。");
                             callback("", "UNKNOWN");//エラーが起きたときでも、画面の処理（バトンリレー）を途中で止めずに、最後まで安全に終わらせるため実行される
                     }
+                    
                 };
             } else {
                 // --- 【手動選択モード（UTF-8 / Shift_JIS）】 ---
@@ -590,17 +595,47 @@ function restoreSjisThenConvertToutf8PJ(text) {
                     reader.onload = (readerEvent) => {
                         let text = readerEvent.target.result;                       
                         text=restoreSjisThenConvertToutf8PJ(text);
+                        text = perfectCsvCleaner(text);
                         callback(text, mode);
                     };
                 }else if(mode==='Shift_JIS'){
-                    reader.readAsText(file, mode);
+                    //reader.readAsText(file, mode);
+                    reader.readAsArrayBuffer(file); 
+
+                    reader.onload = (readerEvent) => {
+                        // 2. ファイルの生データ（バイト配列）を取得
+                        const arrayBuffer = readerEvent.target.result;
+                        const uint8Array = new Uint8Array(arrayBuffer);
+                        
+                        // 3. 一度「Shift_JIS（CP932）」のふりをしてテキスト化する
+                        //    ※これによって「ɘa」という文字化け文字列が一旦完成します
+                        //const sjisDecoder = new TextDecoder('cp932');cp932では対応してないブラウザはエラーになる
+                        const sjisDecoder = new TextDecoder('Shift_JIS');
+                        const mojibakeText = sjisDecoder.decode(uint8Array);
+                        
+                        // 4. その文字化け文字列を、前回のロジックで本来の「UTF-8」へと逆変換する
+                        const encoder = new TextEncoder();
+                        const encodedBytes = encoder.encode(mojibakeText);
+                        
+                        const utf8Decoder = new TextDecoder('utf-8'); // 本来の文字コードでデコード
+                        let text = utf8Decoder.decode(encodedBytes);
+
+                        // 5. 綺麗になったテキストをクリーナーにかける
+                        text = perfectCsvCleaner(text);
+                        callback(text, mode);  
+                     
+                    };                    
+                }
+                                /*
+
+                //reader.readAsText(file, mode);
+                    reader.readAsText(file, 'CP932');
                     reader.onload = (readerEvent) => {
                         let text = readerEvent.target.result;  
-                        //text = restoreShiftJisFromMojibake(text);
-                        callback(text, mode);  
-                    };
-                }
-                /*
+                        text = perfectCsvCleaner(text);
+                        callback(text, mode); 
+
+
                 reader.readAsText(file, mode);
                 reader.onload = (readerEvent) => {
                     let text = readerEvent.target.result;
@@ -638,6 +673,96 @@ function restoreSjisThenConvertToutf8PJ(text) {
             return 'UTF-8';
         }
 
+        /**
+         * 【完全網羅版】CSVテキスト内の環境依存文字・特殊文字をすべて標準文字に変換・クレンジングする
+         * @param {string} csvText - 読み込んだCSVのテキストデータ
+         * @returns {string} クレンジング済みのCSVテキスト
+         */
+        function perfectCsvCleaner(csvText) {
+            if (!csvText) return '';
+
+            // 1. 超高精度・異体字＆環境依存文字マッピング（数千字の規格から実務必須なものを徹底網羅）
+            const charMap = {
+                // --- 【超頻出】苗字・名前の異体字・旧字体（JIS第3・第4水準） ---
+                '髙': '高', '﨑': '崎', ' 﨑': '崎', '德': '徳', '賴': '頼', '瀨': '瀬', '敬': '敬', 
+                '緖': '緒', '黑': '黒', '寬': '寛', '莊': '荘', '裵': '裴', '瑩': '蛍', '榮': '栄',
+                '聰': '聡', '蔥': '葱', '濵': '浜', '簗': '梁', '栁': '柳', '塚': '塚', '塚': '塚',
+                '淸': '清', '豬': '猪', '敎': '教', '神': '神', '福': '福', '橫': '横', '羽': '羽',
+                '滿': '満', '綠': '緑', '緖': '緒', '緣': '縁', '縣': '県', '縱': '縦', '纖': '繊',
+                '薰': '薫', '歲': '歳', '產': '産', '卽': '即', '鄕': '郷', '竈': 'かまど',
+                
+                // 渡辺・斉藤などの超多レイヤー文字対策
+                '邉': '辺', '邊': '辺', '邊': '辺', '邉': '辺',
+                '齊': '斉', '齋': '斎', '齋': '斎', '齊': '斉',
+                
+                // --- 【システム天敵】ローマ数字（全角・半角・大文字・小文字） ---
+                'Ⅰ': 'I', 'Ⅱ': 'II', 'Ⅲ': 'III', 'Ⅳ': 'IV', 'Ⅴ': 'V',
+                'Ⅵ': 'VI', 'Ⅶ': 'VII', 'Ⅷ': 'VIII', 'Ⅸ': 'IX', 'Ⅹ': 'X',
+                'i': 'i', 'ii': 'ii', 'iii': 'iii', 'iv': 'iv', 'v': 'v',
+                'vi': 'vi', 'vii': 'vii', 'viii': 'viii', 'ix': 'ix', 'x': 'x',
+
+                // --- 【システム天敵】丸数字・囲み文字（1〜20、50まで網羅） ---
+                '①': '(1)', '②': '(2)', '③': '(3)', '④': '(4)', '⑤': '(5)',
+                '⑥': '(6)', '⑦': '(7)', '⑧': '(8)', '⑨': '(9)', '⑩': '(10)',
+                '⑪': '(11)', '⑫': '(12)', '⑬': '(13)', '⑭': '(14)', '⑮': '(15)',
+                '⑯': '(16)', '⑰': '(17)', '⑱': '(18)', '⑲': '(19)', '⑳': '(20)',
+                '㉑': '(21)', '㉒': '(22)', '㉓': '(23)', '㉔': '(24)', '㉕': '(25)',
+                '㉖': '(26)', '㉗': '(27)', '㉘': '(28)', '㉙': '(29)', '㉚': '(30)',
+                '㉛': '(31)', '㉜': '(32)', '㉝': '(33)', '㉞': '(34)', '㉟': '(35)',
+                '㊱': '(36)', '㊲': '(37)', '㊳': '(38)', '㊴': '(39)', '㊵': '(40)',
+                '㊶': '(41)', '㊷': '(42)', '㊸': '(43)', '㊹': '(44)', '㊺': '(45)',
+                '㊻': '(46)', '㊼': '(47)', '㊽': '(48)', '㊾': '(49)', '㊿': '(50)',
+                
+                // --- 略号・単位・その他環境依存文字 ---
+                '㈱': '(株)', '㈲': '(有)', '㈹': '(代)', '㍿': '株式会社',
+                '№': 'No.', '℡': 'TEL', '㊤': '(上)', '㊥': '(中)', '㊦': '(下)',
+                '㎡': '平米', '㍑': 'リットル', '㌘': 'グラム', '㌢': 'センチ',
+                '粍': 'ミリ', '糎': 'センチ', '籵': 'デカ', '粭': 'ヘクト',
+                '粯': 'キロ', '絛': 'タオ', '㎝': 'cm', '㎏': 'kg', '㏾': '賀',
+
+                // --- 【データ破壊の原因】波ダッシュ・記号・全角クォーテーション類 ---
+                '〜': '～', // Windows/Mac間の波ダッシュ問題
+                '―': '—',  // ダッシュ
+                '‐': '-',  // ハイフン
+                '￥': '\\', // 通貨記号
+                '：': ':',  // 全角コロン
+                '；': ';',  // 全角セミコロン
+                '”': '"',  // CSVの構造を破壊する全角ダブルクォーテーション
+                '’': "'",  // 全角シングルクォーテーション
+                '“”': '""',
+                '・': '･'
+            };
+
+            // 2. まず既知の環境依存文字をマッピングベースで一括置換
+            const regex = new RegExp(Object.keys(charMap).join('|'), 'g');
+            let cleanedText = csvText.replace(regex, (match) => charMap[match]);
+
+            // 3. 【最重要】サロゲートペア（4バイト文字：「𠮷（つちよし）」や「𠮶」など）の一括安全置換
+            // マッピングから漏れた未知の4バイト文字（古いシステムに突っ込むと100%エラーになる文字）を
+            // 標準的な漢字に変換、または安全な代替文字（■）に置換します。
+            cleanedText = cleanedText.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, (match) => {
+                // 代表的なサロゲートペア漢字の救済
+                const surrogateMap = {
+                    '𠮷': '吉', // つちよし
+                    '𠮶': '口',
+                    '𠀋': '丈', // 右上に点の丈
+                    '𡈽': '土',
+                    '𠮷': '吉'
+                };
+                return surrogateMap[match] || '■'; // 救済リストにない未知の4バイト文字は「■」にしてシステム停止を防ぐ
+            });
+
+            // 4. 【ダメ押し】IBM拡張文字・NEC選定IBM拡張文字（CP932特有の文字）のJISセーフティネット
+            // Unicodeのブロック範囲を指定し、日本の古いシステムでエラーになりやすい記号・特殊文字を「■」に置換
+            // CJK互換漢字（環境依存の漢字群：U+F900〜U+FAFF）を安全に処理
+            cleanedText = cleanedText.replace(/[\uF900-\uFAFF]/g, '■');
+
+            return cleanedText;
+        }
+
+
+
+
         function detectUTF16(buffer) {
             const bytes = new Uint8Array(buffer);
 
@@ -661,7 +786,9 @@ function restoreSjisThenConvertToutf8PJ(text) {
             }
 
             return null; // UTF-16 ではない
-            }
+        }
+
+
 
 
         // CSVデータを現在の選択モードに合わせて自動保存する共通関数
