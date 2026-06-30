@@ -289,6 +289,7 @@
                     // CSV 表示処理を実行
                     displayCSV(text);
                     switchToDirectMode();
+                    currentRawText = text;//csvTextAreaだけでなくcurrentRawTextにも入力するが必要がある、この後「直接テキスト入力」押下するとcsvTextArea.value = currentRawText;となるため
                     csvTextArea.value = text;//csvTextArea.value = text;の位置はdisplayCSV(text)の上showFileInfo(fileName);の下でいいのでないかも時間あるとき調べる
                 });
 
