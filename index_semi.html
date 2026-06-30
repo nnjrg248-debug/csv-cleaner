@@ -151,10 +151,19 @@
                 <!--<textarea id="csvTextArea" placeholder="ここにCSVテキストを直接入力・編集してください..."> &#10はtextareaにおける改行コード-->
                 <textarea id="csvTextArea" placeholder="ＣＳＶテキストを直接入力・編集し、「表形式」ボタンを押してください。&#10;（「ファイル選択／コピペ」ボタンで元のファイル選択、貼付けの領域に戻せます）"></textarea>
             </div>
-            <div class="bookmarktext-area">
-                <p class="bookmark-inline">※よく使う方はブックマークしておくと便利です</p>
-            </div>
+            <div class="bookmarktext-area" style="display: flex; justify-content: space-between; align-items: center;">
+    <p class="bookmark-inline" style="margin: 0;">※よく使う方はブックマークしておくと便利です</p>
 
+    <label for="myCheckbox" style="cursor: pointer;">
+        <input type="checkbox" id="reportCheckbox">
+        整形結果表示の省略
+    </label>
+</div>
+
+
+            </div>
+            
+            
             <!-- ファイル名とキャンセル、コピーボタンを表示するコンテナ -->
             <div class="btn-container">
                 <div id="fileInfo" style="display: none;"><!--style="display: none;"、ファイル貼付けよりjsで"display: flex"となり表示となる-->
@@ -171,7 +180,7 @@
                 <button class="btn-blue-outline" id="Mojibakebtn">               
                     文字化けを直す
                 </button>
-                 <button class="btn-blue-outline" id="Lookseikei">               
+                <button class="btn-blue-outline" id="Lookseikei">               
                     整形結果を見る
                 </button>
                 <button  class="btn-blue-outline"  id="convertBtn">
@@ -185,6 +194,7 @@
                     表のキャンセル
                 </button>               
             </div>
+           
         
             <!-- テーブルを表示する場所 -->
             <div id="tableContainer_out">

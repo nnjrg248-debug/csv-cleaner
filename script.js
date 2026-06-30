@@ -242,6 +242,21 @@
         }
 
 
+        
+        csvTextArea.addEventListener('input', (event) => {
+
+            let testtext = csvTextArea.value;
+            testtext = restoreSjisThenConvertToutf8PJ(testtext);
+            const mode = getSelectedEncoding();
+
+            if(mode!='AUTO'){
+                testtext = perfectCsvCleaner(testtext);
+            }
+            if (csvTextArea.value != testtext){
+                if(Mojibakebtn) Mojibakebtn.style.display = 'inline-block';
+            //const value = event.target.value;
+            }
+        });
 
         
         //sampleデータ置き場
@@ -325,9 +340,9 @@
 
         function Mojibaketaiou() {
             if (csvTextArea.value===""){
-             	alert("文字が入力されてません。");
+             	//alert("文字が入力されてません。");
              	return;
-             }
+            }
 			let text=csvTextArea.value;			 
             const mode = getSelectedEncoding();
 			currentRawText = text; // ファイル読み込み時も生テキストを記憶する
