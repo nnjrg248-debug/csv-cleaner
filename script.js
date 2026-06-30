@@ -34,6 +34,7 @@
         const zoomButtons = document.querySelectorAll('.zoom-btn');
         const zoominput = document.getElementById('zoom-input');
         const bottomActions = document.querySelector(".button-blue-row");
+        const reportCheckbox = document.getElementById("reportCheckbox");
        // const separator_labelkid = document.getElementById('separator_labelkid');
         //const encodingInputs = document.querySelectorAll('.setting-block input[name="encoding_mode"], .setting-block input[name="utf8_bom"]');//文字コード欄内のrんこーどのらひおボックスとbomのチェックボックス
 
@@ -1449,7 +1450,9 @@ function restoreSjisThenConvertToutf8PJ(text) {
             tableContainer.innerHTML = htmlParts.join('');
             cleanedTextForCopy = cleanedLines.join('\n');
 
-           ReportShori(rows,maxcntColumns,cleanedLines,cleanedTextForCopy,warnings); 
+           if (!reportCheckbox.checked) {
+                ReportShori(rows,maxcntColumns,cleanedLines,cleanedTextForCopy,warnings); 
+            }
            //↑普通こんな長々と出なく連想配列でスマートに渡す
             
         }
