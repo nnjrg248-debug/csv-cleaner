@@ -324,7 +324,7 @@
 
         function Mojibaketaiou() {
             if (csvTextArea.value===""){
-             	alert("文字が入力されてません。");
+             //	alert("文字が入力されてません。");
              	return;
              }
 			let text=csvTextArea.value;			 
@@ -499,7 +499,7 @@ function restoreSjisThenConvertToUtf8IfUnicode(text) {
         for (let i = 0; i < sampleText.length; i++) {
             strArray.push(sampleText.charCodeAt(i));
         }
-        const sampleBytes = Encoding.convert(strArray, { to: 'SJIS', from: 'UNICODE' });
+        const sampleBytes = Encoding.convert(strArray, { to: 'SJIS', from: 'UNICODE' });//ライブラリ（encoding.js）の場合'SJIS'でも使える
 
         // 作り直した数値配列をライブラリに渡し、本来の文字コードを判定させます
         const detectedType = Encoding.detect(sampleBytes);
@@ -531,8 +531,29 @@ function restoreSjisThenConvertToutf8PJ(text) {
     }
     return text;
 }
+/*
+function restoreShiftJisFromMojibake(mojibakeText) {
+    const bytes = [];
+    
+    for (let i = 0; i < mojibakeText.length; i++) {
+        const code = mojibakeText.charCodeAt(i);
+        
+        // 1バイトのデータ（0〜255）として安全に抽出する
+        if (code <= 0xFF) {
+            bytes.push(code);
+        } else {
+            // もし2バイト以上の文字に化けてしまっている場合は、
+            // その文字の上位バイトと下位バイトを分解してバイト列に戻す
+            bytes.push((code >> 8) & 0xFF);
+            bytes.push(code & 0xFF);
+        }
+    }
 
-
+    // 分解した生バイト列を、正しい「Shift_JIS」としてデコードし直す
+    const decoder = new TextDecoder('shift-jis');
+    return decoder.decode(new Uint8Array(bytes));
+}
+*/
 
 
 
@@ -596,24 +617,85 @@ function restoreSjisThenConvertToutf8PJ(text) {
                     reader.readAsText(file, mode);
                     reader.onload = (readerEvent) => {
                         let text = readerEvent.target.result;  
-                        //text = restoreShiftJisFromMojibake(text);
+                        text = restoreShiftJisFromMojibake(text);
                         callback(text, mode);  
                     };
-                }
-                /*
-                reader.readAsText(file, mode);
-                reader.onload = (readerEvent) => {
-                    let text = readerEvent.target.result;
-                    if(mode==='UTF-8'){
-                        text=restoreSjisThenConvertToutf8PJ(text);     
-                    }        
-                    callback(text, mode);
-                };
-                */
+                   // ShiftJisHenkan(file, mode);
+                    
+                    /*
+                    reader.readAsText(file, mode);
+                    reader.onload = (readerEvent) => {
+                        let text = readerEvent.target.result;  
+                        text = restoreShiftJisFromMojibake(text);
+                        callback(text, mode);  
+                    */
+                }     
             }
         }
 
+        function restoreShiftJisFromMojibake(mojibakeText) {
+            const bytes = [];
+            
+            // 文字列全体に「f[^mF」のような特殊な化けパターンが含まれているかチェック
+            // ※環境によって「f[^mF」の一部しか含まれない場合もあるため、3文字以上一致で判定
+            const isEucAsciiMojibake = mojibakeText.includes("f[^m");
 
+            for (let i = 0; i < mojibakeText.length; i++) {
+                const code = mojibakeText.charCodeAt(i);
+                
+                // 1. 通常の1バイトデータ（0〜255）の場合
+                if (code <= 0xFF) {
+                    // ★「f[^mF」系の化け文字ファイルを検知している場合、
+                    // 半角英数記号（0x20〜0x7E）のビットを128底上げして日本語データ（EUC/SJIS）に復元する
+                    if (isEucAsciiMojibake && code >= 0x20 && code <= 0x7E) {
+                        bytes.push(code | 0x80); 
+                    } else {
+                        bytes.push(code); // 通常の文字化け（黒いひし形など）はそのまま通す
+                    }
+                } 
+                // 2. すでに2バイト以上の漢字などに合体して化けてしまっている場合
+                else {
+                    bytes.push((code >> 8) & 0xFF);
+                    bytes.push(code & 0xFF);
+                }
+            }
+
+            // すべてのパターンを綺麗に整えたバイト列を、正しい「Shift_JIS」としてデコード
+            const decoder = new TextDecoder('shift-jis');
+            return decoder.decode(new Uint8Array(bytes));
+        }
+
+
+/*
+                
+        function ShiftJisHenkan(file, mode){
+            const reader = new FileReader();
+                    reader.readAsArrayBuffer(file);
+                    reader.onload = (readerEvent) => {
+                        try {
+                            // 1. 読み込んだ結果を生のバイト配列（Uint8Array）に変換
+                            const bytes = new Uint8Array(readerEvent.target.result);
+                            
+                            // 2. Web標準の文字コード表記（ハイフン繋ぎの小文字）でデコーダーを作成
+                            // これにより、Shift_JIS（または大文字のShift_JIS）を完璧に受け入れます
+                            const textDecoder = new TextDecoder('shift-jis');
+                            
+                            // 3. 生バイトから「Shift_JIS」として一気に文字列へデコードする
+                            // 文字の境界が崩れて「」になったり、ASCII文字「f[^mF」に誤認される前に、綺麗に復元されます
+                            const text = textDecoder.decode(bytes);
+
+                            // 4. 親処理（コールバック）に正しい文字列を渡す
+                            callback(text, 'Shift_JIS');
+
+                        } catch (e) {
+                            console.error("Shift_JISのデコードに失敗しました:", e);
+                            alert("ファイルの読み込み中にエラーが発生しました。対応外のファイル形式の可能性があります。");
+                            callback("", "UNKNOWN");
+                        }
+                    };
+        }
+                
+      */  
 
 
         
@@ -1428,7 +1510,7 @@ function restoreSjisThenConvertToutf8PJ(text) {
                 if(directInputZone) directInputZone.style.display = 'block';
                 if(convertBtn) convertBtn.style.display = 'inline-block'; // ボタンを出す
                 if(Lookseikei) Lookseikei.style.display = 'inline-block';
-               // if(Mojibakebtn) Mojibakebtn.style.display = 'inline-block';
+                if(Mojibakebtn) Mojibakebtn.style.display = 'inline-block';
                 if(clearBtn) clearBtn.style.display = 'inline-flex'; // 絵が入ってるのでinline-flex
                 if(cancelClear) cancelClear.style.display = 'inline-block'; 
                 bottomActions.classList.add("adjusted");//肌色ライン下げる

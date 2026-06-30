@@ -585,22 +585,6 @@ function restoreSjisThenConvertToutf8PJ(text) {
                 };
             } else {
                 // --- 【手動選択モード（UTF-8 / Shift_JIS）】 ---
-                if(mode==='UTF-8'){
-                    reader.readAsText(file, mode);
-                    reader.onload = (readerEvent) => {
-                        let text = readerEvent.target.result;                       
-                        text=restoreSjisThenConvertToutf8PJ(text);
-                        callback(text, mode);
-                    };
-                }else if(mode==='Shift_JIS'){
-                    reader.readAsText(file, mode);
-                    reader.onload = (readerEvent) => {
-                        let text = readerEvent.target.result;  
-                        //text = restoreShiftJisFromMojibake(text);
-                        callback(text, mode);  
-                    };
-                }
-                /*
                 reader.readAsText(file, mode);
                 reader.onload = (readerEvent) => {
                     let text = readerEvent.target.result;
@@ -609,7 +593,6 @@ function restoreSjisThenConvertToutf8PJ(text) {
                     }        
                     callback(text, mode);
                 };
-                */
             }
         }
 
@@ -1428,7 +1411,7 @@ function restoreSjisThenConvertToutf8PJ(text) {
                 if(directInputZone) directInputZone.style.display = 'block';
                 if(convertBtn) convertBtn.style.display = 'inline-block'; // ボタンを出す
                 if(Lookseikei) Lookseikei.style.display = 'inline-block';
-               // if(Mojibakebtn) Mojibakebtn.style.display = 'inline-block';
+                if(Mojibakebtn) Mojibakebtn.style.display = 'inline-block';
                 if(clearBtn) clearBtn.style.display = 'inline-flex'; // 絵が入ってるのでinline-flex
                 if(cancelClear) cancelClear.style.display = 'inline-block'; 
                 bottomActions.classList.add("adjusted");//肌色ライン下げる
