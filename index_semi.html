@@ -24,7 +24,7 @@
     <meta name="description" content="【簡単・直感操作】長々とした説明をなくし、一目で使い方がわかる優れたアクセシビリティを実現。大きな文字と明快な解説で、年齢問わず誰でもストレスなく操作できます。まずはシンプルな使いやすさをご体感ください。">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="page" content="3">
-    <!--インデックス設定用 他のページに上書きするとき下の行消すこと
+    <!--インデックス設定用 他のページに上書きするとき下の行消すこと-->
     <link rel="canonical" href="https://nnjrg248-debug.github.io/csv-cleaner/" />-->
     
     <link rel="icon" href="data:,">
@@ -387,7 +387,93 @@
             </div>
         </dialog>
 
+<div id="pwa-popup" class="pwa-popup-hidden">
+          <button class="pwa-close-btn" onclick="closePwaPopup()">×</button>
+          <p class="pwa-title">【アプリとして保存しませんか？】</p>
+          <p class="pwa-text">このツールをインストールすると、スマホのホーム画面やPCのデスクトップから、いつでもワンタップで起動できるようになります。</p>
+          <p class="pwa-method">📥 インストール方法：</p>
+          <p class="pwa-text">URLバーの右側にある [インストールアイコン] をクリックしてください。</p>
+        </div>
 
+        <style>
+        /* ポップアップの見た目（CSS） */
+        #pwa-popup {
+          position: fixed;
+          bottom: 20px; /* 下から少し浮かせる */
+          right: 20px;  /* 右側に寄せる */
+          width: 320px; /* パソコンでの横幅 */
+          max-width: 90%; /* スマホでは画面に収まるように */
+          background-color: #ffffff; /* 背景は白 */
+          border: 2px solid #007bff; /* ツールのテーマカラー（例：青）に合わせて変更してください */
+          border-radius: 12px; /* 角を丸くする */
+          padding: 16px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* 影をつけて浮いているように見せる */
+          z-index: 9999; /* 一番手前に表示 */
+          font-family: sans-serif;
+          transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        /* 最初は非表示にしておくクラス */
+        .pwa-popup-hidden {
+          opacity: 0;
+          transform: translateY(20px);
+          pointer-events: none;
+        }
+        /* スクロール後に表示するためのクラス */
+        .pwa-popup-visible {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+        }
+        /* 文字のデザイン */
+        .pwa-title { font-weight: bold; color: #333; margin: 0 0 8px 0; font-size: 15px; text-align: left; }
+        .pwa-text { color: #555; margin: 0 0 8px 0; font-size: 13px; line-height: 1.5; text-align: left; }
+        .pwa-method { font-weight: bold; color: #333; margin: 12px 0 4px 0; font-size: 13px; text-align: left; }
+        /* ×ボタンのデザイン */
+        .pwa-close-btn { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 20px; cursor: pointer; color: #aaa; }
+        .pwa-close-btn:hover { color: #333; }
+        /* スマホ用の位置調整（画面中央下に配置） */
+        @media (max-width: 600px) {
+          #pwa-popup { right: 5%; left: 5%; bottom: 15px; width: auto; }
+        }
+        </style>
 
-</body> 
+        <script>
+            // スクロールを検知してポップアップを出すJavaScript
+            window.addEventListener('scroll', function() {
+            const popup = document.getElementById('pwa-popup');
+            
+            // 【重要】すでにPWA（アプリ画面）として起動している場合は、絶対に表示しない
+            const isPwa = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            if (isPwa) { return; }
+
+            // 【14日間判定】保存された「次回表示していい日時」を確認する
+            const nextShowTime = localStorage.getItem('pwa-popup-next-show');
+            if (nextShowTime) {
+                // まだ14日経っていない場合は、何もしない（出さない）
+                if (Date.now() < parseInt(nextShowTime, 10)) {
+                return;
+                }
+            }
+
+            // 画面を100ピクセル以上スクロールしたら表示する
+            if (window.scrollY > 100) {
+                popup.classList.remove('pwa-popup-hidden');
+                popup.classList.add('pwa-popup-visible');
+            }
+            });
+
+            // ×ボタンを押した時に閉じる処理
+            function closePwaPopup() {
+            const popup = document.getElementById('pwa-popup');
+            popup.classList.remove('pwa-popup-visible');
+            popup.classList.add('pwa-popup-hidden');
+            
+            // ×を押した瞬間から「２１日間（２１日×24時間×60分×60秒×1000ミリ秒）」を足した未来の時刻を計算
+            const fourteenDaysLater = Date.now() + (21 * 24 * 60 * 60 * 1000);
+            
+            // 「この日時が来るまでは出さないでね」という印をブラウザに保存する
+            localStorage.setItem('pwa-popup-next-show', fourteenDaysLater);
+            }
+            </script>
+    </body> 
 </html>
