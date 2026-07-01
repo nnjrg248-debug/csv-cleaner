@@ -1466,9 +1466,9 @@ function restoreSjisThenConvertToutf8PJ(text) {
             tableContainer.innerHTML = htmlParts.join('');
             cleanedTextForCopy = cleanedLines.join('\n');
 
-           if (!reportCheckbox.checked) {
+           //if (!reportCheckbox.checked) {
                 ReportShori(rows,maxcntColumns,cleanedLines,cleanedTextForCopy,warnings); 
-            }
+           // }
            //↑普通こんな長々と出なく連想配列でスマートに渡す
             
         }
@@ -1534,7 +1534,9 @@ function restoreSjisThenConvertToutf8PJ(text) {
 
             lastReportHtml=reportHtml;
             lastReportText=icleanedText;
-            showReportDialog("整形完了！",reportHtml,`<pre>${icleanedText}</pre>`);
+            if (!reportCheckbox.checked) {
+                showReportDialog("整形完了！",reportHtml,`<pre>${icleanedText}</pre>`);
+            }
         }
 
 
