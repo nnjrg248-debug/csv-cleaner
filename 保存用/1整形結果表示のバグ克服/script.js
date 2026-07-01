@@ -561,23 +561,6 @@ function restoreSjisThenConvertToutf8PJ(text) {
         function loadFileWithAutoEncoding(file, callback) {
             if (!file) return;
 
-            if (window.location.href.includes("index_taiwan")) {//台湾語の場合の分岐
-                const reader = new FileReader();
-                reader.readAsArrayBuffer(file);
-                reader.onload = (readerEvent) => {
-                    const bytes = new Uint8Array(readerEvent.target.result);
-                    let detectedEnco='BIG5';
-                    const textDecoder = new TextDecoder(detectedEnco);
-                    //const text = textDecoder.decode(bytes);
-                    let text = textDecoder.decode(bytes);               
-                    //text=restoreSjisThenConvertToutf8PJ(text);      
-                    //text = perfectCsvCleaner(text);
-                    callback(text, detectedEnco);
-                    //return;
-                };
-                return;
-            }
-
             const mode = getSelectedEncoding();
             const reader = new FileReader();
 

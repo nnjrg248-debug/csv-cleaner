@@ -242,7 +242,7 @@
         }
 
 
-        
+        //文字化が治る場合ボタンが出現する設定
         csvTextArea.addEventListener('input', (event) => {
 
             let testtext = csvTextArea.value;
@@ -561,23 +561,6 @@ function restoreSjisThenConvertToutf8PJ(text) {
         function loadFileWithAutoEncoding(file, callback) {
             if (!file) return;
 
-            if (window.location.href.includes("index_taiwan")) {//台湾語の場合の分岐
-                const reader = new FileReader();
-                reader.readAsArrayBuffer(file);
-                reader.onload = (readerEvent) => {
-                    const bytes = new Uint8Array(readerEvent.target.result);
-                    let detectedEnco='BIG5';
-                    const textDecoder = new TextDecoder(detectedEnco);
-                    //const text = textDecoder.decode(bytes);
-                    let text = textDecoder.decode(bytes);               
-                    //text=restoreSjisThenConvertToutf8PJ(text);      
-                    //text = perfectCsvCleaner(text);
-                    callback(text, detectedEnco);
-                    //return;
-                };
-                return;
-            }
-
             const mode = getSelectedEncoding();
             const reader = new FileReader();
 
@@ -658,7 +641,8 @@ function restoreSjisThenConvertToutf8PJ(text) {
                         text = perfectCsvCleaner(text);
                         callback(text, mode);  
                      
-                    };                    
+                    };   
+                                     
                 }
                                 /*
 
@@ -693,17 +677,82 @@ function restoreSjisThenConvertToutf8PJ(text) {
 
             // UTF-8として正しく読めるか試す
             try {
+                /*
                 const decoder = new TextDecoder('UTF-8', { fatal: true }); // fatal:trueで不正バイトは例外
                 decoder.decode(bytes);
                 return 'UTF-8'; // 例外が出なければUTF-8
+                */
+
+                const decoder = new TextDecoder('UTF-8', { fatal: true });
+                const decodedText = decoder.decode(bytes); // ★一度テキストに変換する
+        
+                // 【★ここが精度アップの鍵！】
+                // 偶然UTF-8の文法をパスしただけの「偽物のUTF-8」は、デコードすると「」などの
+                // 不正文字（Replacement Character）に置き換わることが非常に多いです。
+                // また、2文字だけの「測試」のような短いBig5バイト列がUTF-8として読めてしまった場合、
+                // 漢字ではなく「まったく意味のない制御文字や海外の特殊記号」に化けています。
+                
+                // 💡 対策：デコードした結果に「」が含まれている、または文字数が少ないのに
+                // 漢字やひらがなが1文字も含まれていない場合は、UTF-8ではないとみなして落とす（catchへ飛ばす）
+                if (decodedText.includes('') || !/[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/.test(decodedText)) {
+                    throw new Error("Fake UTF-8"); // 意図的に例外を起こして、次のShift_JISやBig5の判定に流す
+                }
+
+                return 'UTF-8'; // 本物のUTF-8であればここで確定
+
+
             } catch (e) {}
+
             try {
-                new TextDecoder('Shift_JIS', { fatal: true }).decode(bytes);
+                const decoder = new TextDecoder('Shift_JIS', { fatal: true });
+                const decodedText = decoder.decode(bytes);
+                
+                // 💡【さらに精度を上げる修正！】
+                // 台湾のBig5ファイルの中に、たまたま日本語が数文字（「文字化け」など）混ざっていても、
+                // 全体としては「ひらがな・カタカナ」の割合が極端に低くなります。
+                //
+                // 対策：テキスト全体の中から、ひらがな・カタカナの文字数をカウントします。
+                const kanaMatches = decodedText.match(/[\u3040-\u309F\u30A0-\u30FF]/g);
+                const kanaCount = kanaMatches ? kanaMatches.length : 0;
+                
+                // ひらがな・カタカナの文字数が、全体の文字数に対して「3%未満」しか含まれていない場合は、
+                // 日本向けの本物のShift_JISではない（＝台湾のBig5などの可能性が高い）とみなして落とす！
+                // ※これにより「文字化け」の「け」のような数文字のすり抜けを完璧にブロックします。
+                if (bytes.length > 0 && (kanaCount / decodedText.length) < 0.03) {
+                    throw new Error("Fake Shift_JIS (Too few Kana)"); // 意図的に例外を起こして、次のBig5判定に流す
+                }
+
                 return 'Shift_JIS';
             } catch (e) {}
 
+            // ★ 4. ここまで来たらUTF-8でもShift_JISでもない。Big5のパターンが含まれるかチェックする
+            let big5Score = 0;
+            for (let i = 0; i < bytes.length - 1; i++) {
+                const b1 = bytes[i];
+                const b2 = bytes[i + 1];
+
+                // Big5の文字の割り当て規則:
+                if (b1 >= 0x89 && b1 <= 0xF9) {
+                    if ((b2 >= 0x40 && b2 <= 0x7E) || (b2 >= 0xA1 && b2 <= 0xFE)) {
+                        big5Score++;
+                        i++; // 2バイト読んだのでインデックスを1つ進める
+                    }
+                }
+            }
+
+            // Big5の特徴的なバイトの並びが1回でも見つかれば、Big5として判定を返す
+            if (big5Score > 0) {
+                return 'Big5';
+            }
+
+
+
+
+
+
+
             // ここまで来たらどちらでも読めなかった
-            alert('このファイルはUTF-8、Shift_JIS以外の文字コードのため読み込めません。');
+            alert('このファイルはUTF-8、Shift_JIS、Big5以外の文字コードのため読み込めません。');
             return 'UTF-8';
         }
 
