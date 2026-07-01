@@ -1,7 +1,7 @@
 {
   "name": "CSVクリーナー",
   "short_name": "CSVクリーナー",
-  "start_url": "./index_top.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
