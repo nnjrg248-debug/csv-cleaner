@@ -144,7 +144,8 @@
                 <p class="text-primary">ここにCSVファイルをドラッグ＆ドロップ</p>
                 <p class="text-secondary">または クリックしてファイルを選択</p>
                 <p class="text-hint">💡 コピペ（Ctrl + V）でテキストを直接貼り付けてもOKです</p>
-                <input type="file" id="csvFile" accept=".csv" style="display: none;">
+                <!--<input type="file" id="csvFile" accept=".csv" style="display: none;"> 他のファイルでもいいように以下に変更-->
+                <input type="file" id="csvFile" accept="*.*" style="display: none;">
             </div>
             
             <!-- 【モード2】直接テキスト入力ゾーン（初期状態は非表示） -->
